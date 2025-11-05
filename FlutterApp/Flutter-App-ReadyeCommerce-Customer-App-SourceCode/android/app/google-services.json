@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "253369840347",
+    "project_id": "ready-ecommerce",
+    "storage_bucket": "ready-ecommerce.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253369840347:android:46a5a2323d8faf3749d2fe",
+        "android_client_info": {
+          "package_name": "com.echomart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253369840347-v4lm9flundestolpvjfljcop7sqo5m68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnwkduK9tqESOOZI_-MemybQ4CEJoimoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253369840347-v4lm9flundestolpvjfljcop7sqo5m68.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "253369840347-68qbh3ol900ac19ek48o04eltnuj85l1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.readyecommerce"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253369840347:android:0e6e5572d897b26849d2fe",
+        "android_client_info": {
+          "package_name": "com.readyecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253369840347-ro95uv71lv9a0ehnclntuhjk5f13jl1e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.readyecommerce",
+            "certificate_hash": "4e9e9b6c730ba6ce0df077e74273d19a174ba993"
+          }
+        },
+        {
+          "client_id": "253369840347-v4lm9flundestolpvjfljcop7sqo5m68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnwkduK9tqESOOZI_-MemybQ4CEJoimoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253369840347-v4lm9flundestolpvjfljcop7sqo5m68.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "253369840347-68qbh3ol900ac19ek48o04eltnuj85l1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.readyecommerce"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253369840347:android:e173c61723fcb1ae49d2fe",
+        "android_client_info": {
+          "package_name": "com.readyecommerce.apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253369840347-v4lm9flundestolpvjfljcop7sqo5m68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnwkduK9tqESOOZI_-MemybQ4CEJoimoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253369840347-v4lm9flundestolpvjfljcop7sqo5m68.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "253369840347-68qbh3ol900ac19ek48o04eltnuj85l1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.readyecommerce"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
