@@ -19,6 +19,10 @@ return [
     'central_domains' => [
         '127.0.0.1',
         'localhost',
+        'qutecart.com',         // Main SaaS platform
+        'www.qutecart.com',      // With www
+        'qutecat.com',           // Alternative domain
+        'www.qutecat.com',       // Alternative with www
     ],
 
     /**
