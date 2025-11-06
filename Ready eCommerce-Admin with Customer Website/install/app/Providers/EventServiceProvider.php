@@ -12,6 +12,16 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
+// Subscription Events
+use App\Events\Subscription\SubscriptionCreated;
+use App\Events\Subscription\PaymentFailed;
+use App\Events\Subscription\TrialWillEnd;
+
+// Subscription Listeners
+use App\Listeners\Subscription\SendSubscriptionConfirmation;
+use App\Listeners\Subscription\SendPaymentFailedNotification;
+use App\Listeners\Subscription\SendTrialEndingReminder;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -34,6 +44,19 @@ class EventServiceProvider extends ServiceProvider
 
         SendTestMailEvent::class => [
             TestMailListener::class,
+        ],
+
+        // Subscription Management Events
+        SubscriptionCreated::class => [
+            SendSubscriptionConfirmation::class,
+        ],
+
+        PaymentFailed::class => [
+            SendPaymentFailedNotification::class,
+        ],
+
+        TrialWillEnd::class => [
+            SendTrialEndingReminder::class,
         ],
     ];
 
