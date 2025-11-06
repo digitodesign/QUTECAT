@@ -1,7 +1,7 @@
 @php
     $generaleSetting = App\Models\GeneraleSetting::first();
 
-    $title = $generaleSetting?->title ?? config('app.name', 'ReadyEcommerce');
+    $title = $generaleSetting?->title ?? config('app.name', 'QuteCart');
     $favicon = $generaleSetting?->favicon ?? asset('assets/favicon.png');
 @endphp
 <!DOCTYPE html>

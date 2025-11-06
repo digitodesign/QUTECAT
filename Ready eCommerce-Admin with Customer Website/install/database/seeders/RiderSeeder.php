@@ -15,12 +15,12 @@ class RiderSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('email', 'rider@readyecommerce.com')->first();
+        $user = User::where('email', 'rider@qutecart.com')->first();
 
         if (!$user) {
             $user = User::factory()->create([
                 'name' => 'Demo Rider',
-                'email' => 'rider@readyecommerce.com',
+                'email' => 'rider@qutecart.com',
                 'phone' => '0170000000',
                 'password' => Hash::make('secret'),
                 'is_active' => true,

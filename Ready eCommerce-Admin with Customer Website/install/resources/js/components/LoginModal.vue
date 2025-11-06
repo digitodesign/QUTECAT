@@ -194,7 +194,7 @@ const loginFormData = ref({
 
 onMounted(async () => {
     if (master.app_environment == 'local') {
-        loginFormData.value.phone = 'user@readyecommerce.com';
+        loginFormData.value.phone = 'user@qutecart.com';
         loginFormData.value.password = 'secret';
     }
 

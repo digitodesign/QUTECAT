@@ -16,11 +16,11 @@
     <link rel="shortcut icon" type="image/png" href="{{ $generaleSetting?->favicon ?? asset('assets/favicon.png') }}" />
 
     <!-- App title -->
-    <title>{{ $generaleSetting?->title ?? config('app.name', 'ReadyEcommerce') }} Shop Login</title>
+    <title>{{ $generaleSetting?->title ?? config('app.name', 'QuteCart') }} Shop Login</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description"
-        content="{{ $generaleSetting?->name ?? config('app.name', 'ReadyEcommerce') }} shop pannel login">
+        content="{{ $generaleSetting?->name ?? config('app.name', 'QuteCart') }} shop pannel login">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
@@ -119,7 +119,7 @@
                                 <div class="header">Shop Credentials</div>
                                 <div class="content">
                                     <div class="credentials">
-                                        <span>Email: shop@readyecommerce.com</span>
+                                        <span>Email: shop@qutecart.com</span>
                                         <span>Password: secret</span>
                                     </div>
                                     <div class="copyBtn" onclick="loginShop()">
@@ -132,7 +132,7 @@
                                 <div class="header">Admin Credentials</div>
                                 <div class="content">
                                     <div class="credentials">
-                                        <span>Email: root@readyecommerce.com</span>
+                                        <span>Email: root@qutecart.com</span>
                                         <span>Password: secret</span>
                                     </div>
                                     <div class="copyBtn" onclick="gotoAdminLogin()">
@@ -189,7 +189,7 @@
         }
 
         function loginShop() {
-            email.value = 'shop@readyecommerce.com';
+            email.value = 'shop@qutecart.com';
             password.value = 'secret';
 
             if (!sessionStorage.getItem('fromAdmin')) {

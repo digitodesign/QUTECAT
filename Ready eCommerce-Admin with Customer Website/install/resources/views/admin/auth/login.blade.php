@@ -148,7 +148,7 @@
                                 <div class="header">Admin Credentials</div>
                                 <div class="content">
                                     <div class="credentials">
-                                        <span>Email: root@readyecommerce.com</span>
+                                        <span>Email: root@qutecart.com</span>
                                         <span>Password: secret</span>
                                     </div>
                                     <div class="copyBtn" onclick="loginAdmin()">
@@ -161,7 +161,7 @@
                                 <div class="header">Shop Credentials</div>
                                 <div class="content">
                                     <div class="credentials">
-                                        <span>Email: shop@readyecommerce.com</span>
+                                        <span>Email: shop@qutecart.com</span>
                                         <span>Password: secret</span>
                                     </div>
                                     <div class="copyBtn" onclick="gotoShopLogin()">
@@ -211,7 +211,7 @@
         var password = document.getElementById("password");
 
         function loginAdmin() {
-            email.value = 'root@readyecommerce.com';
+            email.value = 'root@qutecart.com';
             password.value = 'secret';
 
             if (!sessionStorage.getItem('fromShop')) {

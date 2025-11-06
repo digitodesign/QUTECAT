@@ -44,6 +44,6 @@ class CreateSuperAdmin extends Controller
         $rootUser->assignRole(Roles::SHOP->value);
 
         // Redirect to the dashboard or any other page
-        return redirect()->route('admin.login')->with('success', 'You are ready to use ReadyEcommerce! Please login with your credentials.');
+        return redirect()->route('admin.login')->with('success', 'You are ready to use QuteCart! Please login with your credentials.');
     }
 }

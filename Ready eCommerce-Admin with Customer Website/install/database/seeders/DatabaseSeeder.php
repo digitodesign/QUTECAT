@@ -62,19 +62,19 @@ class DatabaseSeeder extends Seeder
         // info for root user in command line
         $this->command->line('');
         $this->command->info('Root user created:');
-        $this->command->warn('- Email: root@readyecommerce.com');
+        $this->command->warn('- Email: root@qutecart.com');
         $this->command->warn('- Password: secret');
         $this->command->info('');
 
         if (app()->environment('local')) {
             // info for shop user in command line
             $this->command->info('Demo Shop created:');
-            $this->command->warn('- Email: shop@readyecommerce.com');
+            $this->command->warn('- Email: shop@qutecart.com');
             $this->command->warn('- Password: secret');
 
             // info for rider user in command line
             $this->command->info('Rider created:');
-            $this->command->warn('- Email: rider@readyecommerce.com');
+            $this->command->warn('- Email: rider@qutecart.com');
             $this->command->warn('- Password: secret');
         }
     }

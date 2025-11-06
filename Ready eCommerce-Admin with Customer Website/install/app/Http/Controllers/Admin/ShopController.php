@@ -65,7 +65,7 @@ class ShopController extends Controller
      */
     public function update(ShopCreateRequest $request, Shop $shop)
     {
-        if (app()->environment() == 'local' && $shop->user->email == 'shop@readyecommerce.com') {
+        if (app()->environment() == 'local' && $shop->user->email == 'shop@qutecart.com') {
             return back()->with('demoMode', 'You can not update the shop in demo mode');
         }
 
@@ -80,7 +80,7 @@ class ShopController extends Controller
      */
     public function statusToggle(Shop $shop)
     {
-        if (app()->environment() == 'local' && $shop->user->email == 'shop@readyecommerce.com') {
+        if (app()->environment() == 'local' && $shop->user->email == 'shop@qutecart.com') {
             return back()->with('demoMode', 'You can not update status of the shop in demo mode');
         }
 
@@ -139,7 +139,7 @@ class ShopController extends Controller
 
     public function resetPassword(Shop $shop, ShopPasswordResetRequest $request)
     {
-        if (app()->environment() == 'local' && $shop->user->email == 'shop@readyecommerce.com') {
+        if (app()->environment() == 'local' && $shop->user->email == 'shop@qutecart.com') {
             return back()->with('demoMode', 'You can not update status of the shop in demo mode');
         }
 
