@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\LocalizationManage::class,
+            \App\Http\Middleware\SetShopContext::class, // SaaS: Set shop context from subdomain/session
             \App\Http\Middleware\CheckSubscription::class,
         ],
 
@@ -44,6 +45,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\SetShopContext::class, // SaaS: Set shop context from headers/query params
         ],
     ];
 
@@ -73,5 +75,6 @@ class Kernel extends HttpKernel
         'checkPermission' => \App\Http\Middleware\CheckPermission::class,
         'demoMode' => \App\Http\Middleware\DemoModeMiddleware::class,
         'check_root_user' => \App\Http\Middleware\CheckHasRootUser::class,
+        'check.limits' => \App\Http\Middleware\CheckShopLimits::class, // SaaS: Enforce subscription limits
     ];
 }
