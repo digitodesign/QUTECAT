@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 use Stancl\Tenancy\Database\Models\Domain;
-use Stancl\Tenancy\Database\Models\Tenant;
+// Use our custom Tenant model instead of the package's default
+use App\Models\Tenant;
 
 return [
     'tenant_model' => Tenant::class,
@@ -30,9 +31,13 @@ return [
      * Their responsibility is making Laravel features tenant-aware.
      *
      * To configure their behavior, see the config keys below.
+     *
+     * NOTE: DatabaseTenancyBootstrapper is DISABLED for our hybrid marketplace model.
+     * We use a single shared database, not separate databases per tenant.
+     * Tenancy is used ONLY for subdomain routing and identification.
      */
     'bootstrappers' => [
-        Stancl\Tenancy\Bootstrappers\DatabaseTenancyBootstrapper::class,
+        // Stancl\Tenancy\Bootstrappers\DatabaseTenancyBootstrapper::class, // DISABLED - We use single DB
         Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
