@@ -98,7 +98,119 @@
                         </div>
                     </div>
                     <div class="col-lg-4 mt-3">
-                        <div class="card h-100">
+                        {{-- SaaS: Subscription Information Card --}}
+                        <div class="card mb-3">
+                            <h4 class="m-0 p-3 border-bottom">
+                                {{ __('Subscription') }}
+                                @if($shop->currentPlan)
+                                    <span class="badge badge-sm float-end
+                                        {{ $shop->subscription_status === 'active' ? 'badge-success' :
+                                           ($shop->subscription_status === 'trialing' ? 'badge-info' :
+                                           ($shop->subscription_status === 'canceled' ? 'badge-warning' : 'badge-secondary')) }}">
+                                        {{ ucfirst($shop->subscription_status ?? 'active') }}
+                                    </span>
+                                @endif
+                            </h4>
+                            <div class="card-body pt-0">
+                                <table class="table mb-0">
+                                    <tr>
+                                        <td style="width: 140px">{{ __('Plan') }}:</td>
+                                        <td>
+                                            @if($shop->currentPlan)
+                                                <span class="fw-bold">{{ $shop->currentPlan->name }}</span>
+                                                <small class="text-muted d-block">${{ number_format($shop->currentPlan->price, 2) }}/month</small>
+                                            @else
+                                                <span class="badge badge-secondary">Free</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @if($shop->currentPlan)
+                                        @if($shop->subscription_status === 'trialing' && $shop->trial_ends_at)
+                                        <tr>
+                                            <td>{{ __('Trial Ends') }}:</td>
+                                            <td>
+                                                <span class="fw-bold">{{ $shop->trial_ends_at->format('M d, Y') }}</span>
+                                                <small class="text-muted d-block">{{ $shop->trial_ends_at->diffForHumans() }}</small>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @if($shop->subscription_ends_at)
+                                        <tr>
+                                            <td>{{ __('Next Billing') }}:</td>
+                                            <td>{{ $shop->subscription_ends_at->format('M d, Y') }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($shop->currentTenant && $shop->currentTenant->domains->first())
+                                        <tr>
+                                            <td>{{ __('Subdomain') }}:</td>
+                                            <td>
+                                                <a href="https://{{ $shop->currentTenant->domains->first()->domain }}" target="_blank" class="text-primary">
+                                                    {{ $shop->currentTenant->domains->first()->domain }}
+                                                    <i class="fa fa-external-link-alt fa-xs"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    @endif
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- SaaS: Usage Limits Card --}}
+                        <div class="card mb-3">
+                            <h4 class="m-0 p-3 border-bottom">{{ __('Usage & Limits') }}</h4>
+                            <div class="card-body pt-0">
+                                <table class="table mb-0">
+                                    <tr>
+                                        <td style="width: 140px">{{ __('Products') }}:</td>
+                                        <td>
+                                            <span class="fw-bold">{{ $shop->current_products_count }}</span>
+                                            / {{ $shop->products_limit === -1 ? '∞' : $shop->products_limit }}
+                                            @php
+                                                $productPercent = $shop->products_limit > 0 ? round(($shop->current_products_count / $shop->products_limit) * 100) : 0;
+                                            @endphp
+                                            <div class="progress mt-1" style="height: 6px;">
+                                                <div class="progress-bar {{ $productPercent >= 90 ? 'bg-danger' : ($productPercent >= 80 ? 'bg-warning' : 'bg-success') }}"
+                                                    style="width: {{ min($productPercent, 100) }}%"></div>
+                                            </div>
+                                            <small class="text-muted">{{ $productPercent }}% used</small>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ __('Orders') }}:</td>
+                                        <td>
+                                            <span class="fw-bold">{{ $shop->current_orders_count }}</span>
+                                            / {{ $shop->orders_per_month_limit === -1 ? '∞' : $shop->orders_per_month_limit }}
+                                            @php
+                                                $orderPercent = $shop->orders_per_month_limit > 0 ? round(($shop->current_orders_count / $shop->orders_per_month_limit) * 100) : 0;
+                                            @endphp
+                                            <div class="progress mt-1" style="height: 6px;">
+                                                <div class="progress-bar {{ $orderPercent >= 90 ? 'bg-danger' : ($orderPercent >= 80 ? 'bg-warning' : 'bg-success') }}"
+                                                    style="width: {{ min($orderPercent, 100) }}%"></div>
+                                            </div>
+                                            <small class="text-muted">{{ $orderPercent }}% used this month</small>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ __('Storage') }}:</td>
+                                        <td>
+                                            <span class="fw-bold">{{ $shop->storage_used_mb }}MB</span>
+                                            / {{ $shop->storage_limit_mb === -1 ? '∞' : $shop->storage_limit_mb }}MB
+                                            @php
+                                                $storagePercent = $shop->storage_limit_mb > 0 ? round(($shop->storage_used_mb / $shop->storage_limit_mb) * 100) : 0;
+                                            @endphp
+                                            <div class="progress mt-1" style="height: 6px;">
+                                                <div class="progress-bar {{ $storagePercent >= 90 ? 'bg-danger' : ($storagePercent >= 80 ? 'bg-warning' : 'bg-success') }}"
+                                                    style="width: {{ min($storagePercent, 100) }}%"></div>
+                                            </div>
+                                            <small class="text-muted">{{ $storagePercent }}% used</small>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
                             <h4 class="m-0 p-3 border-bottom">{{ __('Product Information') }}</h4>
                             <div class="card-body pt-0">
                                 <table class="table mb-0">

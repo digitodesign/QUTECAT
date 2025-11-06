@@ -69,6 +69,30 @@
                                         @endhasPermission
                                     </label>
                                 </div>
+                                {{-- SaaS: Subscription Plan --}}
+                                <div class="item">
+                                    <strong>{{ __('Plan') }}</strong>
+                                    @if($shop->currentPlan)
+                                        <span class="badge badge-sm
+                                            {{ $shop->subscription_status === 'active' ? 'badge-success' :
+                                               ($shop->subscription_status === 'trialing' ? 'badge-info' :
+                                               ($shop->subscription_status === 'canceled' ? 'badge-warning' : 'badge-secondary')) }}"
+                                            data-bs-toggle="tooltip" data-bs-placement="left"
+                                            data-bs-title="{{ ucfirst($shop->subscription_status ?? 'active') }}">
+                                            {{ $shop->currentPlan->name }}
+                                        </span>
+                                    @else
+                                        <span class="badge badge-sm badge-secondary">Free</span>
+                                    @endif
+                                </div>
+                                {{-- SaaS: Usage Stats --}}
+                                <div class="item">
+                                    <strong>{{ __('Usage') }}</strong>
+                                    <small class="text-muted" data-bs-toggle="tooltip" data-bs-placement="left"
+                                        data-bs-title="Products: {{ $shop->current_products_count }}/{{ $shop->products_limit }}">
+                                        {{ $shop->current_products_count }}/{{ $shop->products_limit === -1 ? '∞' : $shop->products_limit }}
+                                    </small>
+                                </div>
                                 @hasPermission('admin.shop.products')
                                 <div class="item">
                                     <strong>{{ __('Products') }}</strong>
@@ -120,6 +144,8 @@
                             <th>{{ __('SL') }}</th>
                             <th>{{ __('Logo') }}</th>
                             <th>{{ __('Name') }}</th>
+                            <th>{{ __('Plan') }}</th>{{-- SaaS --}}
+                            <th>{{ __('Usage') }}</th>{{-- SaaS --}}
                             @hasPermission('admin.shop.status.toggle')
                             <th>{{ __('Status') }}</th>
                             @endhasPermission
@@ -143,6 +169,31 @@
                                     </div>
                                 </td>
                                 <td>{{ $shop->name }}</td>
+                                {{-- SaaS: Subscription Plan --}}
+                                <td>
+                                    @if($shop->currentPlan)
+                                        <span class="badge
+                                            {{ $shop->subscription_status === 'active' ? 'badge-success' :
+                                               ($shop->subscription_status === 'trialing' ? 'badge-info' :
+                                               ($shop->subscription_status === 'canceled' ? 'badge-warning' : 'badge-secondary')) }}"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{ ucfirst($shop->subscription_status ?? 'active') }} - ${{ number_format($shop->currentPlan->price, 2) }}/mo">
+                                            {{ $shop->currentPlan->name }}
+                                        </span>
+                                    @else
+                                        <span class="badge badge-secondary">Free</span>
+                                    @endif
+                                </td>
+                                {{-- SaaS: Usage Stats --}}
+                                <td>
+                                    <small class="text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Products: {{ $shop->current_products_count }}/{{ $shop->products_limit === -1 ? 'Unlimited' : $shop->products_limit }}&#10;Orders: {{ $shop->current_orders_count }}/{{ $shop->orders_per_month_limit === -1 ? 'Unlimited' : $shop->orders_per_month_limit }}&#10;Storage: {{ $shop->storage_used_mb }}MB/{{ $shop->storage_limit_mb === -1 ? 'Unlimited' : $shop->storage_limit_mb }}MB">
+                                        {{ round(($shop->current_products_count / max($shop->products_limit, 1)) * 100) }}%
+                                        @if($shop->current_products_count >= $shop->products_limit * 0.9 && $shop->products_limit > 0)
+                                            <i class="fa fa-exclamation-triangle text-warning" title="Approaching limit"></i>
+                                        @endif
+                                    </small>
+                                </td>
                                 @hasPermission('admin.shop.status.toggle')
                                 <td>
                                     <label class="switch mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('Click here to change status')}}">
