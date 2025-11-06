@@ -174,7 +174,7 @@ return [
     */
     'product' => 'Ready Ecommerce', // which product you verify same as supported server
     'verify_code' => 'XUapCS7/OXM6rdPHHyTGYDgvN3VSaXptaG53Zy9wOWJZcVZ4UU1ocmVuMit1UVp1SGRyMFJFeWRoSjRVYVpnazZiNU9JRVJoQTNJTEVOREZ4ZHVZQ1BSdHpaOHJ6dVdCaFZ5QkN3PT0=',
-    'verify_purchase' => true,
+    'verify_purchase' => false, // Disabled - this is our code now
     'verify_rules' => [
         'email' => [
             'rule' => 'required|string',
