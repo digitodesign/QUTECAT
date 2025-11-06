@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SubscriptionController;
+use App\Http\Controllers\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,8 @@ Route::prefix('subscription')->middleware(['auth:sanctum'])->group(function () {
     // Stripe billing portal
     Route::get('/billing-portal', [SubscriptionController::class, 'billingPortal']);
 });
+
+// Stripe Webhook (no authentication required - verified by signature)
+Route::post('/webhooks/stripe', [WebhookController::class, 'handleStripeWebhook'])
+    ->name('webhooks.stripe')
+    ->withoutMiddleware(['auth:sanctum', 'throttle']);

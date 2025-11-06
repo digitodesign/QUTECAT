@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         'payment/*',
         'subscription/payment/*',
         'paytabs/*',
+        'api/webhooks/stripe', // Stripe webhooks (verified by signature)
     ];
 }
