@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\Traits\ContextAware;
 use App\Http\Requests\AddFavoriteRequest;
 use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\BrandResource;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    use ContextAware; // SaaS: Context-aware filtering
     /**
      * Retrieve a paginated list of products based on the provided request parameters.
      *
@@ -31,7 +33,8 @@ class ProductController extends Controller
         $skip = ($page * $perPage) - $perPage;
 
         $search = $request->search;
-        $shopID = $request->shop_id;
+        // SaaS: Use context-aware shop ID (from subdomain, header, or request param)
+        $shopID = $this->getCurrentShopId($request);
         $categoryID = $request->category_id;
         $subCategoryID = $request->sub_category_id;
 
@@ -44,11 +47,8 @@ class ProductController extends Controller
         $sizeID = $request->size_id;
         $isDigital = $request->is_digital == true ? true : false;
 
-        $generaleSetting = generaleSetting('setting');
-        $shop = null;
-        if ($generaleSetting?->shop_type == 'single') {
-            $shop = generaleSetting('rootShop');
-        }
+        // SaaS: Get current shop for filter options
+        $shop = $this->getCurrentShop($request);
 
         // get data for
         $rootShop = $shop ?? generaleSetting('rootShop');
