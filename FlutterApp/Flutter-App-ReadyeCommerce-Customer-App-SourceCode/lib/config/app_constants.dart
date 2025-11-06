@@ -1,11 +1,15 @@
 class AppConstants {
-// Codecanyon
-  static const String baseUrl = 'https://demo.readyecommerce.app/api';
-  // QA Testing
-  //static const String baseUrl = 'https://uat.readyecommerce.app/api';
-  // static const String baseUrl = 'http://chat.razinsoft.site/api';
-  // Development
-  // static const String baseUrl = 'https://dev.readyecommerce.app/api';
+// ============================================================================
+// 🔧 PRODUCTION Configuration - QuteCart
+// ============================================================================
+
+  /// Production API URL - QuteCart
+  static const String baseUrl = 'https://qutecart.com/api';
+
+  // Previous environments (for reference):
+  // Demo: https://demo.readyecommerce.app/api
+  // QA Testing: https://uat.readyecommerce.app/api
+  // Development: https://dev.readyecommerce.app/api
   static const String settings = '$baseUrl/master';
   static const String loginUrl = '$baseUrl/login';
   static const String registrationUrl = '$baseUrl/registration';
@@ -111,8 +115,19 @@ class AppConstants {
   static String appCurrency = "\$";
   static String appServiceName = 'ecommerce';
 
-  static String pusherApiKey = 'a3cbadc04a202a7746fc';
-  static String pusherCluster = 'mt1';
+// ============================================================================
+// 🔧 TODO: Update Pusher Configuration for QuteCart Production
+// ============================================================================
+//
+// REQUIRED: Get these values from your Laravel production server:
+//   SSH to production: ssh user@qutecart.com
+//   Run: cat /path/to/laravel/.env | grep PUSHER
+//   Copy PUSHER_APP_KEY and PUSHER_APP_CLUSTER values below
+//
+// Or get from Pusher Dashboard: https://dashboard.pusher.com
+//
+  static String pusherApiKey = 'a3cbadc04a202a7746fc';  // ⚠️ TODO: Update from Laravel .env PUSHER_APP_KEY
+  static String pusherCluster = 'mt1';                   // ⚠️ TODO: Update from Laravel .env PUSHER_APP_CLUSTER
 }
 
 enum FileSystem {
