@@ -1,0 +1,19 @@
+[phases.setup]
+nixPkgs = ["php82", "php82Packages.composer", "postgresql", "nodejs"]
+
+[phases.install]
+cmds = [
+    "cd 'Ready eCommerce-Admin with Customer Website/install'",
+    "composer install --optimize-autoloader --no-dev --no-interaction"
+]
+
+[phases.build]
+cmds = [
+    "cd 'Ready eCommerce-Admin with Customer Website/install'",
+    "php artisan config:cache",
+    "php artisan route:cache",
+    "php artisan view:cache"
+]
+
+[start]
+cmd = "cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan serve --host=0.0.0.0 --port=$PORT"
