@@ -1,0 +1,36 @@
+# Documentation
+*.md
+docs/
+Documentation/
+
+# Flutter App (deployed separately)
+FlutterApp/
+
+# Development files
+.git/
+.github/
+.vscode/
+.idea/
+
+# Docker files (not needed on Railway)
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+.dockerignore
+docker/
+
+# Scripts
+deploy-script.sh
+
+# Node modules
+node_modules/
+
+# Laravel storage and cache (will be regenerated)
+backend/install/storage/framework/cache/*
+backend/install/storage/framework/sessions/*
+backend/install/storage/framework/views/*
+backend/install/storage/logs/*
+
+# Environment files (configured in Railway)
+.env
+.env.*

@@ -1,0 +1,324 @@
+/* ========================================
+   ZARA-Style Custom Stylesheet
+   Minimalist, sophisticated, elegant design
+   ======================================== */
+
+/* Typography - Clean and minimal */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: 0.02em;
+    color: #1A1A1A;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400 !important;  /* Lighter weight for elegance */
+    letter-spacing: 0.03em;
+    color: #000000;
+}
+
+/* Buttons - Minimal style */
+.btn-primary {
+    background: #000000;
+    border: 1px solid #000000;
+    border-radius: 0;              /* Sharp corners */
+    padding: 12px 32px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.btn-primary:hover {
+    background: #1A1A1A;
+    border-color: #1A1A1A;
+    box-shadow: none;               /* No shadow */
+    transform: translateY(-1px);    /* Subtle lift */
+}
+
+.btn-outline-primary {
+    color: #000000;
+    border: 1px solid #000000;
+    background: transparent;
+    border-radius: 0;
+}
+
+.btn-outline-primary:hover {
+    color: #FFFFFF;
+    background: #000000;
+    border-color: #000000;
+}
+
+/* Cards - Minimal borders */
+.card {
+    border: 1px solid #E5E5E5;
+    border-radius: 0;
+    box-shadow: none !important;
+}
+
+.card-header {
+    background: #FAFAFA;
+    border-bottom: 1px solid #E5E5E5;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+}
+
+/* Forms - Clean inputs */
+.form-control {
+    border: 1px solid #D4D4D4;
+    border-radius: 0;
+    padding: 14px 16px;
+    font-size: 14px;
+    transition: border-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.form-control:focus {
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+/* Tables - Minimal lines */
+.table {
+    border: none;
+}
+
+.table th {
+    background: #FAFAFA;
+    color: #000000;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 11px;
+    border: none;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.table td {
+    border-bottom: 1px solid #F5F5F5;
+    color: #1A1A1A;
+    font-size: 13px;
+}
+
+/* Sidebar - Clean navigation */
+.app-sidebar {
+    background: #FFFFFF;
+    border-right: 1px solid #E5E5E5;
+}
+
+.menu {
+    color: #666666;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: 11px;
+    transition: color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.menu.active {
+    color: #000000;
+    background: #FAFAFA;
+    border-left: 2px solid #000000;
+}
+
+.menu:hover {
+    color: #000000;
+    background: #F5F5F5;
+}
+
+/* Product Cards - Image-first design */
+.product-card {
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.product-card .product-title {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+    letter-spacing: 0.02em;
+    margin-top: 12px;
+}
+
+.product-card .product-price {
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+    margin-top: 4px;
+}
+
+/* Dashboard Stats - Minimal cards */
+.dashboard-box {
+    background: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 0;
+    padding: 24px;
+    transition: border-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.dashboard-box:hover {
+    border-color: #000000;
+}
+
+.dashboard-box .count {
+    font-size: 32px;
+    font-weight: 300;
+    color: #000000;
+    letter-spacing: -0.02em;
+}
+
+.dashboard-box .title {
+    font-size: 12px;
+    font-weight: 400;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 8px;
+}
+
+/* Pagination - Minimal style */
+.pagination .page-link {
+    color: #000000;
+    border: 1px solid #E5E5E5;
+    border-radius: 0;
+    background: #FFFFFF;
+}
+
+.pagination .page-link:hover {
+    background: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+}
+
+.pagination .page-item.active .page-link {
+    background: #000000;
+    border-color: #000000;
+    color: #FFFFFF;
+}
+
+/* Badges - Minimal style */
+.badge {
+    border-radius: 0;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 4px 8px;
+}
+
+.badge-success {
+    background: #FFFFFF;
+    color: #16A34A;
+    border: 1px solid #16A34A;
+}
+
+.badge-danger {
+    background: #FFFFFF;
+    color: #DC2626;
+    border: 1px solid #DC2626;
+}
+
+.badge-info {
+    background: #FFFFFF;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+/* Smooth transitions */
+* {
+    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+}
+
+a, button, .clickable {
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Remove all box shadows globally */
+*, *::before, *::after {
+    box-shadow: none !important;
+}
+
+/* Modal - Clean style */
+.modal-content {
+    border-radius: 0;
+    border: 1px solid #E5E5E5;
+}
+
+.modal-header {
+    border-bottom: 1px solid #E5E5E5;
+    background: #FAFAFA;
+}
+
+.modal-footer {
+    border-top: 1px solid #E5E5E5;
+}
+
+/* Alerts - Minimal style */
+.alert {
+    border-radius: 0;
+    border-left: 3px solid;
+}
+
+.alert-success {
+    background: #F0FDF4;
+    border-left-color: #16A34A;
+    color: #166534;
+}
+
+.alert-danger {
+    background: #FEF2F2;
+    border-left-color: #DC2626;
+    color: #991B1B;
+}
+
+.alert-info {
+    background: #FAFAFA;
+    border-left-color: #000000;
+    color: #1A1A1A;
+}
+
+/* Select dropdowns - Clean style */
+.select2-container--default .select2-selection--single {
+    border: 1px solid #D4D4D4;
+    border-radius: 0;
+    height: 45px;
+}
+
+.select2-container--default .select2-selection--single:focus {
+    border-color: #000000;
+}
+
+/* Inputs - Focus state */
+input:focus, textarea:focus, select:focus {
+    outline: none !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+}
+
+/* Page transitions */
+.page-transition {
+    animation: fadeIn 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
