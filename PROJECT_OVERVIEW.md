@@ -219,7 +219,7 @@
 
 ```bash
 # 1. Clone and navigate
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 
 # 2. Setup environment
 cp .env.example .env

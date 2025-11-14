@@ -8,7 +8,7 @@ We follow **Laravel conventions** with clear separation of concerns. Every file 
 
 ```
 QUTECAT/
-├── Ready eCommerce-Admin with Customer Website/
+├── backend/
 │   ├── install/                              # Main working directory (our modifications)
 │   │   ├── app/
 │   │   │   ├── Models/                       # Eloquent models

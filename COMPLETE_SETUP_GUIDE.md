@@ -83,7 +83,7 @@ cd QuteCart
 ### Step 1.2: Navigate to Laravel Directory
 
 ```bash
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 ```
 
 ### Step 1.3: Environment Configuration
@@ -964,7 +964,7 @@ cd /var/www/qutekart
 git clone <your-repository-url> .
 
 # Navigate to Laravel directory
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 
 # Copy environment file
 cp .env.example .env
@@ -1101,7 +1101,7 @@ nano /etc/nginx/sites-available/qutekart
 server {
     listen 80;
     server_name qutekart.com www.qutekart.com;
-    root /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/public;
+    root /var/www/qutekart/backend/install/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -1136,7 +1136,7 @@ server {
 server {
     listen 80;
     server_name *.qutekart.com;
-    root /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/public;
+    root /var/www/qutekart/backend/install/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -1191,7 +1191,7 @@ nano /etc/supervisor/conf.d/qutekart-worker.conf
 ```ini
 [program:qutekart-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+command=php /var/www/qutekart/backend/install/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
 autostart=true
 autorestart=true
 stopasgroup=true

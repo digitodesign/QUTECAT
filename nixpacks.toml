@@ -3,15 +3,15 @@ nixPkgs = ["php82", "php82Packages.composer", "postgresql", "nodejs"]
 
 [phases.install]
 cmds = [
-    "cd 'Ready eCommerce-Admin with Customer Website/install' && composer install --optimize-autoloader --no-dev --no-interaction"
+    "cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction"
 ]
 
 [phases.build]
 cmds = [
-    "cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan config:cache",
-    "cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan route:cache",
-    "cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan view:cache"
+    "cd backend/install && php artisan config:cache",
+    "cd backend/install && php artisan route:cache",
+    "cd backend/install && php artisan view:cache"
 ]
 
 [start]
-cmd = "cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "cd backend/install && php artisan serve --host=0.0.0.0 --port=$PORT"

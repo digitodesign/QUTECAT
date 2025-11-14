@@ -146,7 +146,7 @@ cd /var/www
 git clone YOUR_REPOSITORY_URL qutekart
 
 # Navigate to Laravel directory
-cd qutekart/"Ready eCommerce-Admin with Customer Website/install"
+cd qutekart/"backend/install"
 ```
 
 ### Step 2: Create Production Environment File
@@ -394,7 +394,7 @@ docker-compose -f docker-compose.proxy.yml up -d
 **Update your main docker-compose.yml nginx service:**
 
 ```bash
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 nano docker-compose.yml
 ```
 
@@ -571,7 +571,7 @@ This will check for updated images daily and auto-update your containers.
 ### Deploying Updates
 
 ```bash
-cd /var/www/qutekart/"Ready eCommerce-Admin with Customer Website/install"
+cd /var/www/qutekart/"backend/install"
 
 # Pull latest code
 git pull

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `Ready eCommerce-Admin with Customer Website/update/` folder contains a **clean, original version** of the Ready eCommerce template without our SaaS modifications.
+The `backend/update/` folder contains a **clean, original version** of the Ready eCommerce template without our SaaS modifications.
 
 ## Purpose
 

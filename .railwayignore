@@ -26,10 +26,10 @@ deploy-script.sh
 node_modules/
 
 # Laravel storage and cache (will be regenerated)
-Ready eCommerce-Admin with Customer Website/install/storage/framework/cache/*
-Ready eCommerce-Admin with Customer Website/install/storage/framework/sessions/*
-Ready eCommerce-Admin with Customer Website/install/storage/framework/views/*
-Ready eCommerce-Admin with Customer Website/install/storage/logs/*
+backend/install/storage/framework/cache/*
+backend/install/storage/framework/sessions/*
+backend/install/storage/framework/views/*
+backend/install/storage/logs/*
 
 # Environment files (configured in Railway)
 .env

@@ -295,7 +295,7 @@ chown -R www-data:www-data /var/www/qutekart
 git clone YOUR_REPOSITORY_URL .
 
 # Navigate to Laravel directory
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 ```
 
 **Option B: Upload via SFTP**
@@ -308,7 +308,7 @@ Use FileZilla or similar:
 ### Step 3: Install Dependencies
 
 ```bash
-cd "/var/www/qutekart/Ready eCommerce-Admin with Customer Website/install"
+cd "/var/www/qutekart/backend/install"
 
 # Install PHP dependencies
 composer install --optimize-autoloader --no-dev
@@ -467,12 +467,12 @@ find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 
 # Storage and cache must be writable
-chmod -R 775 "Ready eCommerce-Admin with Customer Website/install/storage"
-chmod -R 775 "Ready eCommerce-Admin with Customer Website/install/bootstrap/cache"
+chmod -R 775 "backend/install/storage"
+chmod -R 775 "backend/install/bootstrap/cache"
 
 # Create installed flag
-echo "Installed on $(date)" > "Ready eCommerce-Admin with Customer Website/install/storage/installed"
-chmod 664 "Ready eCommerce-Admin with Customer Website/install/storage/installed"
+echo "Installed on $(date)" > "backend/install/storage/installed"
+chmod 664 "backend/install/storage/installed"
 ```
 
 ---
@@ -492,7 +492,7 @@ server {
     listen 80;
     server_name qutekart.com www.qutekart.com;
 
-    root /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/public;
+    root /var/www/qutekart/backend/install/public;
     index index.php index.html;
 
     # Logs
@@ -542,7 +542,7 @@ server {
     listen 80;
     server_name *.qutekart.com;
 
-    root /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/public;
+    root /var/www/qutekart/backend/install/public;
     index index.php index.html;
 
     access_log /var/log/nginx/qutekart-subdomains-access.log;

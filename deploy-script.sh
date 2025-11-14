@@ -25,7 +25,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_PATH="/var/www/qutekart/Ready eCommerce-Admin with Customer Website/install"
+PROJECT_PATH="/var/www/qutekart/backend/install"
 WEB_USER="www-data"
 
 # Check if running as root

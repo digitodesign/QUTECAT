@@ -715,7 +715,7 @@ QUTECAT/
 │   ├── QUTECAT_HYBRID_ARCHITECTURE.md (Complete vision)
 │   ├── IMPLEMENTATION_PLAN.md (This file)
 │   └── API_DOCUMENTATION.md (Coming soon)
-├── Ready eCommerce-Admin with Customer Website/
+├── backend/
 │   └── install/ (Main application)
 │       ├── app/
 │       │   ├── Models/

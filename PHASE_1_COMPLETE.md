@@ -29,7 +29,7 @@ docs/
 
 ### 2. Docker Development Environment ✅
 
-**Location:** `Ready eCommerce-Admin with Customer Website/install/docker/`
+**Location:** `backend/install/docker/`
 
 **Services:**
 - PostgreSQL 16 (primary database)
@@ -358,7 +358,7 @@ All changes committed in **8 organized commits**:
 
 **Docker Environment:**
 ```bash
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 docker-compose up -d
 docker-compose exec php composer install
 docker-compose exec php php artisan migrate

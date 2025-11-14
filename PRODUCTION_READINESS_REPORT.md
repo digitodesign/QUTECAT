@@ -575,7 +575,7 @@ flutter build appbundle --release  # For Play Store
 ### Path A: Test Locally Right Now (5 minutes)
 
 ```bash
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 docker-compose up -d
 docker-compose exec php composer install
 docker-compose exec php php artisan key:generate

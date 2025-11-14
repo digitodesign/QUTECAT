@@ -20,7 +20,7 @@ This document provides a comprehensive testing plan for Phase 2 implementation. 
 
 1. **Docker Environment Running:**
    ```bash
-   cd "/home/user/QUTECAT/Ready eCommerce-Admin with Customer Website/install"
+   cd "/home/user/QUTECAT/backend/install"
    docker-compose up -d
    ```
 

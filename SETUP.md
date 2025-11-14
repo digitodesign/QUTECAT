@@ -13,7 +13,7 @@
 ### 1. Clone and Navigate
 
 ```bash
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 ```
 
 ### 2. Environment Setup

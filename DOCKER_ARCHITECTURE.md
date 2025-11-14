@@ -319,7 +319,7 @@ Continuous:
 ### **Development (Local):**
 
 ```bash
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 
 # Start all containers
 docker-compose up -d
@@ -349,7 +349,7 @@ docker-compose down
 ```bash
 # 1. Clone repository
 git clone https://github.com/digitodesign/QUTECAT.git
-cd QUTECAT/"Ready eCommerce-Admin with Customer Website/install"
+cd QUTECAT/"backend/install"
 
 # 2. Configure environment
 cp .env.example .env

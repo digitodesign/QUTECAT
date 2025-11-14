@@ -138,7 +138,7 @@
 #### 5. **Files Created/Modified**
 
 ```
-Ready eCommerce-Admin with Customer Website/install/
+backend/install/
 ├── app/Providers/
 │   └── TenancyServiceProvider.php          ← Tenancy bootstrapper
 ├── config/

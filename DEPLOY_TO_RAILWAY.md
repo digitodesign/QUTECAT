@@ -29,8 +29,8 @@ Railway is great for **quick testing** but has limitations for a full SaaS platf
 **1. `Procfile` (create in project root)**
 
 ```
-web: cd "Ready eCommerce-Admin with Customer Website/install" && php artisan serve --host=0.0.0.0 --port=$PORT
-worker: cd "Ready eCommerce-Admin with Customer Website/install" && php artisan queue:work redis --tries=3
+web: cd "backend/install" && php artisan serve --host=0.0.0.0 --port=$PORT
+worker: cd "backend/install" && php artisan queue:work redis --tries=3
 ```
 
 **2. `nixpacks.toml` (create in project root)**
@@ -41,20 +41,20 @@ nixPkgs = ["php82", "php82Packages.composer", "postgresql"]
 
 [phases.install]
 cmds = [
-    "cd 'Ready eCommerce-Admin with Customer Website/install'",
+    "cd 'backend/install'",
     "composer install --optimize-autoloader --no-dev"
 ]
 
 [phases.build]
 cmds = [
-    "cd 'Ready eCommerce-Admin with Customer Website/install'",
+    "cd 'backend/install'",
     "php artisan config:cache",
     "php artisan route:cache",
     "php artisan view:cache"
 ]
 
 [start]
-cmd = "cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "cd 'backend/install' && php artisan serve --host=0.0.0.0 --port=$PORT"
 ```
 
 **3. Commit and push:**
@@ -193,7 +193,7 @@ Update the build phase:
 ```toml
 [phases.build]
 cmds = [
-    "cd 'Ready eCommerce-Admin with Customer Website/install'",
+    "cd 'backend/install'",
     "php artisan migrate --force",
     "php artisan db:seed --force",
     "php artisan db:seed --class=PlansTableSeeder --force",
@@ -256,7 +256,7 @@ railway run php artisan db:seed --force
 3. **Connect to same GitHub repo**
 
 4. **In Settings:**
-   - Start Command: `cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan queue:work redis`
+   - Start Command: `cd 'backend/install' && php artisan queue:work redis`
    - Share same environment variables
 
 5. **Deploy**

@@ -173,7 +173,7 @@ railway login
 railway link
 
 # Navigate to Laravel directory
-cd "Ready eCommerce-Admin with Customer Website/install"
+cd "backend/install"
 
 # Generate app key
 railway run php artisan key:generate
@@ -210,7 +210,7 @@ Edit `nixpacks.toml`:
 ```toml
 [phases.build]
 cmds = [
-    "cd 'Ready eCommerce-Admin with Customer Website/install'",
+    "cd 'backend/install'",
     "php artisan migrate --force",
     "php artisan db:seed --force --class=PlansTableSeeder",
     "php artisan config:cache",
@@ -251,7 +251,7 @@ Queue workers need a separate service in Railway:
 2. Select "GitHub Repo"
 3. Choose same QuteKart repo
 4. In "Settings" → "Deploy":
-   - **Start Command:** `cd 'Ready eCommerce-Admin with Customer Website/install' && php artisan queue:work redis --sleep=3 --tries=3`
+   - **Start Command:** `cd 'backend/install' && php artisan queue:work redis --sleep=3 --tries=3`
 5. In "Variables":
    - Share same variables as web service
    - Or use "Shared Variables" feature
