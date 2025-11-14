@@ -14,7 +14,11 @@ return new class extends Migration
     {
         // Handle PostgreSQL type conversion with USING clause
         if (config('database.default') === 'pgsql') {
+            // Drop the old default first
+            DB::statement('ALTER TABLE flash_sales ALTER COLUMN status DROP DEFAULT');
+            // Change the column type
             DB::statement('ALTER TABLE flash_sales ALTER COLUMN status TYPE boolean USING status::boolean');
+            // Set the new default
             DB::statement('ALTER TABLE flash_sales ALTER COLUMN status SET DEFAULT true');
             DB::statement('ALTER TABLE flash_sales ALTER COLUMN status SET NOT NULL');
         } else {
