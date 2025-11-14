@@ -4,22 +4,22 @@ services:
   # PostgreSQL Database
   pgsql:
     image: postgres:16-alpine
-    container_name: qutecart_postgres
+    container_name: qutekart_postgres
     restart: unless-stopped
     ports:
       - "${DB_PORT:-5432}:5432"
     environment:
-      POSTGRES_DB: ${DB_DATABASE:-qutecart}
-      POSTGRES_USER: ${DB_USERNAME:-qutecart}
+      POSTGRES_DB: ${DB_DATABASE:-qutekart}
+      POSTGRES_USER: ${DB_USERNAME:-qutekart}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - pgsql_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - qutecart
+      - qutekart
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-qutecart}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-qutekart}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,14 +27,14 @@ services:
   # Redis Cache & Queue
   redis:
     image: redis:7-alpine
-    container_name: qutecart_redis
+    container_name: qutekart_redis
     restart: unless-stopped
     ports:
       - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     networks:
-      - qutecart
+      - qutekart
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -46,7 +46,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: qutecart_php
+    container_name: qutekart_php
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
@@ -56,8 +56,8 @@ services:
       DB_CONNECTION: pgsql
       DB_HOST: pgsql
       DB_PORT: 5432
-      DB_DATABASE: ${DB_DATABASE:-qutecart}
-      DB_USERNAME: ${DB_USERNAME:-qutecart}
+      DB_DATABASE: ${DB_DATABASE:-qutekart}
+      DB_USERNAME: ${DB_USERNAME:-qutekart}
       DB_PASSWORD: ${DB_PASSWORD:-secret}
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -67,12 +67,12 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - qutecart
+      - qutekart
 
   # Nginx Web Server
   nginx:
     image: nginx:alpine
-    container_name: qutecart_nginx
+    container_name: qutekart_nginx
     restart: unless-stopped
     ports:
       - "${APP_PORT:-80}:80"
@@ -83,7 +83,7 @@ services:
     depends_on:
       - php
     networks:
-      - qutecart
+      - qutekart
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
       interval: 30s
@@ -93,7 +93,7 @@ services:
   # MinIO (S3-compatible local storage)
   minio:
     image: minio/minio:latest
-    container_name: qutecart_minio
+    container_name: qutekart_minio
     restart: unless-stopped
     ports:
       - "${MINIO_PORT:-9000}:9000"
@@ -105,7 +105,7 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
     networks:
-      - qutecart
+      - qutekart
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
@@ -117,7 +117,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: qutecart_queue
+    container_name: qutekart_queue
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
@@ -131,14 +131,14 @@ services:
       DB_HOST: pgsql
       REDIS_HOST: redis
     networks:
-      - qutecart
+      - qutekart
 
   # Task Scheduler (Laravel Cron)
   scheduler:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: qutecart_scheduler
+    container_name: qutekart_scheduler
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
@@ -156,21 +156,21 @@ services:
       DB_HOST: pgsql
       REDIS_HOST: redis
     networks:
-      - qutecart
+      - qutekart
 
   # Mailpit (Email Testing - Development Only)
   mailpit:
     image: axllent/mailpit:latest
-    container_name: qutecart_mailpit
+    container_name: qutekart_mailpit
     restart: unless-stopped
     ports:
       - "${MAILPIT_SMTP_PORT:-1025}:1025"
       - "${MAILPIT_UI_PORT:-8025}:8025"
     networks:
-      - qutecart
+      - qutekart
 
 networks:
-  qutecart:
+  qutekart:
     driver: bridge
 
 volumes:

@@ -107,7 +107,7 @@ If you need to change the bundle ID:
 
 1. Use the package name change tool:
    ```bash
-   flutter pub run change_app_package_name:main com.qutecart.app
+   flutter pub run change_app_package_name:main com.qutekart.app
    ```
 
 2. Then update Firebase with the NEW bundle ID

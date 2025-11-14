@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
  * 4. Session (for authenticated vendor)
  *
  * This enables our hybrid marketplace model where:
- * - Main domain (qutecart.com) shows ALL products
- * - Premium subdomains (johns-shop.qutecart.com) show ONLY that vendor's products
+ * - Main domain (qutekart.com) shows ALL products
+ * - Premium subdomains (johns-shop.qutekart.com) show ONLY that vendor's products
  */
 class SetShopContext
 {
@@ -102,7 +102,7 @@ class SetShopContext
         }
 
         // Check if host is a subdomain of our main domain
-        $mainDomain = config('app.domain', 'qutecart.com');
+        $mainDomain = config('app.domain', 'qutekart.com');
 
         return str_ends_with($host, '.' . $mainDomain);
     }

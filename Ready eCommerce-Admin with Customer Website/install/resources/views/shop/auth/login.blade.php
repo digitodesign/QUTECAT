@@ -119,7 +119,7 @@
                                 <div class="header">Shop Credentials</div>
                                 <div class="content">
                                     <div class="credentials">
-                                        <span>Email: shop@qutecart.com</span>
+                                        <span>Email: shop@qutekart.com</span>
                                         <span>Password: secret</span>
                                     </div>
                                     <div class="copyBtn" onclick="loginShop()">
@@ -132,7 +132,7 @@
                                 <div class="header">Admin Credentials</div>
                                 <div class="content">
                                     <div class="credentials">
-                                        <span>Email: root@qutecart.com</span>
+                                        <span>Email: root@qutekart.com</span>
                                         <span>Password: secret</span>
                                     </div>
                                     <div class="copyBtn" onclick="gotoAdminLogin()">
@@ -189,7 +189,7 @@
         }
 
         function loginShop() {
-            email.value = 'shop@qutecart.com';
+            email.value = 'shop@qutekart.com';
             password.value = 'secret';
 
             if (!sessionStorage.getItem('fromAdmin')) {

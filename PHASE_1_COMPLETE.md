@@ -146,7 +146,7 @@ database/migrations/
 - Disabled `DatabaseTenancyBootstrapper` (no separate DBs)
 - Using custom `App\Models\Tenant` model
 - Cache, filesystem, queue tenancy enabled
-- Central domains configured: qutecart.com, qutecat.com
+- Central domains configured: qutekart.com, qutecat.com
 - Single database architecture maintained
 
 **What This Means:**
@@ -161,7 +161,7 @@ database/migrations/
 
 **Features:**
 - Detects shop context from 4 sources:
-  1. **Subdomain** - Premium vendors (johns-shop.qutecart.com)
+  1. **Subdomain** - Premium vendors (johns-shop.qutekart.com)
   2. **Query param** - API testing (?shop_id=123)
   3. **Header** - Mobile app (X-Shop-ID)
   4. **Session** - Authenticated vendor dashboard
@@ -215,7 +215,7 @@ $query->selectRaw(DB::year('created_at') . ' as year');
 ```ini
 # Application
 APP_NAME="QuteCart"
-APP_URL=http://qutecart.local
+APP_URL=http://qutekart.local
 
 # Database (PostgreSQL)
 DB_CONNECTION=pgsql
@@ -232,7 +232,7 @@ AWS_ENDPOINT=http://minio:9000
 FILESYSTEM_DISK=s3
 
 # Tenancy
-CENTRAL_DOMAINS=qutecart.local,localhost
+CENTRAL_DOMAINS=qutekart.local,localhost
 
 # SaaS Subscriptions
 STRIPE_KEY=pk_test_
@@ -366,7 +366,7 @@ docker-compose exec php php artisan db:seed --class=PlansTableSeeder
 ```
 
 **Access Points:**
-- Main app: http://qutecart.local
+- Main app: http://qutekart.local
 - MinIO: http://localhost:9001
 - Mailpit: http://localhost:8025
 - PostgreSQL: localhost:5432

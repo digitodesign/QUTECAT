@@ -14,13 +14,13 @@ class DemoUserUpdateSeeder extends Seeder
      */
     public function run(): void
     {
-        $email = 'user@qutecart.com';
+        $email = 'user@qutekart.com';
 
         $user = User::where('email', $email)->first();
         if ($user) {
             $user->update([
                 'name' => 'Demo Customer',
-                'email' => 'user@qutecart.com',
+                'email' => 'user@qutekart.com',
                 'phone' => '01000000405',
                 'password' => Hash::make('secret'),
                 'is_active' => true,

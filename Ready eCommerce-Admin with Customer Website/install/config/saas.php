@@ -345,7 +345,7 @@ return [
 
     'subdomains' => [
         // Main domain
-        'domain' => env('APP_DOMAIN', 'qutecart.com'),
+        'domain' => env('APP_DOMAIN', 'qutekart.com'),
 
         // Allow custom subdomains
         'custom_subdomains' => true,
@@ -370,7 +370,7 @@ return [
             'blog',
             'shop',
             'store',
-            'qutecart',
+            'qutekart',
             'qutecat',
         ],
 

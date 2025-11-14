@@ -129,7 +129,7 @@ docker/
 - ✅ Enabled `FilesystemTenancyBootstrapper`
 - ✅ Enabled `QueueTenancyBootstrapper`
 - Using custom `App\Models\Tenant` model
-- Central domains: qutecart.com, qutecat.com, localhost
+- Central domains: qutekart.com, qutecat.com, localhost
 
 **Architecture:**
 - Single PostgreSQL database for all tenants
@@ -142,7 +142,7 @@ docker/
 **Created `app/Http/Middleware/SetShopContext.php`:**
 
 **Detects shop context from 4 sources (priority order):**
-1. **Subdomain** - Premium vendors (johns-shop.qutecart.com)
+1. **Subdomain** - Premium vendors (johns-shop.qutekart.com)
 2. **Query parameter** - API/testing (?shop_id=123)
 3. **Header** - Mobile app (X-Shop-ID: 123)
 4. **Session** - Authenticated vendor
@@ -196,12 +196,12 @@ UNIX_TIMESTAMP()    → EXTRACT(EPOCH FROM ...)
 ```ini
 # === Application ===
 APP_NAME="QuteCart"
-APP_URL=http://qutecart.local
+APP_URL=http://qutekart.local
 
 # === Database (PostgreSQL) ===
 DB_CONNECTION=pgsql
 DB_HOST=pgsql
-DB_DATABASE=qutecart
+DB_DATABASE=qutekart
 
 # === Redis ===
 REDIS_HOST=redis
@@ -213,7 +213,7 @@ FILESYSTEM_DISK=s3
 AWS_ENDPOINT=http://minio:9000
 
 # === Tenancy ===
-CENTRAL_DOMAINS=qutecart.local,localhost
+CENTRAL_DOMAINS=qutekart.local,localhost
 
 # === SaaS Subscriptions ===
 STRIPE_KEY=pk_test_
@@ -281,7 +281,7 @@ FREE_TIER_STORAGE_LIMIT_MB=500
 **Changes:**
 - Product name: "Ready Ecommerce" → "QuteCart"
 - App fallback: 'ReadyEcommerce' → 'QuteCart'
-- Demo emails: @readyecommerce.com → @qutecart.com
+- Demo emails: @readyecommerce.com → @qutekart.com
 - All branding consistent
 
 ---
@@ -370,11 +370,11 @@ FREE_TIER_STORAGE_LIMIT_MB=500
 QuteCart SaaS Hybrid Marketplace
 ├── Single PostgreSQL Database
 ├── Multi-Tenant Subdomain Routing (tenancy package)
-├── Shared Marketplace (qutecart.com)
+├── Shared Marketplace (qutekart.com)
 │   ├── All vendor products visible
 │   ├── Free tier vendors
 │   └── Premium tier vendors
-└── Premium Vendor Storefronts (*.qutecart.com)
+└── Premium Vendor Storefronts (*.qutekart.com)
     ├── Branded subdomain
     ├── Custom appearance
     └── Products ALSO on main marketplace
@@ -464,7 +464,7 @@ Enterprise ($299/mo)
 ### Phase 4: Production Deployment (Week 4)
 **Tasks:**
 - Digital Ocean setup
-- Wildcard DNS (*.qutecart.com)
+- Wildcard DNS (*.qutekart.com)
 - SSL certificates
 - Environment configuration
 - Production testing

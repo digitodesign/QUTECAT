@@ -198,7 +198,7 @@ class Tenant extends BaseTenant
     public static function findBySubdomain(string $subdomain)
     {
         return static::whereHas('domains', function ($query) use ($subdomain) {
-            $query->where('domain', "{$subdomain}.qutecart.com");
+            $query->where('domain', "{$subdomain}.qutekart.com");
         })->first();
     }
 }
@@ -229,8 +229,8 @@ services:
     environment:
       DB_CONNECTION: pgsql
       DB_HOST: pgsql
-      DB_DATABASE: qutecart
-      DB_USERNAME: qutecart
+      DB_DATABASE: qutekart
+      DB_USERNAME: qutekart
       DB_PASSWORD: secret
 
   pgsql:
@@ -238,13 +238,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: qutecart
-      POSTGRES_USER: qutecart
+      POSTGRES_DB: qutekart
+      POSTGRES_USER: qutekart
       POSTGRES_PASSWORD: secret
     volumes:
       - pgsql_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-EXEC", "pg_isready -U qutecart"]
+      test: ["CMD-EXEC", "pg_isready -U qutekart"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -261,8 +261,8 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: qutecart
-      MINIO_ROOT_PASSWORD: qutecart123
+      MINIO_ROOT_USER: qutekart
+      MINIO_ROOT_PASSWORD: qutekart123
     volumes:
       - minio_data:/data
 
@@ -283,8 +283,8 @@ volumes:
         'driver' => 'pgsql',
         'host' => env('DB_HOST', '127.0.0.1'),
         'port' => env('DB_PORT', '5432'),
-        'database' => env('DB_DATABASE', 'qutecart'),
-        'username' => env('DB_USERNAME', 'qutecart'),
+        'database' => env('DB_DATABASE', 'qutekart'),
+        'username' => env('DB_USERNAME', 'qutekart'),
         'password' => env('DB_PASSWORD', ''),
         'charset' => 'utf8',
         'prefix' => '',
@@ -407,7 +407,7 @@ public function processUpgrade(Request $request)
 
             // 3. Create domain
             $tenant->domains()->create([
-                'domain' => "{$request->subdomain}.qutecart.com",
+                'domain' => "{$request->subdomain}.qutekart.com",
             ]);
         }
 
@@ -455,8 +455,8 @@ public function handle($request, Closure $next)
     }
 
     // Check if it's a subdomain
-    if (str_ends_with($domain, '.qutecart.com')) {
-        $subdomain = str_replace('.qutecart.com', '', $domain);
+    if (str_ends_with($domain, '.qutekart.com')) {
+        $subdomain = str_replace('.qutekart.com', '', $domain);
 
         // Find tenant
         $tenant = Tenant::whereHas('domains', function ($query) use ($domain) {
@@ -526,8 +526,8 @@ APP_URL=http://localhost:8000
 DB_CONNECTION=pgsql
 DB_HOST=pgsql
 DB_PORT=5432
-DB_DATABASE=qutecart
-DB_USERNAME=qutecart
+DB_DATABASE=qutekart
+DB_USERNAME=qutekart
 DB_PASSWORD=secret
 
 REDIS_HOST=redis
@@ -537,16 +537,16 @@ QUEUE_CONNECTION=redis
 
 # S3-compatible storage (MinIO locally)
 FILESYSTEM_DISK=s3
-AWS_ACCESS_KEY_ID=qutecart
-AWS_SECRET_ACCESS_KEY=qutecart123
+AWS_ACCESS_KEY_ID=qutekart
+AWS_SECRET_ACCESS_KEY=qutekart123
 AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=qutecart-media
+AWS_BUCKET=qutekart-media
 AWS_ENDPOINT=http://minio:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 
 # Tenancy
 TENANCY_ENABLED=true
-CENTRAL_DOMAINS=localhost,127.0.0.1,qutecart.test
+CENTRAL_DOMAINS=localhost,127.0.0.1,qutekart.test
 ```
 
 ### **Step 2: Development Commands**
@@ -585,7 +585,7 @@ shell:
 
 ```yaml
 # .do/app.yaml
-name: qutecart
+name: qutekart
 region: nyc
 
 services:
@@ -615,12 +615,12 @@ services:
       http_path: /api/health
 
 databases:
-  - name: qutecart-db
+  - name: qutekart-db
     engine: PG
     version: "16"
     production: true
 
-  - name: qutecart-redis
+  - name: qutekart-redis
     engine: REDIS
     version: "7"
 ```
@@ -637,8 +637,8 @@ curl http://localhost:8000/api/products
 # Should return products from ALL shops
 
 # Test 2: Premium subdomain (add to /etc/hosts first)
-echo "127.0.0.1 johns-shop.qutecart.test" >> /etc/hosts
-curl http://johns-shop.qutecart.test:8000/api/products
+echo "127.0.0.1 johns-shop.qutekart.test" >> /etc/hosts
+curl http://johns-shop.qutekart.test:8000/api/products
 # Should return ONLY John's products
 
 # Test 3: Mobile app compatibility

@@ -109,7 +109,7 @@ class Tenant extends BaseTenant
             return null;
         }
 
-        $domain = config('app.domain', 'qutecart.com');
+        $domain = config('app.domain', 'qutekart.com');
         return "https://{$this->subdomain}.{$domain}";
     }
 
@@ -158,7 +158,7 @@ class Tenant extends BaseTenant
         ]);
 
         // Create the domain record for subdomain routing
-        $domain = config('app.domain', 'qutecart.com');
+        $domain = config('app.domain', 'qutekart.com');
         $tenant->domains()->create([
             'domain' => "{$subdomain}.{$domain}",
         ]);

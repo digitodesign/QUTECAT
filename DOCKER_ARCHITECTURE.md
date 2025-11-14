@@ -60,7 +60,7 @@
 ## 📦 Container Details
 
 ### 1. **Nginx** (Web Server)
-**Container:** `qutecart_nginx`
+**Container:** `qutekart_nginx`
 **Image:** `nginx:alpine`
 **Port:** 80 (configurable via APP_PORT)
 
@@ -81,7 +81,7 @@
 ---
 
 ### 2. **PHP-FPM** (Application Server)
-**Container:** `qutecart_php`
+**Container:** `qutekart_php`
 **Image:** Custom (built from `docker/php/Dockerfile`)
 **PHP Version:** 8.2+
 
@@ -120,7 +120,7 @@
 ---
 
 ### 3. **PostgreSQL** (Database)
-**Container:** `qutecart_postgres`
+**Container:** `qutekart_postgres`
 **Image:** `postgres:16-alpine`
 **Port:** 5432
 
@@ -151,7 +151,7 @@ shops (added subscription columns)
 ---
 
 ### 4. **Redis** (Cache & Queue)
-**Container:** `qutecart_redis`
+**Container:** `qutekart_redis`
 **Image:** `redis:7-alpine`
 **Port:** 6379
 
@@ -171,7 +171,7 @@ shops (added subscription columns)
 ---
 
 ### 5. **MinIO** (Object Storage)
-**Container:** `qutecart_minio`
+**Container:** `qutekart_minio`
 **Image:** `minio/minio:latest`
 **Ports:** 9000 (API), 9001 (Console)
 
@@ -195,7 +195,7 @@ shops (added subscription columns)
 ---
 
 ### 6. **Queue Worker** (Background Jobs)
-**Container:** `qutecart_queue`
+**Container:** `qutekart_queue`
 **Image:** Same as PHP-FPM
 **Command:** `php artisan queue:work --sleep=3 --tries=3`
 
@@ -220,7 +220,7 @@ shops (added subscription columns)
 ---
 
 ### 7. **Scheduler** (Cron Jobs)
-**Container:** `qutecart_scheduler`
+**Container:** `qutekart_scheduler`
 **Image:** Same as PHP-FPM
 **Command:** Runs `php artisan schedule:run` every 60 seconds
 
@@ -238,7 +238,7 @@ shops (added subscription columns)
 ---
 
 ### 8. **Mailpit** (Email Testing)
-**Container:** `qutecart_mailpit`
+**Container:** `qutekart_mailpit`
 **Image:** `axllent/mailpit:latest`
 **Ports:** 1025 (SMTP), 8025 (Web UI)
 
@@ -409,8 +409,8 @@ MAILPIT_UI_PORT=8025
 DB_CONNECTION=pgsql
 DB_HOST=pgsql  # ← Docker service name
 DB_PORT=5432
-DB_DATABASE=qutecart
-DB_USERNAME=qutecart
+DB_DATABASE=qutekart
+DB_USERNAME=qutekart
 DB_PASSWORD=secret
 
 # Redis
@@ -425,7 +425,7 @@ QUEUE_CONNECTION=redis
 AWS_ACCESS_KEY_ID=minioadmin
 AWS_SECRET_ACCESS_KEY=minioadmin
 AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=qutecart
+AWS_BUCKET=qutekart
 AWS_ENDPOINT=http://minio:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 
@@ -504,7 +504,7 @@ docker-compose exec php php artisan tinker
 
 # Shell access
 docker-compose exec php sh
-docker-compose exec pgsql psql -U qutecart qutecart
+docker-compose exec pgsql psql -U qutekart qutekart
 ```
 
 ### **Restart Specific Container:**
@@ -559,7 +559,7 @@ secrets:
 docker run -it --rm \
   -v /etc/letsencrypt:/etc/letsencrypt \
   certbot/certbot certonly --standalone \
-  -d qutecart.com -d *.qutecart.com
+  -d qutekart.com -d *.qutekart.com
 ```
 
 ---
@@ -571,7 +571,7 @@ All critical containers have health checks:
 ```yaml
 # PostgreSQL
 healthcheck:
-  test: ["CMD-SHELL", "pg_isready -U qutecart"]
+  test: ["CMD-SHELL", "pg_isready -U qutekart"]
   interval: 10s
   timeout: 5s
   retries: 5

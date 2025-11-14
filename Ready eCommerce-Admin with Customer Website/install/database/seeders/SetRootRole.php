@@ -13,7 +13,7 @@ class SetRootRole extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('email', 'root@qutecart.com')->first();
+        $user = User::where('email', 'root@qutekart.com')->first();
         if ($user) {
             $user->assignRole(Roles::ROOT->value);
         }

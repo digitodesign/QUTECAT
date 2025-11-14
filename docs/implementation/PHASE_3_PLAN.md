@@ -305,8 +305,8 @@ class SubscriptionConfirmation extends Mailable
 <div class="subdomain-info">
     <h2>Your Premium Storefront</h2>
     <p>Your branded storefront is ready:</p>
-    <p><strong>{{ $subdomain }}.qutecart.com</strong></p>
-    <a href="https://{{ $subdomain }}.qutecart.com" class="button">Visit Your Store</a>
+    <p><strong>{{ $subdomain }}.qutekart.com</strong></p>
+    <a href="https://{{ $subdomain }}.qutekart.com" class="button">Visit Your Store</a>
 </div>
 @endif
 
@@ -322,7 +322,7 @@ class SubscriptionConfirmation extends Mailable
     </ul>
 </div>
 
-<p>Questions? Reply to this email or visit our <a href="https://qutecart.com/help">Help Center</a>.</p>
+<p>Questions? Reply to this email or visit our <a href="https://qutekart.com/help">Help Center</a>.</p>
 @endsection
 ```
 
@@ -942,7 +942,7 @@ MAIL_PORT=1025
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=no-reply@qutecart.com
+MAIL_FROM_ADDRESS=no-reply@qutekart.com
 MAIL_FROM_NAME="QuteCart"
 ```
 

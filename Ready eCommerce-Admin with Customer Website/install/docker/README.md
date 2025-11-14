@@ -58,17 +58,17 @@ docker-compose exec php php artisan migrate --seed
 Add these to your `/etc/hosts` file:
 
 ```
-127.0.0.1    qutecart.local
-127.0.0.1    shop.qutecart.local
-127.0.0.1    premium-vendor.qutecart.local
+127.0.0.1    qutekart.local
+127.0.0.1    shop.qutekart.local
+127.0.0.1    premium-vendor.qutekart.local
 ```
 
 ### 3. Access Services
 
-- **Web Application**: http://qutecart.local
+- **Web Application**: http://qutekart.local
 - **MinIO Console**: http://localhost:9001 (minioadmin / minioadmin)
 - **Mailpit UI**: http://localhost:8025
-- **PostgreSQL**: localhost:5432 (qutecart / secret)
+- **PostgreSQL**: localhost:5432 (qutekart / secret)
 - **Redis**: localhost:6379
 
 ## Common Commands
@@ -105,7 +105,7 @@ docker-compose exec php php artisan test
 docker-compose exec php sh
 
 # Access PostgreSQL shell
-docker-compose exec pgsql psql -U qutecart -d qutecart
+docker-compose exec pgsql psql -U qutekart -d qutekart
 ```
 
 ### Database Operations
@@ -121,10 +121,10 @@ docker-compose exec php php artisan migrate:fresh --seed
 docker-compose exec php php artisan make:migration [name]
 
 # Database backup
-docker-compose exec pgsql pg_dump -U qutecart qutecart > backup.sql
+docker-compose exec pgsql pg_dump -U qutekart qutekart > backup.sql
 
 # Restore database
-docker-compose exec -T pgsql psql -U qutecart qutecart < backup.sql
+docker-compose exec -T pgsql psql -U qutekart qutekart < backup.sql
 ```
 
 ### Queue and Scheduler
@@ -144,7 +144,7 @@ docker-compose logs -f scheduler
 
 ```bash
 # Create bucket
-docker-compose exec minio mc mb local/qutecart
+docker-compose exec minio mc mb local/qutekart
 
 # List buckets
 docker-compose exec minio mc ls local
@@ -218,7 +218,7 @@ docker-compose ps
 docker-compose logs pgsql
 
 # Test connection
-docker-compose exec pgsql pg_isready -U qutecart
+docker-compose exec pgsql pg_isready -U qutekart
 ```
 
 ### Clear caches
@@ -301,7 +301,7 @@ Persistent data is stored in Docker volumes:
 docker volume ls
 
 # Backup a volume
-docker run --rm -v qutecart_pgsql_data:/data -v $(pwd):/backup alpine tar czf /backup/pgsql_backup.tar.gz /data
+docker run --rm -v qutekart_pgsql_data:/data -v $(pwd):/backup alpine tar czf /backup/pgsql_backup.tar.gz /data
 ```
 
 ### Clean Up

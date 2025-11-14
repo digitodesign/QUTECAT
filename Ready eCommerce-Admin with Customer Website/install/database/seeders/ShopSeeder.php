@@ -20,7 +20,7 @@ class ShopSeeder extends Seeder
         $user = User::factory()->create([
             'name' => 'Test Shop',
             'phone' => '01100000001',
-            'email' => 'shop@qutecart.com',
+            'email' => 'shop@qutekart.com',
             'is_active' => true,
         ]);
 

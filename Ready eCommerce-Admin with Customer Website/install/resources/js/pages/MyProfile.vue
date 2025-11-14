@@ -230,7 +230,7 @@ onMounted(() => {
     }
     window.scrollTo(0, 0);
 
-    if (authStore.user?.email === 'user@qutecart.com') {
+    if (authStore.user?.email === 'user@qutekart.com') {
         demoUser.value = true;
     }
 

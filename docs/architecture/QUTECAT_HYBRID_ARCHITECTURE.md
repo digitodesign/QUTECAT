@@ -1,7 +1,7 @@
 # 🎯 QUTECAT HYBRID MARKETPLACE ARCHITECTURE
 
 **Vision:** Multi-vendor marketplace with optional premium vendor subdomains
-**Domains:** qutecart.com (main) + {vendor}.qutecart.com (premium)
+**Domains:** qutekart.com (main) + {vendor}.qutekart.com (premium)
 **Date:** November 6, 2025
 
 ---
@@ -12,7 +12,7 @@
 
 #### **1. Multi-Vendor Marketplace Infrastructure**
 ```
-qutecart.com
+qutekart.com
 ├── Customer Website (Browse ALL products from ALL vendors)
 ├── Vendor Dashboard at /shop/* (Manage inventory, orders, etc.)
 ├── Admin Panel at /admin/* (Platform management)
@@ -109,7 +109,7 @@ generate_settings table:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│          qutecart.com (Main Marketplace)                │
+│          qutekart.com (Main Marketplace)                │
 │  Shows products from ALL vendors (free + premium)       │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
 │  │ John's Shop  │  │ Sarah's Shop │  │  Mike's Shop │ │
@@ -120,7 +120,7 @@ generate_settings table:
                   ┌─────────┴─────────┐
                   │                   │
           FREE VENDORS          PREMIUM VENDORS
-          └─ qutecart.com       └─ johns-shop.qutecart.com
+          └─ qutekart.com       └─ johns-shop.qutekart.com
              /shop/dashboard       └─ Has own branded store
              └─ Basic features        └─ PLUS appears on main marketplace
                                       └─ White-label option
@@ -132,7 +132,7 @@ generate_settings table:
 #### **FREE/STARTER TIER** (Default)
 ```
 What they get:
-✅ Sell on qutecart.com marketplace
+✅ Sell on qutekart.com marketplace
 ✅ Access to /shop/dashboard
 ✅ Basic analytics
 ✅ Order management
@@ -140,8 +140,8 @@ What they get:
 ✅ Standard support
 
 Where customers find them:
-→ qutecart.com (mixed with other vendors)
-→ qutecart.com/shop/{shop-id} (shop page)
+→ qutekart.com (mixed with other vendors)
+→ qutekart.com/shop/{shop-id} (shop page)
 
 Cost: Free OR $29/month for enhanced features
 ```
@@ -150,7 +150,7 @@ Cost: Free OR $29/month for enhanced features
 ```
 What they get:
 ✅ Everything in Free tier
-✅ Own subdomain: {shop-slug}.qutecart.com
+✅ Own subdomain: {shop-slug}.qutekart.com
 ✅ Branded storefront
 ✅ Custom domain support (shop.com → CNAME)
 ✅ Remove QuteCart branding
@@ -160,8 +160,8 @@ What they get:
 ✅ Still appears on main marketplace!
 
 Where customers find them:
-→ qutecart.com (STILL appears here!)
-→ johns-shop.qutecart.com (their branded store)
+→ qutekart.com (STILL appears here!)
+→ johns-shop.qutekart.com (their branded store)
 → johns-shop.com (if custom domain configured)
 
 Cost: $99/mo (Growth) or $299/mo (Enterprise)
@@ -174,13 +174,13 @@ Cost: $99/mo (Growth) or $299/mo (Enterprise)
 ### **Scenario 1: Free Vendor (John)**
 
 **John's Experience:**
-1. Signs up at `qutecart.com/shop/register`
+1. Signs up at `qutekart.com/shop/register`
 2. Gets vendor dashboard at `/shop/dashboard`
 3. Adds products (iPhones, Macbooks, etc.)
-4. Products appear on qutecart.com marketplace
+4. Products appear on qutekart.com marketplace
 5. Customers can:
-   - Find products via qutecart.com search
-   - Visit John's shop page: `qutecart.com/shop/johns-electronics`
+   - Find products via qutekart.com search
+   - Visit John's shop page: `qutekart.com/shop/johns-electronics`
    - Add to cart and checkout
 
 **Database:**
@@ -214,9 +214,9 @@ GET /api/products
 **Sarah's Experience:**
 1. Starts as free vendor
 2. Upgrades to Growth plan ($99/mo)
-3. Chooses subdomain: `sarahs-fashion.qutecart.com`
+3. Chooses subdomain: `sarahs-fashion.qutekart.com`
 4. Gets branded storefront at her subdomain
-5. Products STILL appear on qutecart.com marketplace
+5. Products STILL appear on qutekart.com marketplace
 6. Can optionally add custom domain: `sarahsfashion.com`
 
 **Database:**
@@ -236,24 +236,24 @@ tenants table: (NEW - only for premium vendors)
 - status: 'active'
 
 domains table: (NEW - only for premium vendors)
-- domain: 'sarahs-fashion.qutecart.com'
+- domain: 'sarahs-fashion.qutekart.com'
 - tenant_id: uuid-xxx
 ```
 
 **Customer Experience:**
 ```
-Option A: Visit qutecart.com
+Option A: Visit qutekart.com
 → Browse ALL products including Sarah's
 → Add Sarah's dress to cart
 → Checkout (may include items from John too!)
 
-Option B: Visit sarahs-fashion.qutecart.com
+Option B: Visit sarahs-fashion.qutekart.com
 → See ONLY Sarah's products
 → Branded experience (Sarah's colors, logo)
 → Checkout (only Sarah's items)
 
 Option C: Visit sarahsfashion.com (custom domain)
-→ CNAME points to sarahs-fashion.qutecart.com
+→ CNAME points to sarahs-fashion.qutekart.com
 → Same as Option B but on her domain
 ```
 
@@ -266,7 +266,7 @@ Option C: Visit sarahsfashion.com (custom domain)
 **DON'T use multi-tenancy for everything. Use it ONLY for premium subdomains.**
 
 ```
-Main Database (qutecart_main):
+Main Database (qutekart_main):
 ├── shops (ALL vendors - free + premium)
 ├── products (ALL products - visible on main marketplace)
 ├── orders (ALL orders)
@@ -291,18 +291,18 @@ Premium Vendor Subdomains:
 
 ### **Request Flow**
 
-#### **Request to qutecart.com**
+#### **Request to qutekart.com**
 ```
-1. Request: GET qutecart.com/products
+1. Request: GET qutekart.com/products
 2. Middleware: Central context (no tenancy)
 3. Query: Product::where('is_active', true)->get()
 4. Result: ALL products from ALL vendors
 5. Response: Paginated product list
 ```
 
-#### **Request to johns-shop.qutecart.com**
+#### **Request to johns-shop.qutekart.com**
 ```
-1. Request: GET johns-shop.qutecart.com
+1. Request: GET johns-shop.qutekart.com
 2. Middleware: InitializeTenancyByDomain
 3. Tenancy: Find shop_id from tenant record
 4. Context: Set shop_context = shop_id
@@ -401,7 +401,7 @@ Schema::table('subscriptions', function (Blueprint $table) {
 - ✅ Premium subdomains → `/api/*`
 
 **Context is determined by:**
-1. **Domain** (qutecart.com vs johns-shop.qutecart.com)
+1. **Domain** (qutekart.com vs johns-shop.qutekart.com)
 2. **Headers** (optional: X-Shop-ID for mobile app shop filters)
 3. **Query params** (optional: ?shop_id=123)
 
@@ -409,19 +409,19 @@ Schema::table('subscriptions', function (Blueprint $table) {
 
 #### **GET /api/home** (Dashboard/Homepage)
 ```
-Context: qutecart.com
+Context: qutekart.com
 Response: Products from ALL shops
 
-Context: johns-shop.qutecart.com
+Context: johns-shop.qutekart.com
 Response: Products ONLY from John's shop + John's branding
 ```
 
 #### **GET /api/products**
 ```
-Context: qutecart.com
+Context: qutekart.com
 Response: All active products
 
-Context: johns-shop.qutecart.com
+Context: johns-shop.qutekart.com
 Response: Only John's products
 
 Mobile App (browsing main marketplace):
@@ -572,7 +572,7 @@ public function index(Request $request)
    - Creates domain record
    - Updates shop.subscription_tier
    - Provisions subdomain
-   - Redirects to {subdomain}.qutecart.com
+   - Redirects to {subdomain}.qutekart.com
 ```
 
 #### **Step 6: Subdomain Provisioning**
@@ -591,7 +591,7 @@ public function provisionSubdomain(Shop $shop, string $subdomain)
 
     // 2. Create domain
     $tenant->domains()->create([
-        'domain' => "{$subdomain}.qutecart.com",
+        'domain' => "{$subdomain}.qutekart.com",
     ]);
 
     // 3. Update shop
@@ -613,8 +613,8 @@ public function provisionSubdomain(Shop $shop, string $subdomain)
 private function createDNSRecord(string $subdomain)
 {
     // Use Digital Ocean API to create A record
-    // {subdomain}.qutecart.com → Your server IP
-    // Or CNAME → qutecart.com
+    // {subdomain}.qutekart.com → Your server IP
+    // Or CNAME → qutekart.com
 }
 ```
 
@@ -649,7 +649,7 @@ private function createDNSRecord(string $subdomain)
 
         @if(!$shop->remove_platform_branding)
             <footer>
-                Powered by <a href="https://qutecart.com">QuteCart</a>
+                Powered by <a href="https://qutekart.com">QuteCart</a>
             </footer>
         @endif
     </div>
@@ -665,9 +665,9 @@ private function createDNSRecord(string $subdomain)
 // Add shop-specific base URL support
 static String getBaseUrl({String? shopSubdomain}) {
   if (shopSubdomain != null) {
-    return 'https://$shopSubdomain.qutecart.com/api';
+    return 'https://$shopSubdomain.qutekart.com/api';
   }
-  return 'https://qutecart.com/api'; // Main marketplace
+  return 'https://qutekart.com/api'; // Main marketplace
 }
 
 // Shop discovery
@@ -682,13 +682,13 @@ static String getShopProducts(int shopId) =>
 - "Browse by Shop" tab in app
 - Shop directory/discovery
 - Ability to visit premium vendor's branded experience
-- Deep links: `qutecart://shop/johns-electronics`
+- Deep links: `qutekart://shop/johns-electronics`
 
 ### **PHASE 4: Launch & Scale (Week 6+)**
 
 #### **Step 9: Infrastructure**
 - Deploy to Digital Ocean
-- Configure wildcard DNS: `*.qutecart.com`
+- Configure wildcard DNS: `*.qutekart.com`
 - Set up wildcard SSL certificate
 - Configure CDN for media files
 - Set up Redis for caching
@@ -704,7 +704,7 @@ static String getShopProducts(int shopId) =>
 ## 💰 PRICING TIERS (Revised for Hybrid Model)
 
 ### **Free Tier** (No cost)
-- Sell on qutecart.com marketplace
+- Sell on qutekart.com marketplace
 - Basic dashboard access
 - 50 products limit
 - Standard support
@@ -719,7 +719,7 @@ static String getShopProducts(int shopId) =>
 
 ### **Growth Tier** ($99/month) ⭐
 - Everything in Starter
-- **Own subdomain: {shop}.qutecart.com**
+- **Own subdomain: {shop}.qutekart.com**
 - **Branded storefront**
 - Remove QuteCart branding
 - 1,000 products
@@ -770,14 +770,14 @@ class Product extends Model
 
 ### **What You Get:**
 
-**Main Marketplace (qutecart.com):**
+**Main Marketplace (qutekart.com):**
 - ✅ Products from ALL vendors
 - ✅ Customers shop across vendors
 - ✅ Mobile app shows everything
 - ✅ Central checkout & payments
 
 **Premium Vendor Subdomains:**
-- ✅ johns-shop.qutecart.com (branded experience)
+- ✅ johns-shop.qutekart.com (branded experience)
 - ✅ ONLY that vendor's products
 - ✅ Custom branding, logo, colors
 - ✅ Optional custom domain

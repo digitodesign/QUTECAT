@@ -59,12 +59,12 @@ The existing `google-services.json` file is configured for the **demo project** 
 
 ## Package Name Information
 
-If you decide to change the package name from `com.readyecommerce.apps` to something like `com.qutecart.app`:
+If you decide to change the package name from `com.readyecommerce.apps` to something like `com.qutekart.app`:
 
 1. First change the package name using:
    ```bash
    cd FlutterApp/Flutter-App-ReadyeCommerce-Customer-App-SourceCode
-   flutter pub run change_app_package_name:main com.qutecart.app
+   flutter pub run change_app_package_name:main com.qutekart.app
    ```
 
 2. Then create a NEW Android app in Firebase with the NEW package name

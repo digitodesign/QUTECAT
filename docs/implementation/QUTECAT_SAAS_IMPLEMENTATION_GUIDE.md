@@ -40,7 +40,7 @@
 **`domains`** - Tenant Domain Mapping
 ```sql
 - id - Domain record ID
-- domain - shop1.qutecart.com or customdomain.com
+- domain - shop1.qutekart.com or customdomain.com
 - tenant_id - References tenants table
 - is_primary - Primary domain flag
 ```
@@ -124,15 +124,15 @@
 #### 4. **Domain Configuration**
 
 **Central Domains** (Platform/Landing Page):
-- `qutecart.com`
-- `www.qutecart.com`
+- `qutekart.com`
+- `www.qutekart.com`
 - `qutecat.com` (redirect)
 - `www.qutecat.com` (redirect)
 - `localhost` (development)
 - `127.0.0.1` (development)
 
 **Tenant Domains** (Individual Shops):
-- Subdomain: `{shop-name}.qutecart.com`
+- Subdomain: `{shop-name}.qutekart.com`
 - Custom domains: `mycoolstore.com` (Growth/Enterprise plans)
 
 #### 5. **Files Created/Modified**
@@ -196,18 +196,18 @@ mv database/migrations/2024_*_create_products_table.php database/migrations/tena
 ### Step 3: Create Tenant Onboarding Flow
 
 **Build signup system:**
-1. Landing page at `qutecart.com`
+1. Landing page at `qutekart.com`
 2. Signup form collects:
    - Shop name
    - Owner name, email, phone
-   - Subdomain choice (e.g., "mycoolshop" → mycoolshop.qutecart.com)
+   - Subdomain choice (e.g., "mycoolshop" → mycoolshop.qutekart.com)
    - Plan selection
    - Payment method (Stripe)
 3. Creates tenant record
 4. Creates tenant database
 5. Runs migrations on tenant database
 6. Seeds initial data
-7. Redirects to `{subdomain}.qutecart.com/onboarding`
+7. Redirects to `{subdomain}.qutekart.com/onboarding`
 
 **Controllers needed:**
 - `SignupController` - Handle registration
@@ -221,7 +221,7 @@ mv database/migrations/2024_*_create_products_table.php database/migrations/tena
 #### **Option A: App Platform** (Easiest, Recommended for Start)
 ```yaml
 # .do/app.yaml
-name: qutecart
+name: qutekart
 region: nyc
 services:
   - name: web
@@ -262,13 +262,13 @@ services:
     http_port: 8080
 
 databases:
-  - name: qutecart-db
+  - name: qutekart-db
     engine: PG
     version: "16"
     size: db-s-1vcpu-1gb  # $15/month
     num_nodes: 1
 
-  - name: qutecart-redis
+  - name: qutekart-redis
     engine: REDIS
     version: "7"
     size: db-s-1vcpu-1gb  # $15/month
@@ -330,11 +330,11 @@ Total: ~$71/month (+ autoscaling capability)
 
 **DNS Setup (Digital Ocean Domains):**
 ```
-A     qutecart.com           → Digital Ocean App Platform IP
-A     *.qutecart.com         → Digital Ocean App Platform IP (wildcard)
-CNAME www.qutecart.com       → qutecart.com
-CNAME qutecat.com            → qutecart.com
-CNAME www.qutecat.com        → qutecart.com
+A     qutekart.com           → Digital Ocean App Platform IP
+A     *.qutekart.com         → Digital Ocean App Platform IP (wildcard)
+CNAME www.qutekart.com       → qutekart.com
+CNAME qutecat.com            → qutekart.com
+CNAME www.qutecat.com        → qutekart.com
 ```
 
 **SSL:**
@@ -349,12 +349,12 @@ APP_NAME=QuteCart
 APP_ENV=production
 APP_KEY=base64:... # php artisan key:generate
 APP_DEBUG=false
-APP_URL=https://qutecart.com
+APP_URL=https://qutekart.com
 
 DB_CONNECTION=pgsql
 DB_HOST=your-db-hostname.db.ondigitalocean.com
 DB_PORT=25060
-DB_DATABASE=qutecart
+DB_DATABASE=qutekart
 DB_USERNAME=doadmin
 DB_PASSWORD=your-secure-password
 DB_SSLMODE=require
@@ -371,7 +371,7 @@ FILESYSTEM_DISK=s3
 AWS_ACCESS_KEY_ID=your-spaces-key
 AWS_SECRET_ACCESS_KEY=your-spaces-secret
 AWS_DEFAULT_REGION=nyc3
-AWS_BUCKET=qutecart-media
+AWS_BUCKET=qutekart-media
 AWS_ENDPOINT=https://nyc3.digitaloceanspaces.com
 
 STRIPE_KEY=pk_live_...
@@ -383,7 +383,7 @@ MAIL_HOST=smtp.sendgrid.net
 MAIL_PORT=587
 MAIL_USERNAME=apikey
 MAIL_PASSWORD=your-sendgrid-api-key
-MAIL_FROM_ADDRESS=noreply@qutecart.com
+MAIL_FROM_ADDRESS=noreply@qutekart.com
 MAIL_FROM_NAME=QuteCart
 ```
 
@@ -426,26 +426,26 @@ doctl apps run-command <app-id> --component web -- php artisan storage:link
 ### Landing Page Components
 
 **Required Pages:**
-1. **Homepage** (`qutecart.com`)
+1. **Homepage** (`qutekart.com`)
    - Hero section with value proposition
    - Feature highlights
    - Pricing table (3 plans)
    - Testimonials
    - CTA: "Start Your Free Trial"
 
-2. **Pricing Page** (`qutecart.com/pricing`)
+2. **Pricing Page** (`qutekart.com/pricing`)
    - Detailed plan comparison
    - FAQ section
    - Annual billing toggle (show savings)
 
-3. **Signup Flow** (`qutecart.com/signup`)
+3. **Signup Flow** (`qutekart.com/signup`)
    - Step 1: Business info (shop name, owner details)
    - Step 2: Choose subdomain (check availability via AJAX)
    - Step 3: Select plan (highlight Growth as recommended)
    - Step 4: Payment (Stripe Elements)
    - Step 5: Account creation + tenant provisioning
 
-4. **Onboarding** (`{shop}.qutecart.com/onboarding`)
+4. **Onboarding** (`{shop}.qutekart.com/onboarding`)
    - Welcome wizard
    - Import products (CSV, Shopify, WooCommerce)
    - Configure shipping
@@ -519,7 +519,7 @@ POST /api/billing/webhook (Stripe)
    ```bash
    # In Stripe Dashboard
    Webhooks → Add endpoint
-   URL: https://qutecart.com/api/billing/webhook
+   URL: https://qutekart.com/api/billing/webhook
    Events:
      - customer.subscription.updated
      - customer.subscription.deleted
@@ -598,7 +598,7 @@ public function handle()
 ```bash
 # Allow only necessary ports
 doctl compute firewall create \
-  --name qutecart-firewall \
+  --name qutekart-firewall \
   --inbound-rules "protocol:tcp,ports:80,sources:0.0.0.0/0,::/0 protocol:tcp,ports:443,sources:0.0.0.0/0,::/0" \
   --droplet-ids <droplet-id>
 ```
@@ -680,14 +680,14 @@ php artisan config:clear
 # Manually create tenant
 php artisan tinker
 >>> $tenant = Tenant::create(['id' => 'shop1']);
->>> $tenant->domains()->create(['domain' => 'shop1.qutecart.com']);
+>>> $tenant->domains()->create(['domain' => 'shop1.qutekart.com']);
 >>> $tenant->run(function () { Artisan::call('migrate'); });
 ```
 
 ### Issue: Subdomain not resolving
-- Check wildcard DNS: `dig *.qutecart.com`
+- Check wildcard DNS: `dig *.qutekart.com`
 - Verify App Platform custom domains configured
-- Clear DNS cache: `doctl compute domain records list qutecart.com`
+- Clear DNS cache: `doctl compute domain records list qutekart.com`
 
 ### Issue: Stripe webhook failing
 ```bash
@@ -719,7 +719,7 @@ stripe trigger customer.subscription.created
 ### Your Team
 - Repository: https://github.com/digitodesign/QUTECAT
 - Branch: `claude/review-ecommerce-template-011CUqezuPy1BdW4NYBpric7`
-- Domains: qutecart.com, qutecat.com
+- Domains: qutekart.com, qutecat.com
 
 ---
 

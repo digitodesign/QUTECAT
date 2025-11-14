@@ -49,7 +49,7 @@ QuteCart has been successfully transformed from a basic e-commerce template into
 
 #### Tenancy System
 - **stancl/tenancy** package integrated
-- **Subdomain routing:** premium-shop.qutecart.com
+- **Subdomain routing:** premium-shop.qutekart.com
 - **Automatic tenant creation** on subscription
 - **Domain management** for multi-tenant access
 
@@ -105,7 +105,7 @@ shops (vendors)
 **Example Usage:**
 ```bash
 # Subscribe to Starter plan
-curl -X POST https://qutecart.com/api/subscription/subscribe \
+curl -X POST https://qutekart.com/api/subscription/subscribe \
   -H "Authorization: Bearer {token}" \
   -d '{
     "plan_id": 2,
@@ -169,7 +169,7 @@ Route::post('/upload', ...)->middleware('check.limits:storage');
 **ContextAware Trait** - Unified context detection across all APIs
 
 **Priority Order:**
-1. **Premium subdomain:** `johns-shop.qutecart.com` → filters to shop automatically
+1. **Premium subdomain:** `johns-shop.qutekart.com` → filters to shop automatically
 2. **X-Shop-ID header:** For API integrations
 3. **shop_id query param:** Backward compatible with mobile app
 4. **Authenticated session:** Vendor's own shop
@@ -181,7 +181,7 @@ Route::post('/upload', ...)->middleware('check.limits:storage');
 GET /api/products
 
 # Shop mode via subdomain
-GET http://johns-shop.qutecart.com/api/products
+GET http://johns-shop.qutekart.com/api/products
 
 # Shop mode via header (mobile app)
 GET /api/products
@@ -227,11 +227,11 @@ GET /api/products?shop_id=123
 - Graceful error handling
 - Automatic subscription status sync
 
-**Webhook URL:** `https://qutecart.com/api/webhooks/stripe`
+**Webhook URL:** `https://qutekart.com/api/webhooks/stripe`
 
 **Configuration in Stripe Dashboard:**
 1. Go to Developers → Webhooks
-2. Add endpoint: `https://qutecart.com/api/webhooks/stripe`
+2. Add endpoint: `https://qutekart.com/api/webhooks/stripe`
 3. Select events: subscription.*, invoice.*
 4. Copy webhook secret to `.env`: `STRIPE_WEBHOOK_SECRET=whsec_xxx`
 
@@ -294,7 +294,7 @@ MAIL_HOST=smtp.resend.com
 MAIL_PORT=465
 MAIL_USERNAME=resend
 MAIL_PASSWORD=re_xxx  # Resend API key
-MAIL_FROM_ADDRESS=no-reply@qutecart.com
+MAIL_FROM_ADDRESS=no-reply@qutekart.com
 MAIL_FROM_NAME="QuteCart"
 ```
 
@@ -304,7 +304,7 @@ MAIL_FROM_NAME="QuteCart"
 php artisan queue:work
 
 # Production (supervisor)
-[program:qutecart-worker]
+[program:qutekart-worker]
 command=php /var/www/html/artisan queue:work --sleep=3 --tries=3
 ```
 
@@ -398,7 +398,7 @@ command=php /var/www/html/artisan queue:work --sleep=3 --tries=3
 7. Vendor receives email within seconds
    ├─▶ Welcome message
    ├─▶ Trial info
-   └─▶ Subdomain URL: johns-shop.qutecart.com
+   └─▶ Subdomain URL: johns-shop.qutekart.com
 
 8. Stripe dashboard updates in real-time
    ├─▶ Customer created
@@ -482,7 +482,7 @@ tenants
 -- Domains (Subdomain Routing)
 domains
 ├── id
-├── domain (johns-shop.qutecart.com)
+├── domain (johns-shop.qutekart.com)
 └── tenant_id → tenants.id
 ```
 
@@ -496,13 +496,13 @@ domains
 # App
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://qutecart.com
+APP_URL=https://qutekart.com
 
 # Database
 DB_CONNECTION=pgsql
 DB_HOST=your-postgres-host
-DB_DATABASE=qutecart_prod
-DB_USERNAME=qutecart_user
+DB_DATABASE=qutekart_prod
+DB_USERNAME=qutekart_user
 DB_PASSWORD=secure_password_here
 
 # Redis
@@ -521,7 +521,7 @@ MAIL_HOST=smtp.resend.com
 MAIL_PORT=465
 MAIL_USERNAME=resend
 MAIL_PASSWORD=re_xxx
-MAIL_FROM_ADDRESS=no-reply@qutecart.com
+MAIL_FROM_ADDRESS=no-reply@qutekart.com
 MAIL_FROM_NAME="QuteCart"
 
 # Queue
@@ -547,7 +547,7 @@ CACHE_DRIVER=redis
    UPDATE plans SET stripe_price_id = 'price_enterprise_live' WHERE slug = 'enterprise';
    ```
 4. Go to **Developers** → **Webhooks** → Add endpoint:
-   - URL: `https://qutecart.com/api/webhooks/stripe`
+   - URL: `https://qutekart.com/api/webhooks/stripe`
    - Events: `customer.subscription.*`, `invoice.*`
    - Copy webhook secret to `.env`
 
@@ -555,7 +555,7 @@ CACHE_DRIVER=redis
 
 **Domain Verification:**
 1. Go to https://resend.com/domains
-2. Add domain: `qutecart.com`
+2. Add domain: `qutekart.com`
 3. Add DNS records (provided by Resend):
    - SPF (TXT): `v=spf1 include:resend.net ~all`
    - DKIM (TXT): `resend._domainkey` → `p=MIGf...`
@@ -567,7 +567,7 @@ CACHE_DRIVER=redis
 
 ```bash
 # Backup first!
-pg_dump qutecart_prod > backup_$(date +%Y%m%d).sql
+pg_dump qutekart_prod > backup_$(date +%Y%m%d).sql
 
 # Run migrations
 php artisan migrate --force
@@ -578,12 +578,12 @@ php artisan db:seed --class=PlanSeeder --force
 
 ### 5. Queue Workers (Supervisor)
 
-Create `/etc/supervisor/conf.d/qutecart-worker.conf`:
+Create `/etc/supervisor/conf.d/qutekart-worker.conf`:
 
 ```ini
-[program:qutecart-worker]
+[program:qutekart-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/qutecart/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+command=php /var/www/qutekart/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
 autostart=true
 autorestart=true
 stopasgroup=true
@@ -591,14 +591,14 @@ killasgroup=true
 user=www-data
 numprocs=2
 redirect_stderr=true
-stdout_logfile=/var/www/qutecart/storage/logs/worker.log
+stdout_logfile=/var/www/qutekart/storage/logs/worker.log
 stopwaitsecs=3600
 ```
 
 ```bash
 sudo supervisorctl reread
 sudo supervisorctl update
-sudo supervisorctl start qutecart-worker:*
+sudo supervisorctl start qutekart-worker:*
 ```
 
 ### 6. Scheduled Tasks (Cron)
@@ -606,7 +606,7 @@ sudo supervisorctl start qutecart-worker:*
 Add to crontab:
 
 ```bash
-* * * * * cd /var/www/qutecart && php artisan schedule:run >> /dev/null 2>&1
+* * * * * cd /var/www/qutekart && php artisan schedule:run >> /dev/null 2>&1
 ```
 
 ### 7. Optimize for Production
@@ -630,10 +630,10 @@ php artisan view:clear
 
 ```bash
 # Set proper permissions
-sudo chown -R www-data:www-data /var/www/qutecart
-sudo chmod -R 755 /var/www/qutecart
-sudo chmod -R 775 /var/www/qutecart/storage
-sudo chmod -R 775 /var/www/qutecart/bootstrap/cache
+sudo chown -R www-data:www-data /var/www/qutekart
+sudo chmod -R 755 /var/www/qutekart
+sudo chmod -R 775 /var/www/qutekart/storage
+sudo chmod -R 775 /var/www/qutekart/bootstrap/cache
 
 # Disable directory listing in Nginx
 # Add to server block:
@@ -646,7 +646,7 @@ autoindex off;
 ### 9. Monitoring & Logging
 
 **Application Logging:**
-- Logs: `/var/www/qutecart/storage/logs/laravel.log`
+- Logs: `/var/www/qutekart/storage/logs/laravel.log`
 - Rotate logs daily
 - Monitor for errors
 
@@ -674,13 +674,13 @@ autoindex off;
 # Any future expiry, any CVC
 
 # Test subscription
-curl -X POST https://qutecart.com/api/subscription/subscribe \
+curl -X POST https://qutekart.com/api/subscription/subscribe \
   -H "Authorization: Bearer {token}" \
   -d '{"plan_id": 2, "payment_method_id": "pm_card_visa"}'
 
 # Verify in Stripe Dashboard
 # Check email was sent (Resend Dashboard)
-# Confirm subdomain works: https://test-shop.qutecart.com
+# Confirm subdomain works: https://test-shop.qutekart.com
 ```
 
 ---
@@ -805,7 +805,7 @@ curl -X POST https://qutecart.com/api/subscription/subscribe \
 - Custom CSS
 
 ### Phase 7: Advanced Features (Future)
-- Custom domains (vendor.com instead of vendor.qutecart.com)
+- Custom domains (vendor.com instead of vendor.qutekart.com)
 - API webhooks for vendors
 - Advanced reporting
 - Multi-currency support

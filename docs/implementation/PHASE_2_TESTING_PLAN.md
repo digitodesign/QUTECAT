@@ -39,9 +39,9 @@ This document provides a comprehensive testing plan for Phase 2 implementation. 
 4. **Test DNS/Hosts:**
    ```bash
    # Add to /etc/hosts
-   127.0.0.1 qutecart.local
-   127.0.0.1 premium-shop.qutecart.local
-   127.0.0.1 johns-shop.qutecart.local
+   127.0.0.1 qutekart.local
+   127.0.0.1 premium-shop.qutekart.local
+   127.0.0.1 johns-shop.qutekart.local
    ```
 
 ---
@@ -54,7 +54,7 @@ This document provides a comprehensive testing plan for Phase 2 implementation. 
 
 **Test:** Products endpoint returns all shops' products
 ```bash
-curl -X GET http://qutecart.local/api/products \
+curl -X GET http://qutekart.local/api/products \
   -H "Accept: application/json"
 ```
 
@@ -65,7 +65,7 @@ curl -X GET http://qutecart.local/api/products \
 
 **Test:** Categories endpoint returns all categories
 ```bash
-curl -X GET http://qutecart.local/api/categories \
+curl -X GET http://qutekart.local/api/categories \
   -H "Accept: application/json"
 ```
 
@@ -79,7 +79,7 @@ curl -X GET http://qutecart.local/api/categories \
 
 **Test:** Premium shop subdomain filters products
 ```bash
-curl -X GET http://johns-shop.qutecart.local/api/products \
+curl -X GET http://johns-shop.qutekart.local/api/products \
   -H "Accept: application/json"
 ```
 
@@ -91,7 +91,7 @@ curl -X GET http://johns-shop.qutecart.local/api/products \
 
 **Test:** Non-existent subdomain
 ```bash
-curl -X GET http://fake-shop.qutecart.local/api/products \
+curl -X GET http://fake-shop.qutekart.local/api/products \
   -H "Accept: application/json"
 ```
 
@@ -106,7 +106,7 @@ curl -X GET http://fake-shop.qutecart.local/api/products \
 
 **Test:** X-Shop-ID header filters products
 ```bash
-curl -X GET http://qutecart.local/api/products \
+curl -X GET http://qutekart.local/api/products \
   -H "Accept: application/json" \
   -H "X-Shop-ID: 1"
 ```
@@ -118,7 +118,7 @@ curl -X GET http://qutecart.local/api/products \
 
 **Test:** Invalid shop ID
 ```bash
-curl -X GET http://qutecart.local/api/products \
+curl -X GET http://qutekart.local/api/products \
   -H "Accept: application/json" \
   -H "X-Shop-ID: 99999"
 ```
@@ -133,7 +133,7 @@ curl -X GET http://qutecart.local/api/products \
 
 **Test:** shop_id query param (backward compatibility)
 ```bash
-curl -X GET "http://qutecart.local/api/products?shop_id=1" \
+curl -X GET "http://qutekart.local/api/products?shop_id=1" \
   -H "Accept: application/json"
 ```
 
@@ -148,7 +148,7 @@ curl -X GET "http://qutecart.local/api/products?shop_id=1" \
 
 **Test:** Subdomain overrides query param
 ```bash
-curl -X GET "http://johns-shop.qutecart.local/api/products?shop_id=2" \
+curl -X GET "http://johns-shop.qutekart.local/api/products?shop_id=2" \
   -H "Accept: application/json"
 ```
 
@@ -158,7 +158,7 @@ curl -X GET "http://johns-shop.qutecart.local/api/products?shop_id=2" \
 
 **Test:** Header overrides query param
 ```bash
-curl -X GET "http://qutecart.local/api/products?shop_id=1" \
+curl -X GET "http://qutekart.local/api/products?shop_id=1" \
   -H "Accept: application/json" \
   -H "X-Shop-ID: 2"
 ```
@@ -175,7 +175,7 @@ curl -X GET "http://qutecart.local/api/products?shop_id=1" \
 
 **Test:** Get all plans (unauthenticated)
 ```bash
-curl -X GET http://qutecart.local/api/subscription/plans \
+curl -X GET http://qutekart.local/api/subscription/plans \
   -H "Accept: application/json"
 ```
 
@@ -190,7 +190,7 @@ curl -X GET http://qutecart.local/api/subscription/plans \
 
 **Test:** Free vendor subscription
 ```bash
-curl -X GET http://qutecart.local/api/subscription/current \
+curl -X GET http://qutekart.local/api/subscription/current \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {vendor_token}"
 ```
@@ -204,7 +204,7 @@ curl -X GET http://qutecart.local/api/subscription/current \
 
 **Test:** Premium vendor subscription
 ```bash
-curl -X GET http://johns-shop.qutecart.local/api/subscription/current \
+curl -X GET http://johns-shop.qutekart.local/api/subscription/current \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {premium_vendor_token}"
 ```
@@ -215,7 +215,7 @@ curl -X GET http://johns-shop.qutecart.local/api/subscription/current \
 - `status: 'active'`
 - `is_premium: true`
 - `has_subdomain: true`
-- `subdomain_url: 'http://johns-shop.qutecart.local'`
+- `subdomain_url: 'http://johns-shop.qutekart.local'`
 
 ---
 
@@ -223,7 +223,7 @@ curl -X GET http://johns-shop.qutecart.local/api/subscription/current \
 
 **Test:** Free vendor subscribes to Starter plan
 ```bash
-curl -X POST http://qutecart.local/api/subscription/subscribe \
+curl -X POST http://qutekart.local/api/subscription/subscribe \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {vendor_token}" \
   -H "Content-Type: application/json" \
@@ -244,7 +244,7 @@ curl -X POST http://qutecart.local/api/subscription/subscribe \
 
 **Test:** Already subscribed vendor
 ```bash
-curl -X POST http://qutecart.local/api/subscription/subscribe \
+curl -X POST http://qutekart.local/api/subscription/subscribe \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {premium_vendor_token}" \
   -H "Content-Type: application/json" \
@@ -265,7 +265,7 @@ curl -X POST http://qutecart.local/api/subscription/subscribe \
 
 **Test:** Starter to Growth upgrade
 ```bash
-curl -X POST http://qutecart.local/api/subscription/upgrade \
+curl -X POST http://qutekart.local/api/subscription/upgrade \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {starter_vendor_token}" \
   -H "Content-Type: application/json" \
@@ -284,7 +284,7 @@ curl -X POST http://qutecart.local/api/subscription/upgrade \
 
 **Test:** Downgrade attempt via upgrade endpoint
 ```bash
-curl -X POST http://qutecart.local/api/subscription/upgrade \
+curl -X POST http://qutekart.local/api/subscription/upgrade \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {growth_vendor_token}" \
   -H "Content-Type: application/json" \
@@ -304,7 +304,7 @@ curl -X POST http://qutecart.local/api/subscription/upgrade \
 
 **Test:** Growth to Starter downgrade
 ```bash
-curl -X POST http://qutecart.local/api/subscription/downgrade \
+curl -X POST http://qutekart.local/api/subscription/downgrade \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {growth_vendor_token}" \
   -H "Content-Type: application/json" \
@@ -325,7 +325,7 @@ curl -X POST http://qutecart.local/api/subscription/downgrade \
 
 **Test:** Cancel at period end
 ```bash
-curl -X POST http://qutecart.local/api/subscription/cancel \
+curl -X POST http://qutekart.local/api/subscription/cancel \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {vendor_token}" \
   -H "Content-Type: application/json" \
@@ -342,7 +342,7 @@ curl -X POST http://qutecart.local/api/subscription/cancel \
 
 **Test:** Cancel immediately
 ```bash
-curl -X POST http://qutecart.local/api/subscription/cancel \
+curl -X POST http://qutekart.local/api/subscription/cancel \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {vendor_token}" \
   -H "Content-Type: application/json" \
@@ -363,7 +363,7 @@ curl -X POST http://qutecart.local/api/subscription/cancel \
 
 **Test:** Resume before period end
 ```bash
-curl -X POST http://qutecart.local/api/subscription/resume \
+curl -X POST http://qutekart.local/api/subscription/resume \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {canceled_vendor_token}"
 ```
@@ -380,7 +380,7 @@ curl -X POST http://qutecart.local/api/subscription/resume \
 
 **Test:** Get current usage
 ```bash
-curl -X GET http://qutecart.local/api/subscription/usage \
+curl -X GET http://qutekart.local/api/subscription/usage \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {vendor_token}"
 ```
@@ -398,7 +398,7 @@ curl -X GET http://qutecart.local/api/subscription/usage \
 
 **Test:** Get all subscriptions
 ```bash
-curl -X GET http://qutecart.local/api/subscription/history \
+curl -X GET http://qutekart.local/api/subscription/history \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {vendor_token}"
 ```
@@ -415,7 +415,7 @@ curl -X GET http://qutecart.local/api/subscription/history \
 
 **Test:** Get Stripe portal URL
 ```bash
-curl -X GET http://qutecart.local/api/subscription/billing-portal \
+curl -X GET http://qutekart.local/api/subscription/billing-portal \
   -H "Accept: application/json" \
   -H "Authorization: Bearer {vendor_token}"
 ```
@@ -433,7 +433,7 @@ curl -X GET http://qutecart.local/api/subscription/billing-portal \
 
 **Test:** Create product when under limit
 ```bash
-curl -X POST http://qutecart.local/api/vendor/products \
+curl -X POST http://qutekart.local/api/vendor/products \
   -H "Authorization: Bearer {vendor_token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -450,7 +450,7 @@ curl -X POST http://qutecart.local/api/vendor/products \
 **Test:** Create product when at limit
 ```bash
 # After creating 25 products on free plan
-curl -X POST http://qutecart.local/api/vendor/products \
+curl -X POST http://qutekart.local/api/vendor/products \
   -H "Authorization: Bearer {free_vendor_token}" \
   -H "Content-Type: application/json" \
   -d '{...}'
@@ -465,7 +465,7 @@ curl -X POST http://qutecart.local/api/vendor/products \
 **Test:** Warning at 80% threshold
 ```bash
 # After creating 20 products on free plan (80% of 25)
-curl -X POST http://qutecart.local/api/vendor/products \
+curl -X POST http://qutekart.local/api/vendor/products \
   -H "Authorization: Bearer {free_vendor_token}" \
   -d '{...}'
 ```
@@ -482,7 +482,7 @@ curl -X POST http://qutecart.local/api/vendor/products \
 
 **Test:** Process order when under limit
 ```bash
-curl -X POST http://qutecart.local/api/orders \
+curl -X POST http://qutekart.local/api/orders \
   -H "Authorization: Bearer {customer_token}" \
   -d '{...}'
 ```
@@ -494,7 +494,7 @@ curl -X POST http://qutecart.local/api/orders \
 **Test:** Process order when at monthly limit
 ```bash
 # After 100 orders this month on free plan
-curl -X POST http://qutecart.local/api/orders \
+curl -X POST http://qutekart.local/api/orders \
   -H "Authorization: Bearer {customer_token}" \
   -d '{...}'
 ```
@@ -510,7 +510,7 @@ curl -X POST http://qutecart.local/api/orders \
 
 **Test:** Upload image when under limit
 ```bash
-curl -X POST http://qutecart.local/api/vendor/products/upload \
+curl -X POST http://qutekart.local/api/vendor/products/upload \
   -H "Authorization: Bearer {vendor_token}" \
   -F "image=@product.jpg"
 ```
@@ -522,7 +522,7 @@ curl -X POST http://qutecart.local/api/vendor/products/upload \
 **Test:** Upload when at storage limit
 ```bash
 # After using 500MB on free plan
-curl -X POST http://qutecart.local/api/vendor/products/upload \
+curl -X POST http://qutekart.local/api/vendor/products/upload \
   -H "Authorization: Bearer {free_vendor_token}" \
   -F "image=@large_image.jpg"
 ```
@@ -540,7 +540,7 @@ curl -X POST http://qutecart.local/api/vendor/products/upload \
 
 **Test:** Access via subdomain
 ```bash
-curl -X GET http://johns-shop.qutecart.local/ \
+curl -X GET http://johns-shop.qutekart.local/ \
   -H "Accept: text/html"
 ```
 
@@ -663,7 +663,7 @@ POST /api/subscription/downgrade
 
 **Test:** Old mobile app with shop_id param
 ```bash
-curl -X GET "http://qutecart.local/api/products?shop_id=1" \
+curl -X GET "http://qutekart.local/api/products?shop_id=1" \
   -H "Authorization: Bearer {customer_token}"
 ```
 
@@ -678,7 +678,7 @@ curl -X GET "http://qutecart.local/api/products?shop_id=1" \
 
 **Test:** Product response structure unchanged
 ```bash
-curl -X GET "http://qutecart.local/api/products" \
+curl -X GET "http://qutekart.local/api/products" \
   -H "Accept: application/json"
 ```
 
@@ -695,7 +695,7 @@ curl -X GET "http://qutecart.local/api/products" \
 
 **Test:** Unauthenticated subscription access
 ```bash
-curl -X GET http://qutecart.local/api/subscription/current
+curl -X GET http://qutekart.local/api/subscription/current
 ```
 
 **Expected:**
@@ -708,7 +708,7 @@ curl -X GET http://qutecart.local/api/subscription/current
 
 **Test:** Vendor A accessing Vendor B's data
 ```bash
-curl -X GET http://qutecart.local/api/vendor/products \
+curl -X GET http://qutekart.local/api/vendor/products \
   -H "Authorization: Bearer {vendor_a_token}"
 ```
 
@@ -722,7 +722,7 @@ curl -X GET http://qutecart.local/api/vendor/products \
 
 **Test:** Attempt to bypass context via header manipulation
 ```bash
-curl -X GET http://johns-shop.qutecart.local/api/products \
+curl -X GET http://johns-shop.qutekart.local/api/products \
   -H "X-Shop-ID: 999" \
   -H "Accept: application/json"
 ```

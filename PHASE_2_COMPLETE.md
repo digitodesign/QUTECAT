@@ -55,7 +55,7 @@ Enterprise: $299/mo - Unlimited products/orders, 50GB, subdomain
 **SetShopContext Middleware:**
 - Registered in `web` and `api` middleware groups
 - Detects shop context from multiple sources (priority order):
-  1. Premium subdomain (johns-shop.qutecart.com)
+  1. Premium subdomain (johns-shop.qutekart.com)
   2. X-Shop-ID header
   3. shop_id query parameter
   4. Authenticated vendor session
@@ -185,7 +185,7 @@ GET /api/products
 → Returns all shops' products
 
 // Premium subdomain request
-GET http://johns-shop.qutecart.com/api/products
+GET http://johns-shop.qutekart.com/api/products
 → Returns only John's Shop products
 
 // Mobile app with shop_id
@@ -422,7 +422,7 @@ All Stripe objects include:
 ### Context Detection Integration
 
 **Sources (Priority Order):**
-1. **Subdomain** - `johns-shop.qutecart.com` → shop_id via tenant
+1. **Subdomain** - `johns-shop.qutekart.com` → shop_id via tenant
 2. **Header** - `X-Shop-ID: 123` → direct shop_id
 3. **Query Param** - `?shop_id=123` → direct shop_id (backward compat)
 4. **Session** - Authenticated vendor → vendor's shop_id
@@ -570,7 +570,7 @@ tests/Unit/
 
 ### Base URL
 ```
-http://qutecart.local/api
+http://qutekart.local/api
 ```
 
 ### Authentication
@@ -598,7 +598,7 @@ Authorization: Bearer {sanctum_token}
 
 **Subscribe to Plan:**
 ```bash
-curl -X POST http://qutecart.local/api/subscription/subscribe \
+curl -X POST http://qutekart.local/api/subscription/subscribe \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -626,7 +626,7 @@ curl -X POST http://qutecart.local/api/subscription/subscribe \
 
 **Get Usage:**
 ```bash
-curl -X GET http://qutecart.local/api/subscription/usage \
+curl -X GET http://qutekart.local/api/subscription/usage \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -825,7 +825,7 @@ STRIPE_WEBHOOK_SECRET=whsec_test_...
 # Database (already configured in Phase 1)
 DB_CONNECTION=pgsql
 DB_HOST=postgres
-DB_DATABASE=qutecart
+DB_DATABASE=qutekart
 ```
 
 ### Optional (with defaults)

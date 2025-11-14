@@ -48,7 +48,7 @@
 - **Development:** Docker Compose (8 containers)
 - **Production:** Ubuntu 22.04 + Nginx + Supervisor
 - **SSL:** Let's Encrypt (via Certbot)
-- **Domain:** qutecart.com (with wildcard subdomain support)
+- **Domain:** qutekart.com (with wildcard subdomain support)
 
 ---
 
@@ -63,7 +63,7 @@
 - **Enterprise Plan:** $299/month - Unlimited everything
 
 **2. Multi-Tenancy**
-- Subdomain-based shop isolation (e.g., `myshop.qutecart.com`)
+- Subdomain-based shop isolation (e.g., `myshop.qutekart.com`)
 - Context-aware API (subdomain → header → query param)
 - Single database with row-level filtering
 - Shared infrastructure, isolated data
@@ -116,7 +116,7 @@
 - Trial status indicators
 
 **3. Mobile App Customizations**
-- Production API configuration (qutecart.com)
+- Production API configuration (qutekart.com)
 - ZARA black primary color
 - Firebase integration guides
 - Pusher real-time messaging
@@ -225,7 +225,7 @@ cd "Ready eCommerce-Admin with Customer Website/install"
 cp .env.example .env
 
 # 3. Add to /etc/hosts
-echo "127.0.0.1    qutecart.local" | sudo tee -a /etc/hosts
+echo "127.0.0.1    qutekart.local" | sudo tee -a /etc/hosts
 
 # 4. Start Docker
 docker-compose up -d
@@ -243,7 +243,7 @@ docker-compose exec php php artisan db:seed --class=PlansTableSeeder
 docker-compose exec php php artisan db:seed --class=ZaraThemeSeeder
 
 # 8. Access
-open http://qutecart.local
+open http://qutekart.local
 ```
 
 **Detailed instructions:** [COMPLETE_SETUP_GUIDE.md - Part 1](COMPLETE_SETUP_GUIDE.md#part-1-local-development-setup)
@@ -383,18 +383,18 @@ See [COMPLETE_SETUP_GUIDE.md - Part 5](COMPLETE_SETUP_GUIDE.md#part-5-production
 ## 📱 Access Points
 
 ### Local Development
-- **Main Site:** http://qutecart.local
-- **Admin Panel:** http://qutecart.local/admin
-- **API:** http://qutecart.local/api
+- **Main Site:** http://qutekart.local
+- **Admin Panel:** http://qutekart.local/admin
+- **API:** http://qutekart.local/api
 - **MinIO Console:** http://localhost:9001 (minioadmin/minioadmin)
 - **Mailpit:** http://localhost:8025 (email testing)
-- **PostgreSQL:** localhost:5432 (qutecart/secret)
+- **PostgreSQL:** localhost:5432 (qutekart/secret)
 
 ### Production
-- **Main Site:** https://qutecart.com
-- **Admin Panel:** https://qutecart.com/admin
-- **API:** https://qutecart.com/api
-- **Shop Subdomain:** https://{shopname}.qutecart.com
+- **Main Site:** https://qutekart.com
+- **Admin Panel:** https://qutekart.com/admin
+- **API:** https://qutekart.com/api
+- **Shop Subdomain:** https://{shopname}.qutekart.com
 
 ---
 

@@ -141,7 +141,7 @@ docker-compose exec php php artisan migrate:status
 - ✅ Trial status indicators
 - ✅ ZARA minimalist styling
 
-**Access:** http://qutecart.local/admin (local) or https://qutecart.com/admin (production)
+**Access:** http://qutekart.local/admin (local) or https://qutekart.com/admin (production)
 
 ---
 
@@ -255,7 +255,7 @@ exit
 **Step 5: Setup Webhook**
 1. Go to https://dashboard.stripe.com/webhooks
 2. Click **Add endpoint**
-3. Endpoint URL: `https://qutecart.com/api/webhooks/stripe`
+3. Endpoint URL: `https://qutekart.com/api/webhooks/stripe`
 4. Select events:
    - `customer.subscription.created`
    - `customer.subscription.updated`
@@ -411,7 +411,7 @@ flutter build apk --release
 **Step 2: Add Domain**
 1. In Resend dashboard, go to **Domains**
 2. Click **Add Domain**
-3. Enter: `qutecart.com`
+3. Enter: `qutekart.com`
 4. Add the DNS records they provide to your domain registrar
 5. Wait for verification (usually 5-10 minutes)
 
@@ -429,7 +429,7 @@ MAIL_PORT=587
 MAIL_USERNAME=resend
 MAIL_PASSWORD=re_your_api_key_here
 MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="noreply@qutecart.com"
+MAIL_FROM_ADDRESS="noreply@qutekart.com"
 MAIL_FROM_NAME="QuteCart"
 ```
 
@@ -450,7 +450,7 @@ MAIL_FROM_NAME="QuteCart"
 **Current State:**
 ```
 ⚠️ AWS_ENDPOINT=http://minio:9000 (only works in Docker)
-⚠️ AWS_URL=http://localhost:9000/qutecart (not public)
+⚠️ AWS_URL=http://localhost:9000/qutekart (not public)
 ```
 
 **Recommended: DigitalOcean Spaces**
@@ -465,7 +465,7 @@ MAIL_FROM_NAME="QuteCart"
 1. Go to https://cloud.digitalocean.com/
 2. Go to **Spaces** → **Create Space**
 3. Choose region closest to your server
-4. Name: `qutecart-prod`
+4. Name: `qutekart-prod`
 5. Set to **Public** (for product images)
 6. Click **Create Space**
 
@@ -483,10 +483,10 @@ FILESYSTEM_DISK=s3
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_DEFAULT_REGION=nyc3  # or your chosen region
-AWS_BUCKET=qutecart-prod
+AWS_BUCKET=qutekart-prod
 AWS_ENDPOINT=https://nyc3.digitaloceanspaces.com
 AWS_USE_PATH_STYLE_ENDPOINT=false
-AWS_URL=https://qutecart-prod.nyc3.digitaloceanspaces.com
+AWS_URL=https://qutekart-prod.nyc3.digitaloceanspaces.com
 ```
 
 **Alternative Options:**
@@ -504,7 +504,7 @@ AWS_URL=https://qutecart-prod.nyc3.digitaloceanspaces.com
 
 ### What's Configured - ✅
 
-- ✅ API URL updated to `https://qutecart.com/api`
+- ✅ API URL updated to `https://qutekart.com/api`
 - ✅ ZARA black color theme ready
 - ✅ All dependencies installed (50+ packages)
 - ✅ Video player integrated (Chewie)
@@ -581,7 +581,7 @@ docker-compose exec php composer install
 docker-compose exec php php artisan key:generate
 docker-compose exec php php artisan migrate
 docker-compose exec php php artisan db:seed
-open http://qutecart.local
+open http://qutekart.local
 ```
 
 **Result:** Fully functional local environment (without real payments/notifications)

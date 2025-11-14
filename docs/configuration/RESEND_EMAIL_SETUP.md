@@ -46,7 +46,7 @@ For production, verify your sending domain to improve deliverability and remove 
 
 1. Go to **Domains** in Resend Dashboard
 2. Click **Add Domain**
-3. Enter your domain: `qutecart.com` (or your custom domain)
+3. Enter your domain: `qutekart.com` (or your custom domain)
 4. Click **Add**
 
 You'll see DNS records to add:
@@ -99,7 +99,7 @@ MAIL_PORT=465
 MAIL_USERNAME=resend
 MAIL_PASSWORD=re_123abc456def789ghi012jkl345mno678
 MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=no-reply@qutecart.com
+MAIL_FROM_ADDRESS=no-reply@qutekart.com
 MAIL_FROM_NAME="${APP_NAME}"
 
 # Alternative: Use Resend API directly (recommended)
@@ -140,7 +140,7 @@ php artisan vendor:publish --tag=resend-config
 ```env
 MAIL_MAILER=resend
 RESEND_API_KEY=re_123abc456def789ghi012jkl345mno678
-MAIL_FROM_ADDRESS=no-reply@qutecart.com
+MAIL_FROM_ADDRESS=no-reply@qutekart.com
 MAIL_FROM_NAME="QuteCart"
 ```
 
@@ -257,7 +257,7 @@ All emails are:
 
 ### 1. **Use Verified Domain**
 - Don't use @gmail.com or @yahoo.com for `MAIL_FROM_ADDRESS`
-- Use your verified domain: `no-reply@qutecart.com`
+- Use your verified domain: `no-reply@qutekart.com`
 - Improves deliverability and removes "via resend.dev"
 
 ### 2. **Queue Emails**
@@ -355,7 +355,7 @@ Access at: http://localhost:8025
 # Use Resend with test API key
 MAIL_MAILER=resend
 RESEND_API_KEY=re_test_123...
-MAIL_FROM_ADDRESS=staging@qutecart.com
+MAIL_FROM_ADDRESS=staging@qutekart.com
 ```
 
 ### Production
@@ -364,7 +364,7 @@ MAIL_FROM_ADDRESS=staging@qutecart.com
 # Use Resend with production API key and verified domain
 MAIL_MAILER=resend
 RESEND_API_KEY=re_prod_456...
-MAIL_FROM_ADDRESS=no-reply@qutecart.com
+MAIL_FROM_ADDRESS=no-reply@qutekart.com
 MAIL_FROM_NAME="QuteCart"
 ```
 

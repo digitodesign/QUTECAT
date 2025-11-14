@@ -141,10 +141,10 @@ GET /api/products
 X-Shop-ID: 123
 
 # Via subdomain (for premium vendors)
-GET http://johns-shop.qutecart.com/api/products
+GET http://johns-shop.qutekart.com/api/products
 
 # Marketplace mode (all products)
-GET http://qutecart.com/api/products
+GET http://qutekart.com/api/products
 ```
 
 **Priority Order in ContextAware Trait:**
@@ -199,9 +199,9 @@ app/Http/Controllers/API/ShopController.php
 **Testing Recommendation:**
 ```bash
 # Test existing mobile app endpoints
-curl http://qutecart.com/api/products?shop_id=1
-curl http://qutecart.com/api/categories
-curl http://qutecart.com/api/cart
+curl http://qutekart.com/api/products?shop_id=1
+curl http://qutekart.com/api/categories
+curl http://qutekart.com/api/cart
 # All should return expected responses
 ```
 
@@ -211,9 +211,9 @@ curl http://qutecart.com/api/cart
 
 **Frontend Access Modes:**
 
-#### Mode 1: Marketplace (qutecart.com)
+#### Mode 1: Marketplace (qutekart.com)
 ```
-URL: https://qutecart.com
+URL: https://qutekart.com
 Context: No shop filter
 Products: All shops' products
 Behavior: Browse all vendors
@@ -222,7 +222,7 @@ Behavior: Browse all vendors
 
 #### Mode 2: Shop-Specific Query Param
 ```
-URL: https://qutecart.com?shop_id=123
+URL: https://qutekart.com?shop_id=123
 Context: Shop 123
 Products: Only shop 123
 Behavior: Filtered marketplace view
@@ -231,7 +231,7 @@ Behavior: Filtered marketplace view
 
 #### Mode 3: Premium Subdomain (NEW)
 ```
-URL: https://johns-shop.qutecart.com
+URL: https://johns-shop.qutekart.com
 Context: John's Shop
 Products: Only John's products
 Behavior: Branded storefront
@@ -626,15 +626,15 @@ Expected: All routes work, CRUD operations successful
 ### Test Case 3: Context Switching
 ```bash
 # Marketplace
-GET https://qutecart.com/api/products
+GET https://qutekart.com/api/products
 Expected: All products
 
 # Subdomain
-GET https://johns-shop.qutecart.com/api/products
+GET https://johns-shop.qutekart.com/api/products
 Expected: Only John's products
 
 # Query param
-GET https://qutecart.com/api/products?shop_id=1
+GET https://qutekart.com/api/products?shop_id=1
 Expected: Only shop 1 products
 ```
 

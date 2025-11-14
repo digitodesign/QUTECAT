@@ -60,7 +60,7 @@
 ### Rebranding ✅
 - [x] **15 files** updated
 - [x] "Ready eCommerce" → "QuteCart"
-- [x] @readyecommerce.com → @qutecart.com
+- [x] @readyecommerce.com → @qutekart.com
 
 ---
 
@@ -71,7 +71,7 @@
 
 **Implementation:**
 ```
-Database: qutecart
+Database: qutekart
 ├── shops table (all vendors - free + premium)
 ├── tenants table (premium vendors only)
 ├── plans table (subscription tiers)
@@ -91,13 +91,13 @@ NO separate databases created
 **Confirmed:**
 - Free vendors: Marketplace only (no tenant record)
 - Premium vendors: Marketplace + subdomain (has tenant record)
-- Both visible on main marketplace (qutecart.com)
-- Premium get branded storefronts (*.qutecart.com)
+- Both visible on main marketplace (qutekart.com)
+- Premium get branded storefronts (*.qutekart.com)
 
 ### ✅ Context-Aware Routing
 **Verified:**
 - SetShopContext middleware detects:
-  1. Subdomain (johns-shop.qutecart.com)
+  1. Subdomain (johns-shop.qutekart.com)
   2. Query param (?shop_id=123)
   3. Header (X-Shop-ID: 123)
   4. Session (authenticated vendor)
@@ -308,7 +308,7 @@ Cache::tags(['tenant_123'])->put('products', $data);
 
 **2. File Storage Isolation** (S3 folders)
 ```
-s3://qutecart/
+s3://qutekart/
 ├── shop_1/products/...
 ├── shop_2/products/...
 └── shop_3/products/...

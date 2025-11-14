@@ -4,7 +4,7 @@ class AppConstants {
 // ============================================================================
 
   /// Production API URL - QuteCart
-  static const String baseUrl = 'https://qutecart.com/api';
+  static const String baseUrl = 'https://qutekart.com/api';
 
   // Previous environments (for reference):
   // Demo: https://demo.readyecommerce.app/api
@@ -120,7 +120,7 @@ class AppConstants {
 // ============================================================================
 //
 // REQUIRED: Get these values from your Laravel production server:
-//   SSH to production: ssh user@qutecart.com
+//   SSH to production: ssh user@qutekart.com
 //   Run: cat /path/to/laravel/.env | grep PUSHER
 //   Copy PUSHER_APP_KEY and PUSHER_APP_CLUSTER values below
 //

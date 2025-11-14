@@ -2,7 +2,7 @@
 -- This script runs once when the PostgreSQL container is first created
 
 -- Create database if not exists (Docker usually creates this from DB_DATABASE)
--- SELECT 'CREATE DATABASE qutecart' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'qutecart')\gexec
+-- SELECT 'CREATE DATABASE qutekart' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'qutekart')\gexec
 
 -- Set timezone to UTC
 SET timezone = 'UTC';
@@ -31,14 +31,14 @@ $$ LANGUAGE plpgsql IMMUTABLE;
 -- NOW() is already available in PostgreSQL
 
 -- Performance optimizations
-ALTER DATABASE qutecart SET synchronous_commit = OFF;
+ALTER DATABASE qutekart SET synchronous_commit = OFF;
 
 -- Connection settings
-ALTER DATABASE qutecart SET work_mem = '32MB';
-ALTER DATABASE qutecart SET maintenance_work_mem = '128MB';
+ALTER DATABASE qutekart SET work_mem = '32MB';
+ALTER DATABASE qutekart SET maintenance_work_mem = '128MB';
 
 -- Grant privileges to user
-GRANT ALL PRIVILEGES ON DATABASE qutecart TO qutecart;
+GRANT ALL PRIVILEGES ON DATABASE qutekart TO qutekart;
 
 -- Success message
 DO $$

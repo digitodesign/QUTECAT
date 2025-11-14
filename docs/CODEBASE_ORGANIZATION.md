@@ -281,18 +281,18 @@ APP_NAME="QuteCart"
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
-APP_URL=http://qutecart.local
+APP_URL=http://qutekart.local
 
 # === Database (PostgreSQL) ===
 DB_CONNECTION=pgsql
 DB_HOST=pgsql
 DB_PORT=5432
-DB_DATABASE=qutecart
-DB_USERNAME=qutecart
+DB_DATABASE=qutekart
+DB_USERNAME=qutekart
 DB_PASSWORD=secret
 
 # === Tenancy ===
-CENTRAL_DOMAINS=qutecart.com,qutecat.com,localhost
+CENTRAL_DOMAINS=qutekart.com,qutecat.com,localhost
 
 # === SaaS Subscriptions ===
 STRIPE_KEY=

@@ -42,9 +42,9 @@ C:\Windows\System32\drivers\etc\hosts
 
 Add:
 ```
-127.0.0.1    qutecart.local
-127.0.0.1    shop1.qutecart.local
-127.0.0.1    shop2.qutecart.local
+127.0.0.1    qutekart.local
+127.0.0.1    shop1.qutekart.local
+127.0.0.1    shop2.qutekart.local
 ```
 
 ### 4. Start Docker Services
@@ -81,13 +81,13 @@ docker-compose exec php php artisan db:seed --class=PlansTableSeeder
 ### 7. Access the Application
 
 **Main Application:**
-- URL: http://qutecart.local
+- URL: http://qutekart.local
 - Admin: (as configured in seeders)
 
 **Development Services:**
 - MinIO Console: http://localhost:9001 (minioadmin / minioadmin)
 - Mailpit: http://localhost:8025 (email testing)
-- PostgreSQL: localhost:5432 (qutecart / secret)
+- PostgreSQL: localhost:5432 (qutekart / secret)
 
 ## Verify Setup
 
@@ -98,14 +98,14 @@ docker-compose ps
 ```
 
 You should see all services with status "Up":
-- qutecart_postgres
-- qutecart_redis
-- qutecart_php
-- qutecart_nginx
-- qutecart_queue
-- qutecart_scheduler
-- qutecart_minio
-- qutecart_mailpit
+- qutekart_postgres
+- qutekart_redis
+- qutekart_php
+- qutekart_nginx
+- qutekart_queue
+- qutekart_scheduler
+- qutekart_minio
+- qutekart_mailpit
 
 ### Test Database Connection
 
@@ -118,7 +118,7 @@ Should show all migrations as "Ran".
 ### Test Web Server
 
 ```bash
-curl http://qutecart.local
+curl http://qutekart.local
 ```
 
 Should return HTML (not an error).
@@ -168,7 +168,7 @@ docker-compose exec php tail -f storage/logs/laravel.log
 
 ```bash
 # Access PostgreSQL
-docker-compose exec pgsql psql -U qutecart -d qutecart
+docker-compose exec pgsql psql -U qutekart -d qutekart
 
 # Common SQL commands:
 \dt              # List tables
@@ -233,10 +233,10 @@ exit
 
 **Add to /etc/hosts:**
 ```
-127.0.0.1    myshop.qutecart.local
+127.0.0.1    myshop.qutekart.local
 ```
 
-**Visit:** http://myshop.qutecart.local
+**Visit:** http://myshop.qutekart.local
 
 ### 3. Test Shop Context
 
@@ -285,7 +285,7 @@ docker-compose ps pgsql
 docker-compose logs pgsql
 
 # Test connection
-docker-compose exec pgsql pg_isready -U qutecart
+docker-compose exec pgsql pg_isready -U qutekart
 ```
 
 ### "Class not found" Errors
@@ -406,5 +406,5 @@ docker-compose down -v
 
 **You're ready to develop!** 🚀
 
-Main application: http://qutecart.local
+Main application: http://qutekart.local
 Documentation: `docs/` folder

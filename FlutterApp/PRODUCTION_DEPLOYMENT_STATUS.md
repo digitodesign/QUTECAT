@@ -1,7 +1,7 @@
 # QuteCart Flutter App - Production Deployment Status
 
 **Date:** 2025-11-06
-**Domain:** qutecart.com
+**Domain:** qutekart.com
 **Status:** ⚠️ Partial Configuration Complete - Manual Steps Required
 
 ---
@@ -11,7 +11,7 @@
 ### 1. API Backend URL
 - **Status:** ✅ **COMPLETE**
 - **Updated:** `lib/config/app_constants.dart`
-- **Value:** `https://qutecart.com/api`
+- **Value:** `https://qutekart.com/api`
 - **Previous:** `https://demo.readyecommerce.app/api`
 
 The Flutter app is now pointing to your production QuteCart backend API.
@@ -28,7 +28,7 @@ The Flutter app is now pointing to your production QuteCart backend API.
 
 1. SSH to your production Laravel server:
    ```bash
-   ssh user@qutecart.com
+   ssh user@qutekart.com
    ```
 
 2. Get Pusher credentials from Laravel `.env`:
@@ -102,7 +102,7 @@ The Flutter app is now pointing to your production QuteCart backend API.
 
 Use this checklist to track your progress:
 
-- [x] Backend API URL updated to qutecart.com
+- [x] Backend API URL updated to qutekart.com
 - [x] Production configuration documentation created
 - [ ] Pusher credentials obtained from Laravel .env
 - [ ] Pusher credentials updated in app_constants.dart
@@ -175,7 +175,7 @@ Comprehensive guides have been created to help with remaining configuration:
    - Test login, browsing, cart, checkout
    - Test chat messaging (real-time)
    - Test push notifications
-   - Verify all features work with qutecart.com backend
+   - Verify all features work with qutekart.com backend
 
 5. **Deploy to Play Store** (if ready)
    - Build app bundle:
@@ -190,7 +190,7 @@ Comprehensive guides have been created to help with remaining configuration:
 
 ### Test API Connection:
 ```bash
-curl https://qutecart.com/api/master
+curl https://qutekart.com/api/master
 # Should return JSON with app settings
 ```
 
@@ -213,13 +213,13 @@ curl https://qutecart.com/api/master
 - Android: `com.readyecommerce.apps`
 - iOS: `com.readyecommerce.apps`
 
-If you want to change this to `com.qutecart.app`:
+If you want to change this to `com.qutekart.app`:
 1. Use package rename tool first
 2. Then update Firebase with NEW package name
 3. Download NEW config files
 
 ### SSL Certificate
-Ensure your production server (qutecart.com) has:
+Ensure your production server (qutekart.com) has:
 - Valid SSL certificate (HTTPS working)
 - Laravel API endpoints accessible at `/api`
 - CORS configured for mobile app
@@ -259,6 +259,6 @@ All changes have been committed and pushed to branch:
 
 ---
 
-**Summary:** The Flutter app base configuration is complete with the qutecart.com API URL. You now need to add Pusher credentials and Firebase configuration to enable real-time messaging and push notifications. Follow the guides provided to complete these steps.
+**Summary:** The Flutter app base configuration is complete with the qutekart.com API URL. You now need to add Pusher credentials and Firebase configuration to enable real-time messaging and push notifications. Follow the guides provided to complete these steps.
 
 **Estimated Time to Complete:** 20-30 minutes

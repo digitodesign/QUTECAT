@@ -47,7 +47,7 @@ This guide walks you through setting up QuteCart from scratch, including all cus
 
 **For Production:**
 - **Linux server** (Ubuntu 22.04+ recommended)
-- **Domain name** (e.g., qutecart.com)
+- **Domain name** (e.g., qutekart.com)
 - **SSL certificate** (Let's Encrypt free)
 - **Stripe account** (for payment processing)
 - **Pusher account** (for real-time features)
@@ -100,14 +100,14 @@ cp .env.example .env
 APP_NAME="QuteCart"
 APP_ENV=local
 APP_DEBUG=true
-APP_URL=http://qutecart.local
+APP_URL=http://qutekart.local
 
 # Database (Docker defaults)
 DB_CONNECTION=pgsql
 DB_HOST=pgsql
 DB_PORT=5432
-DB_DATABASE=qutecart
-DB_USERNAME=qutecart
+DB_DATABASE=qutekart
+DB_USERNAME=qutekart
 DB_PASSWORD=secret
 
 # Redis (Docker defaults)
@@ -122,7 +122,7 @@ MAIL_PORT=1025
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS="noreply@qutecart.local"
+MAIL_FROM_ADDRESS="noreply@qutekart.local"
 MAIL_FROM_NAME="QuteCart"
 
 # MinIO/S3 (Docker defaults)
@@ -130,10 +130,10 @@ FILESYSTEM_DISK=minio
 AWS_ACCESS_KEY_ID=minioadmin
 AWS_SECRET_ACCESS_KEY=minioadmin
 AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=qutecart
+AWS_BUCKET=qutekart
 AWS_ENDPOINT=http://minio:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
-AWS_URL=http://localhost:9000/qutecart
+AWS_URL=http://localhost:9000/qutekart
 
 # Queue
 QUEUE_CONNECTION=redis
@@ -174,11 +174,11 @@ Open `C:\Windows\System32\drivers\etc\hosts` as Administrator
 
 **Add these lines:**
 ```
-127.0.0.1    qutecart.local
-127.0.0.1    admin.qutecart.local
-127.0.0.1    shop1.qutecart.local
-127.0.0.1    shop2.qutecart.local
-127.0.0.1    testshop.qutecart.local
+127.0.0.1    qutekart.local
+127.0.0.1    admin.qutekart.local
+127.0.0.1    shop1.qutekart.local
+127.0.0.1    shop2.qutekart.local
+127.0.0.1    testshop.qutekart.local
 ```
 
 ### Step 1.5: Start Docker Services
@@ -192,14 +192,14 @@ docker-compose logs -f
 ```
 
 **Expected containers:**
-- `qutecart_nginx` - Web server
-- `qutecart_php` - PHP-FPM application
-- `qutecart_pgsql` - PostgreSQL database
-- `qutecart_redis` - Redis cache/queue
-- `qutecart_queue` - Laravel queue worker
-- `qutecart_scheduler` - Laravel scheduler
-- `qutecart_minio` - S3-compatible storage
-- `qutecart_mailpit` - Email testing
+- `qutekart_nginx` - Web server
+- `qutekart_php` - PHP-FPM application
+- `qutekart_pgsql` - PostgreSQL database
+- `qutekart_redis` - Redis cache/queue
+- `qutekart_queue` - Laravel queue worker
+- `qutekart_scheduler` - Laravel scheduler
+- `qutekart_minio` - S3-compatible storage
+- `qutekart_mailpit` - Email testing
 
 **Verify all services are running:**
 ```bash
@@ -257,17 +257,17 @@ docker-compose exec php npm run dev
 docker-compose exec minio mc alias set minio http://localhost:9000 minioadmin minioadmin
 
 # Create bucket
-docker-compose exec minio mc mb minio/qutecart
+docker-compose exec minio mc mb minio/qutekart
 
 # Set public read policy
-docker-compose exec minio mc anonymous set download minio/qutecart
+docker-compose exec minio mc anonymous set download minio/qutekart
 ```
 
 ### Step 1.11: Verify Setup
 
 **Access the application:**
-- **Main Site:** http://qutecart.local
-- **Admin Panel:** http://qutecart.local/admin
+- **Main Site:** http://qutekart.local
+- **Admin Panel:** http://qutekart.local/admin
 - **MinIO Console:** http://localhost:9001 (minioadmin/minioadmin)
 - **Mailpit (Email Testing):** http://localhost:8025
 
@@ -292,7 +292,7 @@ docker-compose exec php php artisan tinker
 ```php
 $user = App\Models\User::create([
     'name' => 'Admin User',
-    'email' => 'admin@qutecart.local',
+    'email' => 'admin@qutekart.local',
     'password' => bcrypt('password123'),
     'role' => 'admin'
 ]);
@@ -403,7 +403,7 @@ exit
 stripe login
 
 # Forward webhooks to local server
-stripe listen --forward-to http://qutecart.local/api/stripe/webhook
+stripe listen --forward-to http://qutekart.local/api/stripe/webhook
 ```
 
 **For production (covered in Part 5):**
@@ -456,17 +456,17 @@ $shop = App\Models\Shop::where('slug', 'testshop')->first();
 $tenant = App\Models\Tenant::createForShop($shop, 'testshop', 'starter');
 
 echo "Tenant URL: " . $tenant->subdomain_url . "\n";
-// Output: http://testshop.qutecart.local
+// Output: http://testshop.qutekart.local
 
 exit
 ```
 
 **Add to `/etc/hosts`:**
 ```
-127.0.0.1    testshop.qutecart.local
+127.0.0.1    testshop.qutekart.local
 ```
 
-**Visit:** http://testshop.qutecart.local
+**Visit:** http://testshop.qutekart.local
 
 ### Step 2.8: Test Usage Tracking
 
@@ -526,7 +526,7 @@ exit
 ### Step 2.10: Review Admin Dashboard
 
 **Access admin panel:**
-- URL: http://qutecart.local/admin
+- URL: http://qutekart.local/admin
 - Login with admin credentials
 
 **Navigate to:**
@@ -566,7 +566,7 @@ docker-compose exec php php artisan db:seed --class=ZaraThemeSeeder
 
 **Method B: Via Admin UI**
 
-1. Login to admin panel: http://qutecart.local/admin
+1. Login to admin panel: http://qutekart.local/admin
 2. Go to **Settings** → **Theme Colors** (or **Appearance**)
 3. Set:
    - **Primary Color:** `#000000`
@@ -679,7 +679,7 @@ docker-compose exec php php artisan config:clear
 ```
 
 **Visit site:**
-- Go to http://qutecart.local
+- Go to http://qutekart.local
 - Colors should be black/white/gray
 - Buttons should be black with minimal style
 - No box shadows
@@ -723,7 +723,7 @@ flutter doctor
 ```dart
 class AppConstants {
   // Point to local Laravel API
-  static const String baseUrl = 'http://qutecart.local/api';
+  static const String baseUrl = 'http://qutekart.local/api';
   // Or use your machine's local IP (for real device testing):
   // static const String baseUrl = 'http://192.168.1.100/api';
 
@@ -888,7 +888,7 @@ adb install build/app/outputs/flutter-apk/app-release.apk
 - **RAM:** 4GB minimum (8GB recommended)
 - **Storage:** 40GB SSD
 - **CPU:** 2 cores minimum
-- **Domain:** qutecart.com (with DNS configured)
+- **Domain:** qutekart.com (with DNS configured)
 
 **Software Stack:**
 - PHP 8.2+
@@ -947,9 +947,9 @@ apt install -y certbot python3-certbot-nginx
 sudo -u postgres psql
 
 # Create database and user
-CREATE DATABASE qutecart_prod;
-CREATE USER qutecart_user WITH ENCRYPTED PASSWORD 'your_secure_password_here';
-GRANT ALL PRIVILEGES ON DATABASE qutecart_prod TO qutecart_user;
+CREATE DATABASE qutekart_prod;
+CREATE USER qutekart_user WITH ENCRYPTED PASSWORD 'your_secure_password_here';
+GRANT ALL PRIVILEGES ON DATABASE qutekart_prod TO qutekart_user;
 \q
 ```
 
@@ -957,8 +957,8 @@ GRANT ALL PRIVILEGES ON DATABASE qutecart_prod TO qutecart_user;
 
 ```bash
 # Create web directory
-mkdir -p /var/www/qutecart
-cd /var/www/qutecart
+mkdir -p /var/www/qutekart
+cd /var/www/qutekart
 
 # Clone repository
 git clone <your-repository-url> .
@@ -981,14 +981,14 @@ nano .env
 APP_NAME="QuteCart"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://qutecart.com
+APP_URL=https://qutekart.com
 
 # Database
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=qutecart_prod
-DB_USERNAME=qutecart_user
+DB_DATABASE=qutekart_prod
+DB_USERNAME=qutekart_user
 DB_PASSWORD=your_secure_password_here
 
 # Redis
@@ -1003,7 +1003,7 @@ MAIL_PORT=587
 MAIL_USERNAME=resend
 MAIL_PASSWORD=re_your_api_key_here
 MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="noreply@qutecart.com"
+MAIL_FROM_ADDRESS="noreply@qutekart.com"
 MAIL_FROM_NAME="QuteCart"
 
 # S3/MinIO (use AWS S3 or DigitalOcean Spaces)
@@ -1011,7 +1011,7 @@ FILESYSTEM_DISK=s3
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=qutecart-prod
+AWS_BUCKET=qutekart-prod
 AWS_URL=https://your-bucket.s3.amazonaws.com
 
 # Queue
@@ -1082,26 +1082,26 @@ php artisan storage:link
 
 ```bash
 # Set owner
-chown -R www-data:www-data /var/www/qutecart
+chown -R www-data:www-data /var/www/qutekart
 
 # Set permissions
-chmod -R 755 /var/www/qutecart
-chmod -R 775 /var/www/qutecart/storage
-chmod -R 775 /var/www/qutecart/bootstrap/cache
+chmod -R 755 /var/www/qutekart
+chmod -R 775 /var/www/qutekart/storage
+chmod -R 775 /var/www/qutekart/bootstrap/cache
 ```
 
 ### Step 5.7: Configure Nginx
 
 ```bash
-nano /etc/nginx/sites-available/qutecart
+nano /etc/nginx/sites-available/qutekart
 ```
 
 ```nginx
 # Main domain and admin
 server {
     listen 80;
-    server_name qutecart.com www.qutecart.com;
-    root /var/www/qutecart/Ready eCommerce-Admin with Customer Website/install/public;
+    server_name qutekart.com www.qutekart.com;
+    root /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -1135,8 +1135,8 @@ server {
 # Wildcard subdomain for tenants
 server {
     listen 80;
-    server_name *.qutecart.com;
-    root /var/www/qutecart/Ready eCommerce-Admin with Customer Website/install/public;
+    server_name *.qutekart.com;
+    root /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -1165,7 +1165,7 @@ server {
 
 **Enable site:**
 ```bash
-ln -s /etc/nginx/sites-available/qutecart /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/qutekart /etc/nginx/sites-enabled/
 nginx -t
 systemctl restart nginx
 ```
@@ -1174,7 +1174,7 @@ systemctl restart nginx
 
 ```bash
 # Get SSL certificate
-certbot --nginx -d qutecart.com -d www.qutecart.com -d *.qutecart.com
+certbot --nginx -d qutekart.com -d www.qutekart.com -d *.qutekart.com
 
 # Note: Wildcard certificates require DNS verification
 # Follow certbot instructions to add DNS TXT record
@@ -1185,13 +1185,13 @@ certbot --nginx -d qutecart.com -d www.qutecart.com -d *.qutecart.com
 ### Step 5.9: Configure Queue Worker (Supervisor)
 
 ```bash
-nano /etc/supervisor/conf.d/qutecart-worker.conf
+nano /etc/supervisor/conf.d/qutekart-worker.conf
 ```
 
 ```ini
-[program:qutecart-worker]
+[program:qutekart-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/qutecart/Ready eCommerce-Admin with Customer Website/install/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+command=php /var/www/qutekart/Ready eCommerce-Admin with Customer Website/install/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
 autostart=true
 autorestart=true
 stopasgroup=true
@@ -1199,7 +1199,7 @@ killasgroup=true
 user=www-data
 numprocs=2
 redirect_stderr=true
-stdout_logfile=/var/www/qutecart/worker.log
+stdout_logfile=/var/www/qutekart/worker.log
 stopwaitsecs=3600
 ```
 
@@ -1207,7 +1207,7 @@ stopwaitsecs=3600
 # Update supervisor
 supervisorctl reread
 supervisorctl update
-supervisorctl start qutecart-worker:*
+supervisorctl start qutekart-worker:*
 ```
 
 ### Step 5.10: Configure Scheduler (Cron)
@@ -1218,14 +1218,14 @@ crontab -e -u www-data
 
 Add:
 ```
-* * * * * cd /var/www/qutecart/Ready\ eCommerce-Admin\ with\ Customer\ Website/install && php artisan schedule:run >> /dev/null 2>&1
+* * * * * cd /var/www/qutekart/Ready\ eCommerce-Admin\ with\ Customer\ Website/install && php artisan schedule:run >> /dev/null 2>&1
 ```
 
 ### Step 5.11: Configure Stripe Production Webhooks
 
 1. Go to https://dashboard.stripe.com/webhooks
 2. Click **"Add endpoint"**
-3. **Endpoint URL:** `https://qutecart.com/api/stripe/webhook`
+3. **Endpoint URL:** `https://qutekart.com/api/stripe/webhook`
 4. **Events to send:**
    - `customer.subscription.created`
    - `customer.subscription.updated`
@@ -1245,7 +1245,7 @@ Add:
 
 1. **Update API URL** in `lib/config/app_constants.dart`:
    ```dart
-   static const String baseUrl = 'https://qutecart.com/api';
+   static const String baseUrl = 'https://qutekart.com/api';
    ```
 
 2. **Update Pusher credentials** (get from Laravel `.env`):
@@ -1294,44 +1294,44 @@ www         A       your_server_ip
 
 **Test main site:**
 ```bash
-curl https://qutecart.com
+curl https://qutekart.com
 # Should return HTML
 ```
 
 **Test API:**
 ```bash
-curl https://qutecart.com/api/master
+curl https://qutekart.com/api/master
 # Should return JSON with app settings
 ```
 
 **Test subdomain:**
 ```bash
 # Create a tenant first, then test
-curl https://testshop.qutecart.com
+curl https://testshop.qutekart.com
 ```
 
 **Test SSL:**
 ```bash
-openssl s_client -connect qutecart.com:443 -servername qutecart.com
+openssl s_client -connect qutekart.com:443 -servername qutekart.com
 # Should show valid certificate
 ```
 
 **Test queue:**
 ```bash
-supervisorctl status qutecart-worker
+supervisorctl status qutekart-worker
 # Should show "RUNNING"
 ```
 
 **Monitor logs:**
 ```bash
 # Laravel logs
-tail -f /var/www/qutecart/Ready\ eCommerce-Admin\ with\ Customer\ Website/install/storage/logs/laravel.log
+tail -f /var/www/qutekart/Ready\ eCommerce-Admin\ with\ Customer\ Website/install/storage/logs/laravel.log
 
 # Nginx error logs
 tail -f /var/log/nginx/error.log
 
 # Queue worker logs
-tail -f /var/www/qutecart/worker.log
+tail -f /var/www/qutekart/worker.log
 ```
 
 ---
@@ -1340,8 +1340,8 @@ tail -f /var/www/qutecart/worker.log
 
 ### Backend Testing Checklist
 
-- [ ] Main site loads: https://qutecart.com
-- [ ] Admin panel accessible: https://qutecart.com/admin
+- [ ] Main site loads: https://qutekart.com
+- [ ] Admin panel accessible: https://qutekart.com/admin
 - [ ] Can login to admin
 - [ ] Subscription plans visible in admin
 - [ ] Can create a new shop
@@ -1349,7 +1349,7 @@ tail -f /var/www/qutecart/worker.log
 - [ ] Can create a product for a shop
 - [ ] Usage stats update correctly
 - [ ] Can create a subdomain tenant
-- [ ] Subdomain site loads: https://{subdomain}.qutecart.com
+- [ ] Subdomain site loads: https://{subdomain}.qutekart.com
 - [ ] Emails are sent (check inbox)
 - [ ] Queue is processing jobs
 - [ ] Webhooks receive from Stripe
@@ -1380,13 +1380,13 @@ tail -f /var/www/qutecart/worker.log
 
 **Test page load speed:**
 ```bash
-curl -o /dev/null -s -w "Time: %{time_total}s\n" https://qutecart.com
+curl -o /dev/null -s -w "Time: %{time_total}s\n" https://qutekart.com
 # Should be < 2 seconds
 ```
 
 **Test API response time:**
 ```bash
-curl -o /dev/null -s -w "Time: %{time_total}s\n" https://qutecart.com/api/products
+curl -o /dev/null -s -w "Time: %{time_total}s\n" https://qutekart.com/api/products
 # Should be < 1 second
 ```
 
@@ -1438,7 +1438,7 @@ php artisan config:cache
 **Solution:**
 ```bash
 # Test PostgreSQL connection
-psql -U qutecart_user -d qutecart_prod -h 127.0.0.1
+psql -U qutekart_user -d qutekart_prod -h 127.0.0.1
 
 # Check .env database credentials
 cat .env | grep DB_
@@ -1452,13 +1452,13 @@ systemctl restart postgresql
 **Solution:**
 ```bash
 # Check supervisor status
-supervisorctl status qutecart-worker
+supervisorctl status qutekart-worker
 
 # Restart workers
-supervisorctl restart qutecart-worker:*
+supervisorctl restart qutekart-worker:*
 
 # Check worker logs
-tail -f /var/www/qutecart/worker.log
+tail -f /var/www/qutekart/worker.log
 
 # Manually run worker to see errors
 php artisan queue:work --tries=1
@@ -1469,7 +1469,7 @@ php artisan queue:work --tries=1
 **Solution:**
 ```bash
 # Verify DNS wildcard record
-dig *.qutecart.com
+dig *.qutekart.com
 
 # Check Nginx config
 nginx -t
@@ -1490,7 +1490,7 @@ systemctl restart nginx
 cat .env | grep STRIPE_WEBHOOK
 
 # Test webhook endpoint
-curl -X POST https://qutecart.com/api/stripe/webhook
+curl -X POST https://qutekart.com/api/stripe/webhook
 
 # Check Laravel logs for webhook errors
 tail -f storage/logs/laravel.log
@@ -1509,7 +1509,7 @@ cat lib/config/app_constants.dart | grep baseUrl
 # Test API from device
 # On Android emulator, use: http://10.0.2.2 instead of localhost
 # On iOS simulator, use: http://localhost or http://127.0.0.1
-# On real device, use: https://qutecart.com/api
+# On real device, use: https://qutekart.com/api
 
 # Check API CORS settings in Laravel
 cat config/cors.php
@@ -1544,7 +1544,7 @@ cat .env | grep FIREBASE_SERVER_KEY
 **Logs to check:**
 - Laravel: `storage/logs/laravel.log`
 - Nginx: `/var/log/nginx/error.log`
-- Queue: `/var/www/qutecart/worker.log`
+- Queue: `/var/www/qutekart/worker.log`
 - PostgreSQL: `/var/log/postgresql/postgresql-*.log`
 
 **Useful commands:**
@@ -1570,7 +1570,7 @@ systemctl restart nginx php8.2-fpm postgresql redis supervisor  # Production
 
 ### Local Development
 - [ ] Docker running with 8 containers
-- [ ] Laravel accessible at http://qutecart.local
+- [ ] Laravel accessible at http://qutekart.local
 - [ ] Database migrated and seeded
 - [ ] Subscription plans created
 - [ ] ZARA branding applied
@@ -1619,30 +1619,30 @@ docker-compose exec php sh
 **Production:**
 ```bash
 # Deploy updates
-cd /var/www/qutecart
+cd /var/www/qutekart
 git pull
 composer install --no-dev --optimize-autoloader
 php artisan migrate --force
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
-supervisorctl restart qutecart-worker:*
+supervisorctl restart qutekart-worker:*
 ```
 
 ### Access Points
 
 **Local:**
-- Main: http://qutecart.local
-- Admin: http://qutecart.local/admin
+- Main: http://qutekart.local
+- Admin: http://qutekart.local/admin
 - MinIO: http://localhost:9001
 - Mailpit: http://localhost:8025
 - PostgreSQL: localhost:5432
 
 **Production:**
-- Main: https://qutecart.com
-- Admin: https://qutecart.com/admin
-- API: https://qutecart.com/api
-- Subdomain: https://{subdomain}.qutecart.com
+- Main: https://qutekart.com
+- Admin: https://qutekart.com/admin
+- API: https://qutekart.com/api
+- Subdomain: https://{subdomain}.qutekart.com
 
 ### Documentation Index
 

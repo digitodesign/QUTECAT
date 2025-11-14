@@ -557,7 +557,7 @@ public function usage()
 - [ ] Resume subscription works
 
 #### 4. Subdomain Routing
-- [ ] johns-shop.qutecart.com routes to correct tenant
+- [ ] johns-shop.qutekart.com routes to correct tenant
 - [ ] Tenant middleware sets shop context
 - [ ] Products filtered to that shop only
 - [ ] Shop still visible on main marketplace
@@ -614,8 +614,8 @@ docker-compose up -d
 docker-compose exec php php artisan migrate
 
 # Test API endpoints
-curl http://qutecart.local/api/products
-curl http://qutecart.local/api/subscription/plans
+curl http://qutekart.local/api/products
+curl http://qutekart.local/api/subscription/plans
 ```
 
 ---
