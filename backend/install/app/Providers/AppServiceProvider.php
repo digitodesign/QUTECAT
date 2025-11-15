@@ -22,7 +22,9 @@ class AppServiceProvider extends ServiceProvider
     {
         if(request()->ip() != '127.0.0.1'){
             Schema::defaultStringLength(191);
-            if (!file_exists(base_path('storage/installed')) && !request()->is('install') && !request()->is('install/*')) {
+            // Check environment variable first (for Railway/cloud deployments), then file
+            $isInstalled = env('APP_INSTALLED', false) || file_exists(base_path('storage/installed'));
+            if (!$isInstalled && !request()->is('install') && !request()->is('install/*')) {
                 header("Location: install");
                 exit;
             }
