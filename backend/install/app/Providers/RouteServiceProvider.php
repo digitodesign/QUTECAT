@@ -28,11 +28,7 @@ class RouteServiceProvider extends ServiceProvider
 
             // Web Routes
             Route::middleware('web')
-                ->group(function () {
-                    Route::get('/', function(){
-                        return redirect()->route('installer.welcome.index');
-                    });
-                });
+                ->group(base_path('routes/web.php'));
        });
     }
 }
