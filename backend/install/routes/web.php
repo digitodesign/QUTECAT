@@ -42,7 +42,7 @@ Route::middleware(['check_root_user'])->group(function () {
 // =============================================================================
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
-    Route::get('login', [AdminLoginController::class, 'showLoginForm'])->name('login');
+    Route::get('login', [AdminLoginController::class, 'index'])->name('login');
     Route::post('login', [AdminLoginController::class, 'login'])->name('login.post');
     Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
 });
@@ -52,7 +52,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 // =============================================================================
 Route::prefix('shop')->name('shop.')->group(function () {
     // Shop Login Routes
-    Route::get('login', [ShopLoginController::class, 'showLoginForm'])->name('login');
+    Route::get('login', [ShopLoginController::class, 'index'])->name('login');
     Route::post('login', [ShopLoginController::class, 'login'])->name('login.post');
     Route::post('logout', [ShopLoginController::class, 'logout'])->name('logout');
 });
