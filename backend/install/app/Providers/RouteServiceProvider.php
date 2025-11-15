@@ -26,22 +26,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            // Web Routes
+            // Web Routes (Admin, Shop, etc.)
             Route::middleware('web')
-                ->group(function () {
-                    Route::get('/', function(){
-                        // Check if app is installed via env variable or file
-                        $isInstalled = env('APP_INSTALLED', false) || file_exists(storage_path('installed'));
-
-                        if ($isInstalled) {
-                            // Redirect to admin area if installed
-                            return redirect('/admin');
-                        }
-
-                        // Redirect to installer if not installed
-                        return redirect()->route('installer.welcome.index');
-                    });
-                });
+                ->group(base_path('routes/web.php'));
        });
     }
 }
