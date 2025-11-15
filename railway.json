@@ -5,7 +5,7 @@
     "buildCommand": "cd backend/install && composer install --optimize-autoloader --no-dev"
   },
   "deploy": {
-    "startCommand": "cd backend/install && php artisan config:clear && php artisan route:clear && php artisan migrate --force && echo 'Q29uZ3JhdHVsYXRpb25zLCBUaGUgSW5zdGFsbGF0aW9uIFByb2Nlc3MgaXMgQ29tcGxldGVkIHN1Y2Nlc3NmdWxseS4gVGhlIEluc3RhbGxhdGlvbiBwcm9jZXNzIGlzIG1hZGUgYnkgSm95bmFsIEFiZWRpbi4gVGhhbmtzIGZvciB3aXRoIHVz' > storage/installed && php artisan serve --host=0.0.0.0 --port=$PORT",
+    "startCommand": "cd backend/install && php artisan config:clear && php artisan route:clear && php artisan migrate --force && php artisan config:cache && echo 'Q29uZ3JhdHVsYXRpb25zLCBUaGUgSW5zdGFsbGF0aW9uIFByb2Nlc3MgaXMgQ29tcGxldGVkIHN1Y2Nlc3NmdWxseS4gVGhlIEluc3RhbGxhdGlvbiBwcm9jZXNzIGlzIG1hZGUgYnkgSm95bmFsIEFiZWRpbi4gVGhhbmtzIGZvciB3aXRoIHVz' > storage/installed && php artisan serve --host=0.0.0.0 --port=$PORT",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
