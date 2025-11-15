@@ -20,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Force HTTPS in production (for Railway/cloud deployments)
+        if (env('APP_ENV') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         if(request()->ip() != '127.0.0.1'){
             Schema::defaultStringLength(191);
             // Check environment variable first (for Railway/cloud deployments), then file

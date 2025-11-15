@@ -34,8 +34,8 @@ class RouteServiceProvider extends ServiceProvider
                         $isInstalled = env('APP_INSTALLED', false) || file_exists(storage_path('installed'));
 
                         if ($isInstalled) {
-                            // Redirect to admin login if installed
-                            return redirect('/admin/login');
+                            // Redirect to admin area if installed
+                            return redirect('/admin');
                         }
 
                         // Redirect to installer if not installed
