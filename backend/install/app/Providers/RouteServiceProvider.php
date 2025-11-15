@@ -30,6 +30,15 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(function () {
                     Route::get('/', function(){
+                        // Check if app is installed via env variable or file
+                        $isInstalled = env('APP_INSTALLED', false) || file_exists(storage_path('installed'));
+
+                        if ($isInstalled) {
+                            // Redirect to admin login if installed
+                            return redirect('/admin/login');
+                        }
+
+                        // Redirect to installer if not installed
                         return redirect()->route('installer.welcome.index');
                     });
                 });
