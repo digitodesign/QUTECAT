@@ -101,7 +101,7 @@
 
                 <hr>
 
-                <form action="{{ route('admin.login.submit') }}" method="POST">
+                <form action="{{ route('admin.login.post') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="email">Enter Address</label>
