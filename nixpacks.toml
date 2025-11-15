@@ -2,12 +2,7 @@
 nixPkgs = ["php83", "php83Packages.composer", "postgresql", "nodejs"]
 
 [phases.install]
-cmds = [
-    "cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction"
-]
-
-[phases.build]
-cmds = []
+cmds = ["echo 'Install phase - nixpacks will copy files here'"]
 
 [start]
-cmd = "cd backend/install && php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction && cp .env.example .env && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
