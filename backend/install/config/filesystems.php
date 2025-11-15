@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'r2'),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,6 +54,35 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
+        ],
+
+        // Cloudflare R2 - Public Storage (Product images, shop logos, etc.)
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto', // R2 uses 'auto' for region
+            'bucket' => env('R2_BUCKET', 'qutecat-production'),
+            'url' => env('R2_PUBLIC_URL'), // Public CDN URL (e.g., https://pub-xxxxx.r2.dev)
+            'endpoint' => env('R2_ENDPOINT'), // e.g., https://xxxxx.r2.cloudflarestorage.com
+            'use_path_style_endpoint' => false,
+            'throw' => false,
+            'options' => [
+                'CacheControl' => 'max-age=31536000, public', // 1 year cache
+            ],
+        ],
+
+        // Cloudflare R2 - Private Storage (Invoices, licenses, private documents)
+        'r2-private' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_PRIVATE_BUCKET', 'qutecat-private'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => false,
+            'throw' => false,
+            'visibility' => 'private', // Private files require presigned URLs
         ],
 
     ],
