@@ -17,6 +17,19 @@ use App\Http\Controllers\Shop\Auth\LoginController as ShopLoginController;
 */
 
 // =============================================================================
+// DEFAULT ROUTE (Redirect based on installation status)
+// =============================================================================
+Route::get('/', function () {
+    $isInstalled = env('APP_INSTALLED', false) || file_exists(storage_path('installed'));
+
+    if ($isInstalled) {
+        return redirect()->route('admin.login');
+    }
+
+    return redirect()->route('installer.welcome.index');
+});
+
+// =============================================================================
 // ROOT USER CREATION (One-time setup)
 // =============================================================================
 Route::middleware(['check_root_user'])->group(function () {
@@ -362,16 +375,4 @@ Route::prefix('seller')->name('seller.')->middleware(['authShop'])->group(functi
     Route::get('chat', [App\Http\Controllers\Seller\SellerChatController::class, 'index'])->name('chat.index');
     Route::get('chat/{customerId}', [App\Http\Controllers\Seller\SellerChatController::class, 'show'])->name('chat.show');
     Route::post('chat/{customerId}/send', [App\Http\Controllers\Seller\SellerChatController::class, 'send'])->name('chat.send');
-});
-
-// =============================================================================
-// DEFAULT ROUTE (Redirect to installer or login)
-// =============================================================================
-Route::get('/', function () {
-    // If storage/installed exists, redirect to admin login
-    if (file_exists(storage_path('installed'))) {
-        return redirect()->route('admin.login');
-    }
-    // Otherwise, redirect to installer
-    return redirect()->route('installer.welcome.index');
 });
