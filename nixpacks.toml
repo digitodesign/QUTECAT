@@ -1,11 +1,9 @@
 [phases.setup]
-nixPkgs = ["php83", "php83Packages.composer", "postgresql", "nodejs"]
+nixPkgs = ["php83", "php83Packages.composer", "postgresql"]
 
 [phases.install]
 cmds = [
-  "cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction",
-  "cd backend/install && npm install",
-  "cd backend/install && npm run build"
+  "cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction"
 ]
 
 [start]
