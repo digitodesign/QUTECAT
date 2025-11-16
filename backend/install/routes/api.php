@@ -19,6 +19,25 @@ use App\Http\Controllers\WebhookController;
 // PUBLIC API ROUTES (No Authentication Required)
 // =============================================================================
 
+// DEBUG: Check filesystem
+Route::get('/debug-files', function() {
+    $publicPath = public_path();
+    $buildPath = public_path('build');
+    $manifestPath = public_path('build/manifest.json');
+
+    return response()->json([
+        'public_path' => $publicPath,
+        'public_exists' => is_dir($publicPath),
+        'build_path' => $buildPath,
+        'build_exists' => is_dir($buildPath),
+        'manifest_path' => $manifestPath,
+        'manifest_exists' => file_exists($manifestPath),
+        'build_files_count' => is_dir($buildPath) ? count(scandir($buildPath)) - 2 : 0,
+        'working_dir' => getcwd(),
+        'base_path' => base_path(),
+    ]);
+});
+
 // Home & Master Data
 Route::get('/home', [App\Http\Controllers\API\HomeController::class, 'index']);
 Route::get('/master', [App\Http\Controllers\API\MasterController::class, 'index']);
