@@ -9,4 +9,4 @@ cmds = [
 ]
 
 [start]
-cmd = "bash -c 'if [ \"$PROCESS_TYPE\" = \"worker\" ]; then cd backend/install && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan queue:work redis --sleep=3 --tries=3 --timeout=60 --memory=512 --verbose; else cd backend/install && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan migrate --force && php -S 0.0.0.0:$PORT -t public public/index.php; fi'"
+cmd = "bash -c 'if [ \"$PROCESS_TYPE\" = \"worker\" ]; then cd backend/install && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan queue:work redis --sleep=3 --tries=3 --timeout=60 --memory=512 --verbose; else cd backend/install && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan migrate --force && php -S 0.0.0.0:$PORT server.php; fi'"
