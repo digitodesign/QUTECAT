@@ -1,14 +1,18 @@
 [phases.setup]
-nixPkgs = ["php83", "php83Packages.composer", "postgresql", "nodejs"]
+nixPkgs = ["php83", "php83Packages.composer", "postgresql", "nodejs", "npm"]
 
 [phases.install]
-cmds = ["echo 'Install phase - nixpacks will copy files here'"]
+cmds = [
+  "cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction",
+  "cd backend/install && npm install",
+  "cd backend/install && npm run build"
+]
 
 [start]
 cmd = """
 if [ "$PROCESS_TYPE" = "worker" ]; then
-  cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan queue:work redis --sleep=3 --tries=3 --timeout=60 --memory=512 --verbose
+  cd backend/install && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan queue:work redis --sleep=3 --tries=3 --timeout=60 --memory=512 --verbose
 else
-  cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan migrate --force && php -S 0.0.0.0:$PORT server.php
+  cd backend/install && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan migrate --force && php -S 0.0.0.0:$PORT server.php
 fi
 """
