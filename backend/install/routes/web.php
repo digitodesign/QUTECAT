@@ -369,6 +369,25 @@ Route::prefix('seller')->name('seller.')->middleware(['authShop'])->group(functi
     Route::post('chat/{customerId}/send', [App\Http\Controllers\Seller\SellerChatController::class, 'send'])->name('chat.send');
 });
 
+// DEBUG: Check filesystem
+Route::get('/debug-files', function() {
+    $publicPath = public_path();
+    $buildPath = public_path('build');
+    $manifestPath = public_path('build/manifest.json');
+
+    return response()->json([
+        'public_path' => $publicPath,
+        'public_exists' => is_dir($publicPath),
+        'build_path' => $buildPath,
+        'build_exists' => is_dir($buildPath),
+        'manifest_path' => $manifestPath,
+        'manifest_exists' => file_exists($manifestPath),
+        'build_files_count' => is_dir($buildPath) ? count(scandir($buildPath)) - 2 : 0,
+        'working_dir' => getcwd(),
+        'base_path' => base_path(),
+    ]);
+});
+
 // =============================================================================
 // CUSTOMER-FACING FRONTEND (Vue.js SPA) - MUST BE LAST
 // =============================================================================
