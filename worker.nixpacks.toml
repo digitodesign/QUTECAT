@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["php83", "php83Packages.composer", "postgresql"]
+
+[phases.install]
+cmds = ["cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction"]
+
+[start]
+cmd = "cd backend/install && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan queue:work redis --sleep=3 --tries=3 --timeout=60 --memory=512 --verbose"
