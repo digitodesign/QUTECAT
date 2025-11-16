@@ -17,17 +17,9 @@ use App\Http\Controllers\Shop\Auth\LoginController as ShopLoginController;
 */
 
 // =============================================================================
-// DEFAULT ROUTE (Redirect based on installation status)
+// INSTALLATION CHECK
 // =============================================================================
-Route::get('/', function () {
-    $isInstalled = env('APP_INSTALLED', false) || file_exists(storage_path('installed'));
-
-    if ($isInstalled) {
-        return redirect()->route('admin.login');
-    }
-
-    return redirect()->route('installer.welcome.index');
-});
+// This middleware will be applied to all routes below via the catch-all route
 
 // =============================================================================
 // ROOT USER CREATION (One-time setup)
@@ -376,3 +368,19 @@ Route::prefix('seller')->name('seller.')->middleware(['authShop'])->group(functi
     Route::get('chat/{customerId}', [App\Http\Controllers\Seller\SellerChatController::class, 'show'])->name('chat.show');
     Route::post('chat/{customerId}/send', [App\Http\Controllers\Seller\SellerChatController::class, 'send'])->name('chat.send');
 });
+
+// =============================================================================
+// CUSTOMER-FACING FRONTEND (Vue.js SPA) - MUST BE LAST
+// =============================================================================
+// Catch-all route to serve Vue.js SPA for customer routes
+// Excludes: /admin/*, /shop/*, /api/*, /installer/*, /create-root, /seller/*
+Route::get('/{any?}', function () {
+    $isInstalled = env('APP_INSTALLED', false) || file_exists(storage_path('installed'));
+
+    if (!$isInstalled) {
+        return redirect()->route('installer.welcome.index');
+    }
+
+    // Serve the Vue.js customer-facing frontend
+    return view('app');
+})->where('any', '^(?!admin|shop|api|installer|create-root|seller).*$');

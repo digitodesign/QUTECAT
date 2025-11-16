@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MenuSeeder::class);
         $this->call(CountrySeeder::class);
         $this->call(FooterSeeder::class);
+        $this->call(PlansTableSeeder::class);  // SaaS subscription plans (Starter/Growth/Enterprise)
 
         if (app()->environment('local')) {
             $this->call(UserSeeder::class);

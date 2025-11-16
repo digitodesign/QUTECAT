@@ -5,4 +5,10 @@ nixPkgs = ["php83", "php83Packages.composer", "postgresql", "nodejs"]
 cmds = ["echo 'Install phase - nixpacks will copy files here'"]
 
 [start]
-cmd = "cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan migrate --force && php -S 0.0.0.0:$PORT server.php"
+cmd = """
+if [ "$PROCESS_TYPE" = "worker" ]; then
+  cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan queue:work redis --sleep=3 --tries=3 --timeout=60 --memory=512 --verbose
+else
+  cd backend/install && composer install --optimize-autoloader --no-dev --no-interaction && php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan migrate --force && php -S 0.0.0.0:$PORT server.php
+fi
+"""
