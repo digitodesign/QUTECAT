@@ -99,18 +99,25 @@ class Product extends Model
     {
         $video = null;
 
-        if ($this->videoMedia && $this->videoMedia->type == 'file' && Storage::exists($this->videoMedia->src)) {
-            $video = (object) [
-                'id' => $this->videoMedia->id,
-                'url' => Storage::url($this->videoMedia->src),
-                'type' => $this->videoMedia->type,
-            ];
-        } elseif ($this->videoMedia && $this->videoMedia->type != 'file' && $this->videoMedia->src != null) {
-            $video = (object) [
-                'id' => $this->videoMedia->id,
-                'url' => $this->videoMedia->src,
-                'type' => $this->videoMedia->type,
-            ];
+        try {
+            if ($this->videoMedia && $this->videoMedia->type == 'file' && Storage::exists($this->videoMedia->src)) {
+                $video = (object) [
+                    'id' => $this->videoMedia->id,
+                    'url' => Storage::url($this->videoMedia->src),
+                    'type' => $this->videoMedia->type,
+                ];
+            } elseif ($this->videoMedia && $this->videoMedia->type != 'file' && $this->videoMedia->src != null) {
+                $video = (object) [
+                    'id' => $this->videoMedia->id,
+                    'url' => $this->videoMedia->src,
+                    'type' => $this->videoMedia->type,
+                ];
+            }
+        } catch (\Exception $e) {
+            \Log::debug('Product video error: ' . $e->getMessage(), [
+                'product_id' => $this->id,
+                'video_id' => $this->videoMedia?->id,
+            ]);
         }
 
         return new Attribute(
@@ -132,8 +139,16 @@ class Product extends Model
     public function thumbnail(): Attribute
     {
         $thumbnail = asset('default/default.jpg');
-        if ($this->media && Storage::exists($this->media->src)) {
-            $thumbnail = Storage::url($this->media->src);
+
+        try {
+            if ($this->media && Storage::exists($this->media->src)) {
+                $thumbnail = Storage::url($this->media->src);
+            }
+        } catch (\Exception $e) {
+            \Log::debug('Product thumbnail error: ' . $e->getMessage(), [
+                'product_id' => $this->id,
+                'media_id' => $this->media?->id,
+            ]);
         }
 
         return new Attribute(

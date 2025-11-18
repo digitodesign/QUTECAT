@@ -52,8 +52,16 @@ class SubCategory extends Model
     public function thumbnail(): Attribute
     {
         $thumbnail = asset('default/default.jpg');
-        if ($this->media && Storage::exists($this->media->src)) {
-            $thumbnail = Storage::url($this->media->src);
+
+        try {
+            if ($this->media && Storage::exists($this->media->src)) {
+                $thumbnail = Storage::url($this->media->src);
+            }
+        } catch (\Exception $e) {
+            \Log::debug('SubCategory thumbnail error: ' . $e->getMessage(), [
+                'subcategory_id' => $this->id,
+                'media_id' => $this->media?->id,
+            ]);
         }
 
         return Attribute::make(

@@ -16,8 +16,9 @@ class MediaFactory extends Factory
         return [
             'type' => 'image',
             'name' => $this->faker->word,
-            'src' => 'default/dummy-profile.png',
-            'extention' => 'png',
+            'src' => 'default/default.jpg',
+            'disk' => 'r2',
+            'extention' => 'jpg',
         ];
     }
 }
