@@ -73,8 +73,18 @@ class Category extends Model
     public function thumbnail(): Attribute
     {
         $thumbnail = asset('default/default.jpg');
-        if ($this->media && Storage::exists($this->media->src)) {
-            $thumbnail = Storage::url($this->media->src);
+
+        // Gracefully handle storage errors (R2 not configured, missing files, etc.)
+        try {
+            if ($this->media && Storage::exists($this->media->src)) {
+                $thumbnail = Storage::url($this->media->src);
+            }
+        } catch (\Exception $e) {
+            // Log the error but don't crash - use default image
+            \Log::debug('Category thumbnail error: ' . $e->getMessage(), [
+                'category_id' => $this->id,
+                'media_id' => $this->media?->id,
+            ]);
         }
 
         return Attribute::make(
