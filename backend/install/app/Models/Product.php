@@ -182,20 +182,24 @@ class Product extends Model
         $thumbnails = collect([]);
 
         if (request()->is('api/*')) {
-            if ($this->videoMedia && $this->videoMedia->type == 'file' && Storage::exists($this->videoMedia->src)) {
-                $thumbnails[] = (object) [
-                    'id' => $this->videoMedia->id,
-                    'thumbnail' => null,
-                    'url' => Storage::url($this->videoMedia->src),
-                    'type' => $this->videoMedia->type,
-                ];
-            } elseif ($this->videoMedia && $this->videoMedia->type != 'file' && $this->videoMedia->src != null) {
-                $thumbnails[] = (object) [
-                    'id' => $this->videoMedia->id,
-                    'thumbnail' => null,
-                    'url' => $this->videoMedia->src,
-                    'type' => $this->videoMedia->type,
-                ];
+            try {
+                if ($this->videoMedia && $this->videoMedia->type == 'file' && Storage::exists($this->videoMedia->src)) {
+                    $thumbnails[] = (object) [
+                        'id' => $this->videoMedia->id,
+                        'thumbnail' => null,
+                        'url' => Storage::url($this->videoMedia->src),
+                        'type' => $this->videoMedia->type,
+                    ];
+                } elseif ($this->videoMedia && $this->videoMedia->type != 'file' && $this->videoMedia->src != null) {
+                    $thumbnails[] = (object) [
+                        'id' => $this->videoMedia->id,
+                        'thumbnail' => null,
+                        'url' => $this->videoMedia->src,
+                        'type' => $this->videoMedia->type,
+                    ];
+                }
+            } catch (\Exception $e) {
+                \Log::debug('Product thumbnails video error: ' . $e->getMessage());
             }
 
             $thumbnails[] = (object) [
@@ -208,8 +212,12 @@ class Product extends Model
 
         foreach ($this->medias as $media) {
             $thumbnail = asset('default/default.jpg');
-            if ($media && Storage::exists($media->src)) {
-                $thumbnail = Storage::url($media->src);
+            try {
+                if ($media && Storage::exists($media->src)) {
+                    $thumbnail = Storage::url($media->src);
+                }
+            } catch (\Exception $e) {
+                \Log::debug('Product media thumbnail error: ' . $e->getMessage());
             }
             $thumbnails[] = (object) [
                 'id' => $media?->id,
@@ -230,8 +238,12 @@ class Product extends Model
         $attachments = collect([]);
         foreach ($this->attachments as $attachment) {
             $file = asset('default/default.jpg');
-            if ($attachment && Storage::exists($attachment->src)) {
-                $file = Storage::url($attachment->src);
+            try {
+                if ($attachment && Storage::exists($attachment->src)) {
+                    $file = Storage::url($attachment->src);
+                }
+            } catch (\Exception $e) {
+                \Log::debug('Product attachment error: ' . $e->getMessage());
             }
             $attachments[] = (object) [
                 'id' => $attachment?->id,
@@ -248,8 +260,12 @@ class Product extends Model
         $thumbnails = collect([]);
         foreach ($this->medias as $media) {
             $thumbnail = asset('default/default.jpg');
-            if ($media && Storage::exists($media->src)) {
-                $thumbnail = Storage::url($media->src);
+            try {
+                if ($media && Storage::exists($media->src)) {
+                    $thumbnail = Storage::url($media->src);
+                }
+            } catch (\Exception $e) {
+                \Log::debug('Product additional thumbnail error: ' . $e->getMessage());
             }
             $thumbnails[] = (object) [
                 'id' => $media?->id,
