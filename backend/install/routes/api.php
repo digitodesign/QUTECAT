@@ -42,9 +42,22 @@ Route::get('/debug-files', function() {
 Route::get('/home', [App\Http\Controllers\API\HomeController::class, 'index']);
 Route::get('/master', [App\Http\Controllers\API\MasterController::class, 'index']);
 
+// Language Translations
+Route::get('/lang/{code}', function ($code) {
+    $filePath = base_path("lang/{$code}.json");
+    
+    if (file_exists($filePath)) {
+        $translations = json_decode(file_get_contents($filePath), true);
+        return response()->json(['data' => $translations]);
+    }
+    
+    return response()->json(['error' => 'Language file not found'], 404);
+});
+
 // Products
 Route::get('/products', [App\Http\Controllers\API\ProductController::class, 'index']);
 Route::get('/products/{product}', [App\Http\Controllers\API\ProductController::class, 'show']);
+Route::get('/product-details', [App\Http\Controllers\API\ProductController::class, 'show']);
 
 // Categories
 Route::get('/categories', [App\Http\Controllers\API\CategoryController::class, 'index']);
