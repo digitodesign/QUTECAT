@@ -27,7 +27,7 @@ trait ContextAware
     protected function getCurrentShopId($request = null): ?int
     {
         // 1. Check context from middleware (subdomain, header, session)
-        $shopId = app('current_shop_id');
+        $shopId = app()->bound('current_shop_id') ? app('current_shop_id') : null;
 
         if ($shopId) {
             return $shopId;
