@@ -117,7 +117,7 @@ class ProductController extends Controller
                 return $query->orderByDesc('orders_count')->orderByDesc('average_rating');
             })->when($sortType == 'newest' || $sortType == 'just_for_you', function ($query) {
                 return $query->orderBy('id', 'desc');
-            })->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
+            ->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
                 $query->whereRaw('
                     COALESCE(
                         (SELECT flash_sale_products.price
@@ -128,7 +128,7 @@ class ProductController extends Controller
                          AND flash_sales.status = 1
                          AND flash_sales.start_date <= CURRENT_DATE
                          AND flash_sales.end_date >= CURRENT_DATE
-                         AND (flash_sales.start_time <= CAST(CURRENT_TIME AS TIME) OR flash_sales.end_time >= CAST(CURRENT_TIME AS TIME))
+                         AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
                          ORDER BY flash_sale_products.price ASC LIMIT 1
                         ),
                         CASE WHEN discount_price > 0 THEN discount_price ELSE price END
@@ -148,7 +148,7 @@ class ProductController extends Controller
                          AND flash_sales.status = 1
                          AND flash_sales.start_date <= CURRENT_DATE
                          AND flash_sales.end_date >= CURRENT_DATE
-                         AND (flash_sales.start_time <= CAST(CURRENT_TIME AS TIME) OR flash_sales.end_time >= CAST(CURRENT_TIME AS TIME))
+                         AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
                          ORDER BY flash_sale_products.price $order LIMIT 1
                         ),
                         CASE WHEN discount_price > 0 THEN discount_price ELSE price END
