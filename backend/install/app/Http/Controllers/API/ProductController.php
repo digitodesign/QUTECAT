@@ -117,7 +117,7 @@ class ProductController extends Controller
                 return $query->orderByDesc('orders_count')->orderByDesc('average_rating');
             })->when($sortType == 'newest' || $sortType == 'just_for_you', function ($query) {
                 return $query->orderBy('id', 'desc');
-            ->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
+            })->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
                 $query->whereRaw('
                     COALESCE(
                         (SELECT flash_sale_products.price
