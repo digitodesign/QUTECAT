@@ -38,6 +38,42 @@ Route::get('/debug-files', function() {
     ]);
 });
 
+Route::get('/debug-db', function () {
+    try {
+        $results = [];
+        
+        // Test 1: Raw SQL
+        try {
+            \DB::select("
+                SELECT 1 FROM flash_sales 
+                WHERE start_date <= CURRENT_DATE 
+                AND end_date >= CURRENT_DATE 
+                AND (CAST(start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
+                LIMIT 1
+            ");
+            $results['sql'] = 'OK';
+        } catch (\Exception $e) {
+            $results['sql'] = $e->getMessage();
+        }
+
+        // Test 2: Product Thumbnail (Storage)
+        try {
+            $product = \App\Models\Product::first();
+            if ($product) {
+                $results['thumbnail'] = $product->thumbnail;
+            } else {
+                $results['thumbnail'] = 'No product found';
+            }
+        } catch (\Exception $e) {
+            $results['thumbnail'] = $e->getMessage();
+        }
+
+        return $results;
+    } catch (\Exception $e) {
+        return ['error' => $e->getMessage()];
+    }
+});
+
 // Home & Master Data
 Route::get('/home', [App\Http\Controllers\API\HomeController::class, 'index']);
 Route::get('/master', [App\Http\Controllers\API\MasterController::class, 'index']);
