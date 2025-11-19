@@ -38,34 +38,150 @@ Route::get('/debug-files', function() {
     ]);
 });
 
-Route::get('/debug-db', function () {
+Route::get('/debug-db', function (\Illuminate\Http\Request $request) {
     try {
-        $results = [];
+        \Illuminate\Support\Facades\Log::info('Debug DB started');
         
-        // Test Shop Logos (Storage Access)
-        try {
-            $shops = \App\Models\Shop::with('mediaLogo')->get();
-            $results['shops_count'] = $shops->count();
-            
-            foreach ($shops as $shop) {
-                try {
-                    // Trigger logo accessor
-                    $logo = $shop->logo; 
-                } catch (\Exception $e) {
-                    $results['shop_logo_error_' . $shop->id] = $e->getMessage();
-                }
-            }
-            
-            if (empty($results['shop_logo_error_'])) {
-                $results['shops_storage'] = 'OK (Tested ' . $shops->count() . ' shops)';
-            }
-        } catch (\Exception $e) {
-            $results['shops_query_error'] = $e->getMessage();
-        }
+        // Mock parameters
+        $page = $request->page ?? 1;
+        $perPage = $request->per_page ?? 12;
+        $skip = ($page * $perPage) - $perPage;
+        $search = $request->search;
+        $shopID = $request->shop_id; // Simplified
+        $categoryID = $request->category_id;
+        $subCategoryID = $request->sub_category_id;
+        $rating = $request->rating;
+        $sortType = $request->sort_type;
+        $minPrice = $request->min_price;
+        $maxPrice = $request->max_price;
+        $brandID = $request->brand_id;
+        $colorID = $request->color_id;
+        $sizeID = $request->size_id;
+        $isDigital = $request->is_digital == true ? true : false;
 
-        return $results;
-    } catch (\Exception $e) {
-        return ['error' => $e->getMessage()];
+        $shop = null; // Simplified for marketplace
+
+        $rootShop = generaleSetting('rootShop');
+        
+        // 1. Min/Max Price Logic
+        $productQuery = \App\Repositories\ProductRepository::query()->isActive();
+        $productMinPrice = $productQuery->min('price');
+        
+        $flashSale = \App\Models\FlashSale::isActive()->first();
+        $flashSaleMinPrice = $flashSale ? $flashSale->products->min('pivot.price') : null;
+        
+        if ($flashSaleMinPrice && $flashSaleMinPrice < $productMinPrice) {
+            $productMinPrice = $flashSaleMinPrice;
+        }
+        $productMaxPrice = $productQuery->max('price');
+
+        // 2. Main Query
+        $products = \App\Repositories\ProductRepository::query()
+            ->withSum('orders as orders_count', 'order_products.quantity')
+            ->withAvg('reviews as average_rating', 'rating')
+            ->isActive()
+            ->when($isDigital, function ($query) {
+                return $query->where('is_digital', true);
+            })
+            ->when($shop, function ($query) use ($shop) {
+                return $query->where('shop_id', $shop->id);
+            })->when($shopID && ! $shop, function ($query) use ($shopID) {
+                return $query->where('shop_id', $shopID);
+            })
+            ->when($search, function ($query) use ($search) {
+                return $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('short_description', 'like', '%'.$search.'%')
+                        ->orWhere('code', 'like', '%'.$search.'%');
+                });
+            })->when($brandID, function ($query) use ($brandID) {
+                return $query->where('brand_id', $brandID);
+            })->when($colorID, function ($query) use ($colorID) {
+                return $query->whereHas('colors', function ($query) use ($colorID) {
+                    return $query->where('id', $colorID);
+                });
+            })->when($sizeID, function ($query) use ($sizeID) {
+                return $query->whereHas('sizes', function ($query) use ($sizeID) {
+                    return $query->where('id', $sizeID);
+                });
+            })->when($categoryID, function ($query) use ($categoryID) {
+                return $query->whereHas('categories', function ($query) use ($categoryID) {
+                    return $query->where('id', $categoryID);
+                });
+            })->when($subCategoryID, function ($query) use ($subCategoryID) {
+                $query->whereHas('subcategories', function ($query) use ($subCategoryID) {
+                    return $query->where('id', $subCategoryID);
+                });
+            })->when($rating, function ($query) use ($rating) {
+                $ratingValue = floatval($rating);
+                $upperBound = $ratingValue + 1;
+                return $query->havingRaw('average_rating >= '.$rating.' AND average_rating < '.$upperBound);
+            })->when($sortType == 'top_selling', function ($query) {
+                return $query->orderByDesc('orders_count');
+            })->when($sortType == 'popular_product', function ($query) {
+                return $query->orderByDesc('orders_count')->orderByDesc('average_rating');
+            })->when($sortType == 'newest' || $sortType == 'just_for_you', function ($query) {
+                return $query->orderBy('id', 'desc');
+            })->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
+                $query->whereRaw('
+                    COALESCE(
+                        (SELECT flash_sale_products.price
+                         FROM flash_sale_products
+                         INNER JOIN flash_sales ON flash_sales.id = flash_sale_products.flash_sale_id
+                         WHERE flash_sale_products.product_id = products.id
+                         AND flash_sale_products.quantity > 0
+                         AND flash_sales.status = 1
+                         AND flash_sales.start_date <= CURRENT_DATE
+                         AND flash_sales.end_date >= CURRENT_DATE
+                         AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
+                         ORDER BY flash_sale_products.price ASC LIMIT 1
+                        ),
+                        CASE WHEN discount_price > 0 THEN discount_price ELSE price END
+                    ) BETWEEN ? AND ?
+                ', [$minPrice ?? 0, $maxPrice ?? PHP_INT_MAX]);
+            })
+            ->when(in_array($sortType, ['high_to_low', 'low_to_high']), function ($query) use ($sortType) {
+                $order = $sortType === 'high_to_low' ? 'DESC' : 'ASC';
+                return $query->orderByRaw("
+                    COALESCE(
+                        (SELECT flash_sale_products.price
+                         FROM flash_sale_products
+                         INNER JOIN flash_sales ON flash_sales.id = flash_sale_products.flash_sale_id
+                         WHERE flash_sale_products.product_id = products.id
+                         AND flash_sale_products.quantity > 0
+                         AND flash_sales.status = 1
+                         AND flash_sales.start_date <= CURRENT_DATE
+                         AND flash_sales.end_date >= CURRENT_DATE
+                         AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
+                         ORDER BY flash_sale_products.price $order LIMIT 1
+                        ),
+                        CASE WHEN discount_price > 0 THEN discount_price ELSE price END
+                    ) $order
+                ")->orderByDesc('id');
+            });
+
+        $total = $products->count();
+        // Limit to 100 to avoid OOM but catch most issues
+        $products = $products->take(100)->get();
+
+        // 3. Resource Resolution
+        $data = \App\Http\Resources\ProductResource::collection($products)->resolve();
+
+        return [
+            'status' => 'Success',
+            'total' => $total,
+            'count' => count($data),
+            'min_price' => $productMinPrice,
+            'max_price' => $productMaxPrice
+        ];
+
+    } catch (\Throwable $e) {
+        return [
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => substr($e->getTraceAsString(), 0, 500)
+        ];
     }
 });
 
