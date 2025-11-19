@@ -42,45 +42,30 @@ Route::get('/debug-db', function () {
     try {
         $results = [];
         
-        // Step 1: Check Root Shop
-        $rootShop = generaleSetting('rootShop');
-        $results['root_shop'] = $rootShop ? 'Found ID: ' . $rootShop->id : 'NULL';
-
-        // Step 2: Check Filters (Resources)
-        if ($rootShop) {
-            try {
-                $sizes = $rootShop->sizes()->isActive()->get();
-                $results['sizes_resource'] = \App\Http\Resources\SizeResource::collection($sizes)->resolve();
-            } catch (\Exception $e) { $results['sizes_error'] = $e->getMessage(); }
-
-            try {
-                $colors = $rootShop->colors()->isActive()->get();
-                $results['colors_resource'] = \App\Http\Resources\ColorResource::collection($colors)->resolve();
-            } catch (\Exception $e) { $results['colors_error'] = $e->getMessage(); }
-
-            try {
-                $brands = $rootShop->brands()->isActive()->get();
-                $results['brands_resource'] = \App\Http\Resources\BrandResource::collection($brands)->resolve();
-            } catch (\Exception $e) { $results['brands_error'] = $e->getMessage(); }
-        }
-
-        // Step 3: Full Product Query & Resource
+        // Test Shop Logos (Storage Access)
         try {
-            $products = \App\Repositories\ProductRepository::query()
-                ->withSum('orders as orders_count', 'order_products.quantity')
-                ->withAvg('reviews as average_rating', 'rating')
-                ->isActive()
-                ->take(5)
-                ->get();
+            $shops = \App\Models\Shop::with('mediaLogo')->get();
+            $results['shops_count'] = $shops->count();
             
-            $results['products_resource'] = \App\Http\Resources\ProductResource::collection($products)->resolve();
+            foreach ($shops as $shop) {
+                try {
+                    // Trigger logo accessor
+                    $logo = $shop->logo; 
+                } catch (\Exception $e) {
+                    $results['shop_logo_error_' . $shop->id] = $e->getMessage();
+                }
+            }
+            
+            if (empty($results['shop_logo_error_'])) {
+                $results['shops_storage'] = 'OK (Tested ' . $shops->count() . ' shops)';
+            }
         } catch (\Exception $e) {
-            $results['products_error'] = $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine();
+            $results['shops_query_error'] = $e->getMessage();
         }
 
         return $results;
     } catch (\Exception $e) {
-        return ['error' => $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine()];
+        return ['error' => $e->getMessage()];
     }
 });
 
