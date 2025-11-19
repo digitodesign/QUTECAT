@@ -56,16 +56,26 @@ Route::get('/debug-db', function () {
             $results['sql'] = $e->getMessage();
         }
 
-        // Test 2: Product Thumbnail (Storage)
+        // Test 2: Product Resource Transformation (Check for crashes)
         try {
-            $product = \App\Models\Product::first();
-            if ($product) {
-                $results['thumbnail'] = $product->thumbnail;
-            } else {
-                $results['thumbnail'] = 'No product found';
+            $products = \App\Models\Product::with(['shop', 'media', 'videoMedia'])->take(20)->get();
+            $results['products_count'] = $products->count();
+            
+            foreach ($products as $product) {
+                try {
+                    // Manually trigger accessors and resource logic
+                    $thumb = $product->thumbnail;
+                    $resource = new \App\Http\Resources\ProductResource($product);
+                    $data = $resource->resolve(); 
+                } catch (\Exception $e) {
+                    $results['product_error_' . $product->id] = $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine();
+                }
+            }
+            if (empty($results['product_error_'])) {
+                $results['resource_transform'] = 'OK (Tested ' . $products->count() . ' products)';
             }
         } catch (\Exception $e) {
-            $results['thumbnail'] = $e->getMessage();
+            $results['products_query_error'] = $e->getMessage();
         }
 
         return $results;
