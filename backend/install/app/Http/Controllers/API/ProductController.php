@@ -128,7 +128,7 @@ class ProductController extends Controller
                          AND flash_sales.status = 1
                          AND flash_sales.start_date <= CURRENT_DATE
                          AND flash_sales.end_date >= CURRENT_DATE
-                         AND (flash_sales.start_time <= CURRENT_TIME OR flash_sales.end_time >= CURRENT_TIME)
+                         AND (flash_sales.start_time <= CAST(CURRENT_TIME AS TIME) OR flash_sales.end_time >= CAST(CURRENT_TIME AS TIME))
                          ORDER BY flash_sale_products.price ASC LIMIT 1
                         ),
                         CASE WHEN discount_price > 0 THEN discount_price ELSE price END
@@ -148,7 +148,7 @@ class ProductController extends Controller
                          AND flash_sales.status = 1
                          AND flash_sales.start_date <= CURRENT_DATE
                          AND flash_sales.end_date >= CURRENT_DATE
-                         AND (flash_sales.start_time <= CURRENT_TIME OR flash_sales.end_time >= CURRENT_TIME)
+                         AND (flash_sales.start_time <= CAST(CURRENT_TIME AS TIME) OR flash_sales.end_time >= CAST(CURRENT_TIME AS TIME))
                          ORDER BY flash_sale_products.price $order LIMIT 1
                         ),
                         CASE WHEN discount_price > 0 THEN discount_price ELSE price END
