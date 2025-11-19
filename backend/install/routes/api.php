@@ -43,38 +43,28 @@ Route::get('/debug-db', function () {
         $results = [];
         
         // Step 1: Check Root Shop
-        try {
-            $rootShop = generaleSetting('rootShop');
-            $results['root_shop'] = $rootShop ? 'Found ID: ' . $rootShop->id : 'NULL';
-        } catch (\Exception $e) {
-            $results['root_shop_error'] = $e->getMessage();
-        }
+        $rootShop = generaleSetting('rootShop');
+        $results['root_shop'] = $rootShop ? 'Found ID: ' . $rootShop->id : 'NULL';
 
-        // Step 2: Check Product Min/Max Price
-        try {
-            $productQuery = \App\Repositories\ProductRepository::query()->isActive();
-            $results['min_price'] = $productQuery->min('price');
-            $results['max_price'] = $productQuery->max('price');
-        } catch (\Exception $e) {
-            $results['price_query_error'] = $e->getMessage();
-        }
-
-        // Step 3: Check Root Shop Relations
-        if (isset($rootShop) && $rootShop) {
+        // Step 2: Check Filters (Resources)
+        if ($rootShop) {
             try {
-                $results['sizes_count'] = $rootShop->sizes()->isActive()->count();
+                $sizes = $rootShop->sizes()->isActive()->get();
+                $results['sizes_resource'] = \App\Http\Resources\SizeResource::collection($sizes)->resolve();
             } catch (\Exception $e) { $results['sizes_error'] = $e->getMessage(); }
-            
+
             try {
-                $results['colors_count'] = $rootShop->colors()->isActive()->count();
+                $colors = $rootShop->colors()->isActive()->get();
+                $results['colors_resource'] = \App\Http\Resources\ColorResource::collection($colors)->resolve();
             } catch (\Exception $e) { $results['colors_error'] = $e->getMessage(); }
 
             try {
-                $results['brands_count'] = $rootShop->brands()->isActive()->count();
+                $brands = $rootShop->brands()->isActive()->get();
+                $results['brands_resource'] = \App\Http\Resources\BrandResource::collection($brands)->resolve();
             } catch (\Exception $e) { $results['brands_error'] = $e->getMessage(); }
         }
 
-        // Step 4: Full Query Simulation (Simplified)
+        // Step 3: Full Product Query & Resource
         try {
             $products = \App\Repositories\ProductRepository::query()
                 ->withSum('orders as orders_count', 'order_products.quantity')
@@ -82,14 +72,15 @@ Route::get('/debug-db', function () {
                 ->isActive()
                 ->take(5)
                 ->get();
-            $results['full_query_count'] = $products->count();
+            
+            $results['products_resource'] = \App\Http\Resources\ProductResource::collection($products)->resolve();
         } catch (\Exception $e) {
-            $results['full_query_error'] = $e->getMessage();
+            $results['products_error'] = $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine();
         }
 
         return $results;
     } catch (\Exception $e) {
-        return ['error' => $e->getMessage()];
+        return ['error' => $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine()];
     }
 });
 
