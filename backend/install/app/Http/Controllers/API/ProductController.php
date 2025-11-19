@@ -28,150 +28,159 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $page = $request->page;
-        $perPage = $request->per_page;
-        $skip = ($page * $perPage) - $perPage;
+        try {
+            $page = $request->page;
+            $perPage = $request->per_page;
+            $skip = ($page * $perPage) - $perPage;
 
-        $search = $request->search;
-        // SaaS: Use context-aware shop ID (from subdomain, header, or request param)
-        $shopID = $this->getCurrentShopId($request);
-        $categoryID = $request->category_id;
-        $subCategoryID = $request->sub_category_id;
+            $search = $request->search;
+            // SaaS: Use context-aware shop ID (from subdomain, header, or request param)
+            $shopID = $this->getCurrentShopId($request);
+            $categoryID = $request->category_id;
+            $subCategoryID = $request->sub_category_id;
 
-        $rating = $request->rating; // 4.0
-        $sortType = $request->sort_type;
-        $minPrice = $request->min_price;
-        $maxPrice = $request->max_price;
-        $brandID = $request->brand_id;
-        $colorID = $request->color_id;
-        $sizeID = $request->size_id;
-        $isDigital = $request->is_digital == true ? true : false;
+            $rating = $request->rating; // 4.0
+            $sortType = $request->sort_type;
+            $minPrice = $request->min_price;
+            $maxPrice = $request->max_price;
+            $brandID = $request->brand_id;
+            $colorID = $request->color_id;
+            $sizeID = $request->size_id;
+            $isDigital = $request->is_digital == true ? true : false;
 
-        // SaaS: Get current shop for filter options
-        $shop = $this->getCurrentShop($request);
+            // SaaS: Get current shop for filter options
+            $shop = $this->getCurrentShop($request);
 
-        // get data for
-        $rootShop = $shop ?? generaleSetting('rootShop');
-        $productQuery = ProductRepository::query()->when($shop, function ($query) use ($shop) {
-            return $query->where('shop_id', $shop->id);
-        })->isActive();
-
-        $flashSale = FlashSale::isActive()->first();
-        $flashSaleMinPrice = $flashSale ? $flashSale->products->min('pivot.price') : null;
-
-        $productMinPrice = $productQuery->min('price');
-        if ($flashSaleMinPrice && $flashSaleMinPrice < $productMinPrice) {
-            $productMinPrice = $flashSaleMinPrice;
-        }
-
-        $productMaxPrice = $productQuery->max('price');
-        $sizes = $rootShop?->sizes()->isActive()->get();
-        $colors = $rootShop?->colors()->isActive()->get();
-        $brands = $rootShop?->brands()->isActive()->get();
-
-        // filter query
-        $products = ProductRepository::query()
-            ->withSum('orders as orders_count', 'order_products.quantity')
-            ->withAvg('reviews as average_rating', 'rating')
-            ->isActive()
-            ->when($isDigital, function ($query) {
-                return $query->where('is_digital', true);
-            })
-            ->when($shop, function ($query) use ($shop) {
+            // get data for
+            $rootShop = $shop ?? generaleSetting('rootShop');
+            $productQuery = ProductRepository::query()->when($shop, function ($query) use ($shop) {
                 return $query->where('shop_id', $shop->id);
-            })->when($shopID && ! $shop, function ($query) use ($shopID) {
-                return $query->where('shop_id', $shopID);
-            })
-            ->when($search, function ($query) use ($search) {
-                return $query->where(function ($query) use ($search) {
-                    $query->where('name', 'like', '%'.$search.'%')
-                        ->orWhere('short_description', 'like', '%'.$search.'%')
-                        ->orWhere('code', 'like', '%'.$search.'%');
-                });
-            })->when($brandID, function ($query) use ($brandID) {
-                return $query->where('brand_id', $brandID);
-            })->when($colorID, function ($query) use ($colorID) {
-                return $query->whereHas('colors', function ($query) use ($colorID) {
-                    return $query->where('id', $colorID);
-                });
-            })->when($sizeID, function ($query) use ($sizeID) {
-                return $query->whereHas('sizes', function ($query) use ($sizeID) {
-                    return $query->where('id', $sizeID);
-                });
-            })->when($categoryID, function ($query) use ($categoryID) {
-                return $query->whereHas('categories', function ($query) use ($categoryID) {
-                    return $query->where('id', $categoryID);
-                });
-            })->when($subCategoryID, function ($query) use ($subCategoryID) {
-                $query->whereHas('subcategories', function ($query) use ($subCategoryID) {
-                    return $query->where('id', $subCategoryID);
-                });
-            })->when($rating, function ($query) use ($rating) {
-                $ratingValue = floatval($rating);
-                $upperBound = $ratingValue + 1;
+            })->isActive();
 
-                return $query->havingRaw('average_rating >= '.$rating.' AND average_rating < '.$upperBound);
-            })->when($sortType == 'top_selling', function ($query) {
-                return $query->orderByDesc('orders_count');
-            })->when($sortType == 'popular_product', function ($query) {
-                return $query->orderByDesc('orders_count')->orderByDesc('average_rating');
-            })->when($sortType == 'newest' || $sortType == 'just_for_you', function ($query) {
-                return $query->orderBy('id', 'desc');
-            })->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
-                $query->whereRaw('
-                    COALESCE(
-                        (SELECT flash_sale_products.price
-                         FROM flash_sale_products
-                         INNER JOIN flash_sales ON flash_sales.id = flash_sale_products.flash_sale_id
-                         WHERE flash_sale_products.product_id = products.id
-                         AND flash_sale_products.quantity > 0
-                         AND flash_sales.status = 1
-                         AND flash_sales.start_date <= CURRENT_DATE
-                         AND flash_sales.end_date >= CURRENT_DATE
-                         AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
-                         ORDER BY flash_sale_products.price ASC LIMIT 1
-                        ),
-                        CASE WHEN discount_price > 0 THEN discount_price ELSE price END
-                    ) BETWEEN ? AND ?
-                ', [$minPrice ?? 0, $maxPrice ?? PHP_INT_MAX]);
-            })
-            ->when(in_array($sortType, ['high_to_low', 'low_to_high']), function ($query) use ($sortType) {
-                $order = $sortType === 'high_to_low' ? 'DESC' : 'ASC';
+            $flashSale = FlashSale::isActive()->first();
+            $flashSaleMinPrice = $flashSale ? $flashSale->products->min('pivot.price') : null;
 
-                return $query->orderByRaw("
-                    COALESCE(
-                        (SELECT flash_sale_products.price
-                         FROM flash_sale_products
-                         INNER JOIN flash_sales ON flash_sales.id = flash_sale_products.flash_sale_id
-                         WHERE flash_sale_products.product_id = products.id
-                         AND flash_sale_products.quantity > 0
-                         AND flash_sales.status = 1
-                         AND flash_sales.start_date <= CURRENT_DATE
-                         AND flash_sales.end_date >= CURRENT_DATE
-                         AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
-                         ORDER BY flash_sale_products.price $order LIMIT 1
-                        ),
-                        CASE WHEN discount_price > 0 THEN discount_price ELSE price END
-                    ) $order
-                ")->orderByDesc('id');
-            });
+            $productMinPrice = $productQuery->min('price');
+            if ($flashSaleMinPrice && $flashSaleMinPrice < $productMinPrice) {
+                $productMinPrice = $flashSaleMinPrice;
+            }
 
-        $total = $products->count();
-        $products = $products->when($perPage && $page, function ($query) use ($perPage, $skip) {
-            return $query->skip($skip)->take($perPage);
-        })->get();
+            $productMaxPrice = $productQuery->max('price');
+            $sizes = $rootShop?->sizes()->isActive()->get();
+            $colors = $rootShop?->colors()->isActive()->get();
+            $brands = $rootShop?->brands()->isActive()->get();
 
-        return $this->json('products', [
-            'total' => $total,
-            'products' => ProductResource::collection($products),
-            'filters' => [
-                'sizes' => $sizes ? SizeResource::collection($sizes) : [],
-                'colors' => $colors ? ColorResource::collection($colors) : [],
-                'brands' => $brands ? BrandResource::collection($brands) : [],
-                'min_price' => (int) intval($productMinPrice),
-                'max_price' => (int) intval($productMaxPrice),
-            ],
-        ]);
+            // filter query
+            $products = ProductRepository::query()
+                ->withSum('orders as orders_count', 'order_products.quantity')
+                ->withAvg('reviews as average_rating', 'rating')
+                ->isActive()
+                ->when($isDigital, function ($query) {
+                    return $query->where('is_digital', true);
+                })
+                ->when($shop, function ($query) use ($shop) {
+                    return $query->where('shop_id', $shop->id);
+                })->when($shopID && ! $shop, function ($query) use ($shopID) {
+                    return $query->where('shop_id', $shopID);
+                })
+                ->when($search, function ($query) use ($search) {
+                    return $query->where(function ($query) use ($search) {
+                        $query->where('name', 'like', '%'.$search.'%')
+                            ->orWhere('short_description', 'like', '%'.$search.'%')
+                            ->orWhere('code', 'like', '%'.$search.'%');
+                    });
+                })->when($brandID, function ($query) use ($brandID) {
+                    return $query->where('brand_id', $brandID);
+                })->when($colorID, function ($query) use ($colorID) {
+                    return $query->whereHas('colors', function ($query) use ($colorID) {
+                        return $query->where('id', $colorID);
+                    });
+                })->when($sizeID, function ($query) use ($sizeID) {
+                    return $query->whereHas('sizes', function ($query) use ($sizeID) {
+                        return $query->where('id', $sizeID);
+                    });
+                })->when($categoryID, function ($query) use ($categoryID) {
+                    return $query->whereHas('categories', function ($query) use ($categoryID) {
+                        return $query->where('id', $categoryID);
+                    });
+                })->when($subCategoryID, function ($query) use ($subCategoryID) {
+                    $query->whereHas('subcategories', function ($query) use ($subCategoryID) {
+                        return $query->where('id', $subCategoryID);
+                    });
+                })->when($rating, function ($query) use ($rating) {
+                    $ratingValue = floatval($rating);
+                    $upperBound = $ratingValue + 1;
+
+                    return $query->havingRaw('average_rating >= '.$rating.' AND average_rating < '.$upperBound);
+                })->when($sortType == 'top_selling', function ($query) {
+                    return $query->orderByDesc('orders_count');
+                })->when($sortType == 'popular_product', function ($query) {
+                    return $query->orderByDesc('orders_count')->orderByDesc('average_rating');
+                })->when($sortType == 'newest' || $sortType == 'just_for_you', function ($query) {
+                    return $query->orderBy('id', 'desc');
+                })->when($minPrice || $maxPrice, function ($query) use ($minPrice, $maxPrice) {
+                    $query->whereRaw('
+                        COALESCE(
+                            (SELECT flash_sale_products.price
+                             FROM flash_sale_products
+                             INNER JOIN flash_sales ON flash_sales.id = flash_sale_products.flash_sale_id
+                             WHERE flash_sale_products.product_id = products.id
+                             AND flash_sale_products.quantity > 0
+                             AND flash_sales.status = 1
+                             AND flash_sales.start_date <= CURRENT_DATE
+                             AND flash_sales.end_date >= CURRENT_DATE
+                             AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
+                             ORDER BY flash_sale_products.price ASC LIMIT 1
+                            ),
+                            CASE WHEN discount_price > 0 THEN discount_price ELSE price END
+                        ) BETWEEN ? AND ?
+                    ', [$minPrice ?? 0, $maxPrice ?? PHP_INT_MAX]);
+                })
+                ->when(in_array($sortType, ['high_to_low', 'low_to_high']), function ($query) use ($sortType) {
+                    $order = $sortType === 'high_to_low' ? 'DESC' : 'ASC';
+
+                    return $query->orderByRaw("
+                        COALESCE(
+                            (SELECT flash_sale_products.price
+                             FROM flash_sale_products
+                             INNER JOIN flash_sales ON flash_sales.id = flash_sale_products.flash_sale_id
+                             WHERE flash_sale_products.product_id = products.id
+                             AND flash_sale_products.quantity > 0
+                             AND flash_sales.status = 1
+                             AND flash_sales.start_date <= CURRENT_DATE
+                             AND flash_sales.end_date >= CURRENT_DATE
+                             AND (CAST(flash_sales.start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(flash_sales.end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
+                             ORDER BY flash_sale_products.price $order LIMIT 1
+                            ),
+                            CASE WHEN discount_price > 0 THEN discount_price ELSE price END
+                        ) $order
+                    ")->orderByDesc('id');
+                });
+
+            $total = $products->count();
+            $products = $products->when($perPage && $page, function ($query) use ($perPage, $skip) {
+                return $query->skip($skip)->take($perPage);
+            })->get();
+
+            return $this->json('products', [
+                'total' => $total,
+                'products' => ProductResource::collection($products),
+                'filters' => [
+                    'sizes' => $sizes ? SizeResource::collection($sizes) : [],
+                    'colors' => $colors ? ColorResource::collection($colors) : [],
+                    'brands' => $brands ? BrandResource::collection($brands) : [],
+                    'min_price' => (int) intval($productMinPrice),
+                    'max_price' => (int) intval($productMaxPrice),
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => substr($e->getTraceAsString(), 0, 1000)
+            ], 500);
+        }
     }
 
     /**
