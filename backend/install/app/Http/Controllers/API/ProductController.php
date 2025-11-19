@@ -126,12 +126,12 @@ class ProductController extends Controller
                          WHERE flash_sale_products.product_id = products.id
                          AND flash_sale_products.quantity > 0
                          AND flash_sales.status = 1
-                         AND flash_sales.start_date <= CURDATE()
-                         AND flash_sales.end_date >= CURDATE()
-                         AND (flash_sales.start_time <= CURTIME() OR flash_sales.end_time >= CURTIME())
+                         AND flash_sales.start_date <= CURRENT_DATE
+                         AND flash_sales.end_date >= CURRENT_DATE
+                         AND (flash_sales.start_time <= CURRENT_TIME OR flash_sales.end_time >= CURRENT_TIME)
                          ORDER BY flash_sale_products.price ASC LIMIT 1
                         ),
-                        IF(discount_price > 0, discount_price, price)
+                        CASE WHEN discount_price > 0 THEN discount_price ELSE price END
                     ) BETWEEN ? AND ?
                 ', [$minPrice ?? 0, $maxPrice ?? PHP_INT_MAX]);
             })
@@ -146,12 +146,12 @@ class ProductController extends Controller
                          WHERE flash_sale_products.product_id = products.id
                          AND flash_sale_products.quantity > 0
                          AND flash_sales.status = 1
-                         AND flash_sales.start_date <= CURDATE()
-                         AND flash_sales.end_date >= CURDATE()
-                         AND (flash_sales.start_time <= CURTIME() OR flash_sales.end_time >= CURTIME())
+                         AND flash_sales.start_date <= CURRENT_DATE
+                         AND flash_sales.end_date >= CURRENT_DATE
+                         AND (flash_sales.start_time <= CURRENT_TIME OR flash_sales.end_time >= CURRENT_TIME)
                          ORDER BY flash_sale_products.price $order LIMIT 1
                         ),
-                        IF(discount_price > 0, discount_price, price)
+                        CASE WHEN discount_price > 0 THEN discount_price ELSE price END
                     ) $order
                 ")->orderByDesc('id');
             });
