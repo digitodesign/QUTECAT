@@ -78,6 +78,14 @@ Route::get('/debug-db', function () {
             $results['products_query_error'] = $e->getMessage();
         }
 
+        // Test 3: FlashSale Scope
+        try {
+            $flashSale = \App\Models\FlashSale::isActive()->first();
+            $results['flash_sale'] = $flashSale ? 'Found ID: ' . $flashSale->id : 'None found (but query worked)';
+        } catch (\Exception $e) {
+            $results['flash_sale_error'] = $e->getMessage();
+        }
+
         return $results;
     } catch (\Exception $e) {
         return ['error' => $e->getMessage()];
