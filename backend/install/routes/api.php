@@ -42,48 +42,49 @@ Route::get('/debug-db', function () {
     try {
         $results = [];
         
-        // Test 1: Raw SQL
+        // Step 1: Check Root Shop
         try {
-            \DB::select("
-                SELECT 1 FROM flash_sales 
-                WHERE start_date <= CURRENT_DATE 
-                AND end_date >= CURRENT_DATE 
-                AND (CAST(start_time AS TIME) <= CAST(CURRENT_TIME AS TIME) OR CAST(end_time AS TIME) >= CAST(CURRENT_TIME AS TIME))
-                LIMIT 1
-            ");
-            $results['sql'] = 'OK';
+            $rootShop = generaleSetting('rootShop');
+            $results['root_shop'] = $rootShop ? 'Found ID: ' . $rootShop->id : 'NULL';
         } catch (\Exception $e) {
-            $results['sql'] = $e->getMessage();
+            $results['root_shop_error'] = $e->getMessage();
         }
 
-        // Test 2: Product Resource Transformation (Check for crashes)
+        // Step 2: Check Product Min/Max Price
         try {
-            $products = \App\Models\Product::with(['shop', 'media', 'videoMedia'])->take(20)->get();
-            $results['products_count'] = $products->count();
+            $productQuery = \App\Repositories\ProductRepository::query()->isActive();
+            $results['min_price'] = $productQuery->min('price');
+            $results['max_price'] = $productQuery->max('price');
+        } catch (\Exception $e) {
+            $results['price_query_error'] = $e->getMessage();
+        }
+
+        // Step 3: Check Root Shop Relations
+        if (isset($rootShop) && $rootShop) {
+            try {
+                $results['sizes_count'] = $rootShop->sizes()->isActive()->count();
+            } catch (\Exception $e) { $results['sizes_error'] = $e->getMessage(); }
             
-            foreach ($products as $product) {
-                try {
-                    // Manually trigger accessors and resource logic
-                    $thumb = $product->thumbnail;
-                    $resource = new \App\Http\Resources\ProductResource($product);
-                    $data = $resource->resolve(); 
-                } catch (\Exception $e) {
-                    $results['product_error_' . $product->id] = $e->getMessage() . ' | ' . $e->getFile() . ':' . $e->getLine();
-                }
-            }
-            if (empty($results['product_error_'])) {
-                $results['resource_transform'] = 'OK (Tested ' . $products->count() . ' products)';
-            }
-        } catch (\Exception $e) {
-            $results['products_query_error'] = $e->getMessage();
+            try {
+                $results['colors_count'] = $rootShop->colors()->isActive()->count();
+            } catch (\Exception $e) { $results['colors_error'] = $e->getMessage(); }
+
+            try {
+                $results['brands_count'] = $rootShop->brands()->isActive()->count();
+            } catch (\Exception $e) { $results['brands_error'] = $e->getMessage(); }
         }
 
-        // Test 3: FlashSale Scope
+        // Step 4: Full Query Simulation (Simplified)
         try {
-            $flashSale = \App\Models\FlashSale::isActive()->first();
-            $results['flash_sale'] = $flashSale ? 'Found ID: ' . $flashSale->id : 'None found (but query worked)';
+            $products = \App\Repositories\ProductRepository::query()
+                ->withSum('orders as orders_count', 'order_products.quantity')
+                ->withAvg('reviews as average_rating', 'rating')
+                ->isActive()
+                ->take(5)
+                ->get();
+            $results['full_query_count'] = $products->count();
         } catch (\Exception $e) {
-            $results['flash_sale_error'] = $e->getMessage();
+            $results['full_query_error'] = $e->getMessage();
         }
 
         return $results;
