@@ -40,7 +40,8 @@ class SubscriptionController extends Controller
     public function plans()
     {
         $plans = Plan::active()->orderBy('sort_order')->get();
-        $currentShop = auth()->user()->shop;
+        $user = auth('sanctum')->user();
+        $currentShop = $user ? $user->shop : null;
 
         return response()->json([
             'plans' => $plans,
